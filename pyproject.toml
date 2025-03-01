@@ -1,0 +1,16 @@
+[project]
+name = "entrag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.8",
+    "numpy>=2.2.3",
+    "ollama>=0.4.7",
+    "faiss-cpu>=1.10.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

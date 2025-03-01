@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to Apple's 2022 Form 10-K, what was the total revenue for the fiscal year 2022?",
+    "reference_answer": "Apple reported total revenue of approximately $394.3 billion in fiscal year 2022."
+  },
+  {
+    "id": "2",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "From UnitedHealth Group's 2022 Form 10-K, what was the revenue specifically attributable to its Medical Benefits segment (excluding revenue from Pharmacy and other services)?",
+    "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $220 billion in revenue in 2022."
+  },
+  {
+    "id": "3",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does the net income reported in the 2022 Form 10-K of Apple compare to that of Alphabet for the same fiscal year?",
+    "reference_answer": "Apple's net income for fiscal year 2022 was about $99.8 billion, while Alphabet's net income was around $76 billion—meaning Apple's net income was roughly 31% higher than Alphabet's."
+  },
+  {
+    "id": "4",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "Based on the 2022 Form 10-K filings, what is the combined total revenue of ExxonMobil and CVS Health?",
+    "reference_answer": "ExxonMobil reported total revenue of approximately $285 billion and CVS Health around $322 billion in 2022; together, their combined total revenue is about $607 billion."
+  },
+  {
+    "id": "5",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "Among UnitedHealth Group, Berkshire Hathaway, and Alphabet, which company reported the highest operating margin in their 2021 Form 10-K filings?",
+    "reference_answer": "Based on the 2021 filings, Alphabet reported the highest operating margin at roughly 30%, compared to UnitedHealth Group's approximately 7.5% and Berkshire Hathaway's around 10%."
+  }
+]
