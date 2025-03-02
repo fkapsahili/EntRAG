@@ -1,27 +1,18 @@
 import abc
 import logging
-from typing import TypeVar, final
-from pydantic import BaseModel
-import numpy as np
-import faiss
-
 import os
+from typing import TypeVar, final
+
+import faiss
+import numpy as np
+
+from entrag.data_model.document import Document
+
 
 eval_logger = logging.getLogger(__name__)
 
 
 T = TypeVar("T", bound="RAGLM")
-
-
-class Document(BaseModel):
-    """
-    Model for a document used in retrieval.
-    """
-
-    title: str | None = None
-    content: str
-    source: str | None = None
-    metadata: dict[str, str] | None = None
 
 
 class RAGLM(abc.ABC):
@@ -100,17 +91,13 @@ class RAGLM(abc.ABC):
             return None
 
         if vectors.ndim != 2 or vectors.shape[0] == 0:
-            eval_logger.error(
-                "Invalid embedding shape. Expected a 2D array with shape (num_docs, vector_dim)."
-            )
+            eval_logger.error("Invalid embedding shape. Expected a 2D array with shape (num_docs, vector_dim).")
             return None
 
         vector_dim = vectors.shape[1]
         index = faiss.IndexFlatL2(vector_dim)
         index.add(vectors)
-        eval_logger.info(
-            f"Built vector store with {index.ntotal} documents, dimension: {vector_dim}"
-        )
+        eval_logger.info(f"Built vector store with {index.ntotal} documents, dimension: {vector_dim}")
 
         if self.data_dir:
             index_path = os.path.join(self.data_dir, "vector_store.index")

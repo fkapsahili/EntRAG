@@ -3,13 +3,43 @@ name = "entrag"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12,<3.13"
 dependencies = [
     "click>=8.1.8",
     "numpy>=2.2.3",
-    "ollama>=0.4.7",
     "faiss-cpu>=1.10.0",
+    "loguru>=0.7.3",
+    "pymupdf>=1.25.3",
+    "nltk>=3.9.1",
+    "pydantic>=2.10.6",
+    "pyyaml>=6.0.2",
 ]
+
+[project.scripts]
+evaluation = "entrag.main:main"
+
+[tool.ruff]
+line-length = 119
+exclude = ["**/*.ipynb"]
+
+lint.ignore = ["E501", "C901", "F841"]
+lint.select = ["C", "E", "F", "I", "W"]
+lint.fixable = ["A", "B", "C", "D", "E", "F", "I", "W"]
+preview = true
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = ["entrag"]
+split-on-trailing-comma = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.uv]
+package = true
 
 [build-system]
 requires = ["hatchling"]
