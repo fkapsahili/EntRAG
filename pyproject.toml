@@ -13,6 +13,9 @@ dependencies = [
     "nltk>=3.9.1",
     "pydantic>=2.10.6",
     "pyyaml>=6.0.2",
+    "sentence-transformers>=3.4.1",
+    "transformers>=4.49.0",
+    "markitdown[all]>=0.0.1a5",
 ]
 
 [project.scripts]

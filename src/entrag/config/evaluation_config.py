@@ -6,6 +6,8 @@ class ChunkingConfig(BaseModel):
     Configuration section for chunking.
     """
 
+    files_directory: str = Field(description="Input directory containing the text files to chunk.", default="data/raw")
+    dataset_name: str = Field(description="Name of the dataset to use.", default="dataset")
     model_name: str = Field(
         description="The model name to use for chunking.", default="sentence-transformers/all-MiniLM-L6-v2"
     )
@@ -13,6 +15,7 @@ class ChunkingConfig(BaseModel):
     max_tokens: int = Field(description="Maximum number of tokens in a chunk.", default=1024)
     target_chunk_size: int = Field(description="Target chunk size in tokens.", default=512)
     similarity_threshold: float = Field(description="Similarity threshold for chunking.", default=0.3)
+    overlap_size: int = Field(description="Number of overlapping sentences between chunks.", default=2)
 
 
 class EvaluationConfig(BaseModel):
@@ -22,4 +25,4 @@ class EvaluationConfig(BaseModel):
 
     config_name: str
 
-    chunks: ChunkingConfig = Field(description="Chunking configuration to use.", default=ChunkingConfig())
+    chunking: ChunkingConfig = Field(description="Chunking configuration to use.", default=ChunkingConfig())

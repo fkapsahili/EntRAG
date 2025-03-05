@@ -175,3 +175,5 @@ cython_debug/
 
 # Data
 data/raw/
+
+chunks.json

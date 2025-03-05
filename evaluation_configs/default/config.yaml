@@ -1,8 +1,11 @@
 config_name: default_test
 
-chunks:
+chunking:
+  files_directory: data/entrag_test
+  dataset_name: entrag_test
   model_name: sentence-transformers/all-MiniLM-L6-v2
   min_tokens: 256 # tokens
   target_chunk_size: 512 # tokens
   max_tokens: 1024 # tokens
   similarity_threshold: 0.3
+  overlap_size: 2

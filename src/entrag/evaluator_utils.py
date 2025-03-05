@@ -1,5 +1,5 @@
-from pathlib import Path
 import json
+from pathlib import Path
 
 from entrag.api.model import Document
 
@@ -18,9 +18,7 @@ def load_documents(file_path: str) -> list[Document]:
     if isinstance(data, dict):
         data = data.get("documents", [])
     elif not isinstance(data, list):
-        raise ValueError(
-            "Invalid data format. Expected a list or a dictionary with a 'documents' key."
-        )
+        raise ValueError("Invalid data format. Expected a list or a dictionary with a 'documents' key.")
 
     documents = [Document(**doc) for doc in data]
     return documents

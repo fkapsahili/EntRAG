@@ -1,16 +1,15 @@
 """
-This script processes raw PDF files from a specified input directory and saves the structured data as JSON.
+This script processes raw PDF files from a specified input directory and saves the structured data as markdown.
 """
 
-import json
 import os
 import re
 import unicodedata
-from typing import List, Optional
+import uuid
 
 import click
-import pymupdf
 from loguru import logger
+from markitdown import MarkItDown
 from pydantic import BaseModel
 
 
@@ -19,11 +18,10 @@ class Document(BaseModel):
     Model for a document used in preprocessing steps.
     """
 
-    id: Optional[str] = None
-    title: Optional[str] = None
+    id: str | None = None
+    title: str
     content: str
-    source: Optional[str] = None
-    metadata: Optional[dict] = None
+    source: str | None = None
 
 
 def _clean_text(text: str) -> str:
@@ -33,40 +31,25 @@ def _clean_text(text: str) -> str:
     return cleaned_text
 
 
-def extract_text_from_pdf(file_path: str) -> str:
+def load_documents_from_directory(directory_path: str) -> list[Document]:
     """
-    Extract text from a PDF file using PyMuPDF.
+    Load documents from a directory containing files,
+    extract their text, and convert them into a list of Documents.
     """
-    text = ""
-    try:
-        doc = pymupdf.open(file_path)
-        for page in doc:
-            page_text = page.get_text("text")
-            if page_text:
-                text += page_text + "\n"
-    except Exception as e:
-        logger.error(f"Error reading PDF {file_path}: {e}")
-    return text.strip()
-
-
-def load_documents_from_directory(directory_path: str) -> List[Document]:
-    """
-    Load documents from a directory containing PDF files,
-    extract their text, and convert them into a list of Document objects.
-    """
+    md = MarkItDown()
     documents = []
     for root, _, files in os.walk(directory_path):
         for file in files:
-            if file.lower().endswith(".pdf"):
-                full_path = os.path.join(root, file)
-                logger.info(f"Processing PDF: {full_path}")
-                text = extract_text_from_pdf(full_path)
-                text = _clean_text(text)
-                if not text:
-                    logger.warning(f"No text extracted from {full_path}. Skipping document.")
-                    continue
-                doc_obj = Document(id=file, title=file, content=text, source=full_path, metadata={"extension": "pdf"})
-                documents.append(doc_obj)
+            full_path = os.path.join(root, file)
+            logger.info(f"Processing file: {full_path}")
+            result = md.convert(full_path)
+            text = _clean_text(result.text_content)
+            if not text:
+                logger.warning(f"No text extracted from {full_path}. Skipping document.")
+                continue
+            filename = os.path.splitext(file)[0]
+            document = Document(id=str(uuid.uuid4()), title=filename, content=result.text_content, source=file)
+            documents.append(document)
     return documents
 
 
@@ -78,21 +61,24 @@ def load_documents_from_directory(directory_path: str) -> List[Document]:
     help="Path to the directory containing PDF files.",
 )
 @click.option(
-    "--output",
+    "--output-dir",
     type=click.Path(writable=True),
     required=True,
-    help="Output JSON file path. Must contain `*.json` as file-ending.",
+    help="Output file path. The documents will be saved as markdown.",
 )
-def main(input_dir: str, output: str) -> None:
+def main(input_dir: str, output_dir: str) -> None:
     """
-    Process raw PDF files and save them as structured JSON.
+    Process raw PDF files and save them in the structured format.
     """
     documents = load_documents_from_directory(input_dir)
     logger.info(f"Processed {len(documents)} documents.")
 
-    with open(output, "w", encoding="utf-8") as f:
-        json.dump([doc.model_dump() for doc in documents], f, ensure_ascii=False, indent=2)
-    logger.info(f"Documents saved to {output}")
+    os.makedirs(output_dir, exist_ok=True)
+    for doc in documents:
+        file_path = os.path.join(output_dir, f"{doc.title}.md")
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(f"# {doc.title}\n\n{doc.content}")
+        logger.info(f"Document saved as markdown: {file_path}")
 
 
 if __name__ == "__main__":
