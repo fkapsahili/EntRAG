@@ -1,3 +1,5 @@
+import json
+import os
 import re
 
 import nltk
@@ -94,6 +96,33 @@ def _process_sentences_segment(
     return chunks, current_chunk_sentences, current_token_count
 
 
+def _save_document_chunks(config: EvaluationConfig, chunks: list[Chunk]):
+    """
+    Save the created document chunks to disk.
+    """
+    output_file = os.path.join(config.chunking.output_directory, config.chunking.dataset_name + ".jsonl")
+    logger.debug(f"Saving document chunks to: {output_file}")
+    os.makedirs(config.chunking.output_directory, exist_ok=True)
+    with open(output_file, "w", encoding="utf-8") as file:
+        for chunk in chunks:
+            file.write(json.dumps(chunk.model_dump(), ensure_ascii=False) + "\n")
+    logger.debug("Document chunks saved successfully.")
+
+
+def _load_document_chunks(config: ChunkingConfig) -> list[Chunk]:
+    """
+    Load the document chunks from disk.
+    """
+    input_file = os.path.join(config.output_directory, config.dataset_name + ".jsonl")
+    logger.debug(f"Loading document chunks from: {input_file}")
+    chunks = []
+    with open(input_file, "r", encoding="utf-8") as file:
+        for line in file:
+            chunks.append(Chunk.model_validate_json(line))
+    logger.debug("Document chunks loaded successfully.")
+    return chunks
+
+
 def semantic_chunking(
     document: str, chunking_config: ChunkingConfig, model: SentenceTransformer, tokenizer: AutoTokenizer
 ):
@@ -140,6 +169,10 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
     """
     logger.info("Starting document chunking.")
 
+    if not config.chunking.enabled:
+        logger.info("Chunking is disabled. Loading existing chunks.")
+        return _load_document_chunks(config.chunking)
+
     source_directory = config.chunking.files_directory
     logger.debug(f"Using chunking configuration: {config.chunking}")
 
@@ -175,4 +208,6 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
         chunks_list.extend(chunks_formatted)
 
     logger.info(f"Document chunking completed. Created {len(chunks_list)} chunks.")
+    _save_document_chunks(config, chunks_list)
+    logger.success("Document chunking completed successfully.")
     return chunks_list

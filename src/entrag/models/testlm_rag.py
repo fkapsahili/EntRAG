@@ -3,8 +3,8 @@ import pickle
 
 import faiss
 import numpy as np
+from google.genai import Client
 from loguru import logger
-from sentence_transformers import SentenceTransformer
 
 from entrag.api.model import RAGLM
 from entrag.data_model.document import Chunk
@@ -15,17 +15,21 @@ class TestLMRAG(RAGLM):
         super().__init__()
         self.index = None
         self.chunk_store = []
-        self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        self.genai_client = Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.index_path = os.path.join(storage_dir, "faiss_index.bin")
         self.chunks_path = os.path.join(storage_dir, "chunks.pkl")
 
         self.load_store()
 
-    def encode_chunk(self, chunk: Chunk) -> list[float]:
-        return self.embedding_model.encode(chunk.chunk_text).tolist()
+    def embed_chunk(self, chunk: Chunk) -> list[float]:
+        return (
+            self.genai_client.models.embed_content(model="text-embedding-004", contents=chunk.chunk_text)
+            .embeddings[0]
+            .values
+        )
 
-    def encode_query(self, query: str) -> list[float]:
-        return self.embedding_model.encode(query).tolist()
+    def embed_query(self, query: str) -> list[float]:
+        return self.genai_client.models.embed_content(model="text-embedding-004", contents=query).embeddings[0].values
 
     def persist_store(self) -> None:
         """
@@ -68,7 +72,7 @@ class TestLMRAG(RAGLM):
             logger.info("Using existing vector store. Skipping build.")
             return self.index
 
-        embeddings = [self.encode_chunk(chunk) for chunk in chunks]
+        embeddings = [self.embed_chunk(chunk) for chunk in chunks]
         try:
             vectors = np.array(embeddings, dtype=np.float32)
         except Exception as exc:
@@ -89,7 +93,7 @@ class TestLMRAG(RAGLM):
         return self.index
 
     def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
-        query_vector = np.array(self.encode_query(query), dtype=np.float32).reshape(1, -1)
+        query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")

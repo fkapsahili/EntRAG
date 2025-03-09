@@ -25,12 +25,11 @@ def main() -> None:
     """
     config = load_eval_config("default")
 
-    model = TestLMRAG()
+    chunks = create_chunks_for_documents(config)
+    logger.info(f"Loaded {len(chunks)} chunks.")
 
-    if config.chunking.enabled:
-        chunks = create_chunks_for_documents(config)
-        logger.info(f"Created {len(chunks)} chunks.")
-        model.build_store(chunks)
+    model = TestLMRAG()
+    model.build_store(chunks)
 
     retrieved_chunks = model.retrieve("Volkswagen emissions scandal", top_k=5)
     print("Retrieved chunks:")
