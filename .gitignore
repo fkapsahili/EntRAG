@@ -177,3 +177,6 @@ cython_debug/
 data/raw/
 
 chunks.json
+
+# Vector store patterns
+*_vector_store/

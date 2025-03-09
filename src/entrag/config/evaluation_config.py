@@ -6,6 +6,7 @@ class ChunkingConfig(BaseModel):
     Configuration section for chunking.
     """
 
+    enabled: bool = Field(description="Flag to enable the chunking step.", default=True)
     files_directory: str = Field(description="Input directory containing the text files to chunk.", default="data/raw")
     dataset_name: str = Field(description="Name of the dataset to use.", default="dataset")
     model_name: str = Field(

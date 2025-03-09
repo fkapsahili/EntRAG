@@ -1,6 +1,7 @@
 config_name: default_test
 
 chunking:
+  enabled: false
   files_directory: data/entrag_test
   dataset_name: entrag_test
   model_name: sentence-transformers/all-MiniLM-L6-v2

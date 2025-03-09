@@ -13,6 +13,9 @@ from entrag.data_model.document import Chunk
 from entrag.preprocessing.create_dataset import create_dataset
 
 
+# Block multithreading for PyTorch to avoid memory issues
+torch.set_num_threads(1)
+
 # Download NLTK data
 nltk.download("punkt_tab")
 
