@@ -8,6 +8,8 @@ from loguru import logger
 
 from entrag.api.model import RAGLM
 from entrag.data_model.document import Chunk
+from entrag.prompts.default_prompts import SIMPLE_QA_PROMPT
+from entrag.utils.prompt import get_query_time
 
 
 class TestLMRAG(RAGLM):
@@ -21,12 +23,11 @@ class TestLMRAG(RAGLM):
 
         self.load_store()
 
-    def embed_chunk(self, chunk: Chunk) -> list[float]:
-        return (
-            self.genai_client.models.embed_content(model="text-embedding-004", contents=chunk.chunk_text)
-            .embeddings[0]
-            .values
+    def embed_chunks(self, chunks: list[Chunk]) -> list[list[float]]:
+        embeddings = self.genai_client.models.embed_content(
+            model="text-embedding-004", contents=[chunk.chunk_text for chunk in chunks]
         )
+        return [embedding.values for embedding in embeddings.embeddings]
 
     def embed_query(self, query: str) -> list[float]:
         return self.genai_client.models.embed_content(model="text-embedding-004", contents=query).embeddings[0].values
@@ -59,7 +60,7 @@ class TestLMRAG(RAGLM):
                 logger.error(f"Failed to load vector store: {e}")
         return False
 
-    def build_store(self, chunks: list[Chunk]) -> faiss.Index | None:
+    def build_store(self, chunks: list[Chunk], batch_size=100) -> faiss.Index | None:
         """
         Build a vector store for the provided chunks.
         Uses FAISS for the vector store creation.
@@ -72,7 +73,11 @@ class TestLMRAG(RAGLM):
             logger.info("Using existing vector store. Skipping build.")
             return self.index
 
-        embeddings = [self.embed_chunk(chunk) for chunk in chunks]
+        embeddings = []
+        for i in range(0, len(chunks), batch_size):
+            logger.info(f"Embedding chunks {i} to {i + batch_size}")
+            embeddings.extend(self.embed_chunks(chunks[i : i + batch_size]))
+
         try:
             vectors = np.array(embeddings, dtype=np.float32)
         except Exception as exc:
@@ -93,15 +98,35 @@ class TestLMRAG(RAGLM):
         return self.index
 
     def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
-        query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
+        search_query = self.query_expansion(query)
+        query_vector = np.array(self.embed_query(search_query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
         return retrieved_chunks
 
+    def query_expansion(self, query: str) -> str:
+        prompt = """
+        Given the following query:
+        {}
+        Please generate a query which is suitable for retrieving relevant information
+        in a vector-based retrieval system.
+
+        Only respond with the query text.
+        """.format(query)
+        response = self.genai_client.models.generate_content(model="gemini-2.0-flash", contents=[prompt])
+        logger.info(f"Expanded query: {response.text}")
+        return response.text
+
     def generate(self, query: str, retrieved_chunks: list[Chunk], generation_kwargs: dict | None = None) -> str:
         combined_context = " ".join([chunk.chunk_text for chunk in retrieved_chunks])
-        return "Hello, world!"
+        logger.info(f"Generated response for query: {query}")
+        prompt_template = SIMPLE_QA_PROMPT.format(
+            query=query, references=combined_context, query_time=get_query_time()
+        )
+        response = self.genai_client.models.generate_content(model="gemini-1.5-pro", contents=[prompt_template])
+        logger.info(f"Generated response: {response.text}")
+        return response.text
 
     def evaluate(self, queries: list[str]) -> list[str]:
         return [self.generate(q, self.retrieve(q)) for q in queries]

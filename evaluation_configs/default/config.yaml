@@ -1,5 +1,9 @@
 config_name: default_test
 
+tasks:
+  question_answering:
+    dataset_path: datasets/20250301-entrag-dev.json 
+
 chunking:
   enabled: false
   files_directory: data/entrag_test

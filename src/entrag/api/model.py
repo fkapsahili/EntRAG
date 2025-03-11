@@ -19,9 +19,9 @@ class RAGLM(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def embed_chunk(self, chunk: Chunk) -> list[float] | None:
+    def embed_chunks(self, chunk: Chunk) -> list[list[float]] | None:
         """
-        Encode a chunk into a vector or other meaningful representation.
+        Encode chunks into a vector or other meaningful representation.
         Each subclass must define its own encoding logic or return `None` if not applicable.
         """
         pass

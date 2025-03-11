@@ -13,7 +13,7 @@
     "question_type": "simple_w_condition",
     "dynamism": "static",
     "question": "From UnitedHealth Group's 2022 Form 10-K, what was the revenue specifically attributable to its Medical Benefits segment (excluding revenue from Pharmacy and other services)?",
-    "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $220 billion in revenue in 2022."
+    "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $249.7 million in revenue in 2022."
   },
   {
     "id": "3",

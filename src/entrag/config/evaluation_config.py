@@ -20,6 +20,22 @@ class ChunkingConfig(BaseModel):
     overlap_size: int = Field(description="Number of overlapping sentences between chunks.", default=2)
 
 
+class QuestionAnsweringConfig(BaseModel):
+    """
+    Configuration section for question answering.
+    """
+
+    dataset_path: str = Field(description="File path of the dataset to use.", default="dataset")
+
+
+class TasksConfig(BaseModel):
+    """
+    Configuration section for tasks.
+    """
+
+    question_answering: QuestionAnsweringConfig = Field(description="Question answering configuration to use.")
+
+
 class EvaluationConfig(BaseModel):
     """
     Model for the evaluation configuration.
@@ -28,3 +44,4 @@ class EvaluationConfig(BaseModel):
     config_name: str
 
     chunking: ChunkingConfig = Field(description="Chunking configuration to use.", default=ChunkingConfig())
+    tasks: TasksConfig = Field(description="Tasks configuration to use.", default=TasksConfig())

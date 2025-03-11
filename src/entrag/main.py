@@ -23,6 +23,7 @@ def main() -> None:
     """
     Main entry point for the evaluation script.
     """
+    # TODO: Load all available configurations
     config = load_eval_config("default")
 
     chunks = create_chunks_for_documents(config)
@@ -31,10 +32,16 @@ def main() -> None:
     model = TestLMRAG()
     model.build_store(chunks)
 
-    retrieved_chunks = model.retrieve("Volkswagen emissions scandal", top_k=5)
-    print("Retrieved chunks:")
+    query = "How does the net income reported in the 2022 Form 10-K of Apple compare to that of Alphabet for the same fiscal year?"
+
+    retrieved_chunks = model.retrieve(query, top_k=5)
     for chunk in retrieved_chunks:
         print(chunk.document_name)
+        print(chunk.chunk_text)
+        print()
+
+    answer = model.generate(query, retrieved_chunks)
+    print(answer)
 
 
 if __name__ == "__main__":
