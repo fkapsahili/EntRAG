@@ -8,8 +8,6 @@ from loguru import logger
 
 from entrag.api.model import RAGLM
 from entrag.data_model.document import Chunk
-from entrag.prompts.default_prompts import SIMPLE_QA_PROMPT
-from entrag.utils.prompt import get_query_time
 
 
 class TestLMRAG(RAGLM):
@@ -98,14 +96,14 @@ class TestLMRAG(RAGLM):
         return self.index
 
     def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
-        search_query = self.query_expansion(query)
+        search_query = self._query_expansion(query)
         query_vector = np.array(self.embed_query(search_query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
         return retrieved_chunks
 
-    def query_expansion(self, query: str) -> str:
+    def _query_expansion(self, query: str) -> str:
         prompt = """
         Given the following query:
         {}
@@ -118,15 +116,7 @@ class TestLMRAG(RAGLM):
         logger.info(f"Expanded query: {response.text}")
         return response.text
 
-    def generate(self, query: str, retrieved_chunks: list[Chunk], generation_kwargs: dict | None = None) -> str:
-        combined_context = " ".join([chunk.chunk_text for chunk in retrieved_chunks])
-        logger.info(f"Generated response for query: {query}")
-        prompt_template = SIMPLE_QA_PROMPT.format(
-            query=query, references=combined_context, query_time=get_query_time()
-        )
-        response = self.genai_client.models.generate_content(model="gemini-1.5-pro", contents=[prompt_template])
+    def generate(self, prompt: str) -> str:
+        response = self.genai_client.models.generate_content(model="gemini-2.0-flash", contents=[prompt])
         logger.info(f"Generated response: {response.text}")
         return response.text
-
-    def evaluate(self, queries: list[str]) -> list[str]:
-        return [self.generate(q, self.retrieve(q)) for q in queries]

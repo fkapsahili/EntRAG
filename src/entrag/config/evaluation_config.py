@@ -33,7 +33,9 @@ class TasksConfig(BaseModel):
     Configuration section for tasks.
     """
 
-    question_answering: QuestionAnsweringConfig = Field(description="Question answering configuration to use.")
+    question_answering: QuestionAnsweringConfig = Field(
+        description="Question answering configuration to use.", default=QuestionAnsweringConfig()
+    )
 
 
 class EvaluationConfig(BaseModel):

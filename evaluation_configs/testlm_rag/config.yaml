@@ -1,4 +1,4 @@
-config_name: default_test
+config_name: testlm_rag
 
 tasks:
   question_answering:

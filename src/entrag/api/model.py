@@ -43,15 +43,8 @@ class RAGLM(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def generate(self, query: str, retrieved_chunks: list[Chunk], generation_kwargs: dict | None = None) -> str:
+    def generate(self, prompt: str) -> str:
         """
-        Generate a response using the given context and retrieved chunks.
-        """
-        pass
-
-    @abc.abstractmethod
-    def evaluate(self, queries: list[str]) -> list[str]:
-        """
-        Evaluate the model on a set of queries.
+        Generate a response using the given prompt.
         """
         pass

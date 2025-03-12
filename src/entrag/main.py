@@ -5,6 +5,7 @@ from loguru import logger
 from entrag.config.load_config import load_eval_config
 from entrag.models.testlm_rag import TestLMRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
+from entrag.tasks.question_answering import evaluate_question_answering
 
 
 logger.remove()  # Remove the default logger
@@ -24,7 +25,7 @@ def main() -> None:
     Main entry point for the evaluation script.
     """
     # TODO: Load all available configurations
-    config = load_eval_config("default")
+    config = load_eval_config("testlm_rag")
 
     chunks = create_chunks_for_documents(config)
     logger.info(f"Loaded {len(chunks)} chunks.")
@@ -32,16 +33,7 @@ def main() -> None:
     model = TestLMRAG()
     model.build_store(chunks)
 
-    query = "How does the net income reported in the 2022 Form 10-K of Apple compare to that of Alphabet for the same fiscal year?"
-
-    retrieved_chunks = model.retrieve(query, top_k=5)
-    for chunk in retrieved_chunks:
-        print(chunk.document_name)
-        print(chunk.chunk_text)
-        print()
-
-    answer = model.generate(query, retrieved_chunks)
-    print(answer)
+    evaluate_question_answering(model, config)
 
 
 if __name__ == "__main__":
