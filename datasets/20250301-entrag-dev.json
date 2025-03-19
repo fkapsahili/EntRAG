@@ -56,6 +56,10 @@
     "sources": [
       {
         "filename": "ExxonMobil_Annual_Report_2023.pdf",
+        "pages": [80]
+      },
+      {
+        "filename": "CVSHealth_Annual_Report_2023.pdf",
         "pages": [77, 81, 109, 130]
       }
     ]
