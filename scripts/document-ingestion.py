@@ -24,13 +24,8 @@ def load_documents_from_directory(directory_path: str, output_directory) -> int:
                 continue
 
             full_path = os.path.join(root, file)
-            rel_path = root[len(directory_path) :].strip(os.path.sep)
             filename = os.path.splitext(file)[0]
-
-            if rel_path:
-                output_filename = f"{rel_path.replace(os.path.sep, '_')}_{filename}.md"
-            else:
-                output_filename = f"{filename}.md"
+            output_filename = f"{filename}.md"
 
             file_path = os.path.join(output_directory, output_filename)
 
@@ -40,7 +35,7 @@ def load_documents_from_directory(directory_path: str, output_directory) -> int:
 
             logger.info(f"Processing file: {full_path}")
             result = converter.convert(full_path)
-            markdown = result.document.export_to_markdown()
+            markdown = result.document.export_to_markdown(add_page_markers=True)
             if not markdown:
                 logger.warning(f"No text extracted from {full_path}. Skipping document.")
                 continue

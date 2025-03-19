@@ -337,8 +337,8 @@ wheels = [
 
 [[package]]
 name = "docling-core"
-version = "2.23.1"
-source = { registry = "https://pypi.org/simple" }
+version = "2.23.0"
+source = { git = "https://github.com/Adolar13/docling-core.git?rev=feat%2Fexport-page-markers#507ebc87f8ee13aa087300062874d43ff5f0c196" }
 dependencies = [
     { name = "jsonref" },
     { name = "jsonschema" },
@@ -351,10 +351,6 @@ dependencies = [
     { name = "tabulate" },
     { name = "typer" },
     { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a3/97/84b1f0cbf9951908292b5dd05451945b5f6c4e6a121ab0bebd841b0c056d/docling_core-2.23.1.tar.gz", hash = "sha256:0708f4ffe61faef9a2dee48e71cf3890248bf1d9b409f6414cd9c0dd6c7a1681", size = 92485 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/7b/58c86848e32a82e2317d7ae4f9586479acbe37897d53fd3a41a60c659c32/docling_core-2.23.1-py3-none-any.whl", hash = "sha256:4a3f7bcc55a735a070d69d74cf1278f7e40cb403c5059d4149672c7ca163992f", size = 115616 },
 ]
 
 [package.optional-dependencies]
@@ -467,6 +463,7 @@ dependencies = [
     { name = "click" },
     { name = "docling", version = "2.15.1", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
     { name = "docling", version = "2.26.0", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine != 'x86_64' or sys_platform != 'darwin'" },
+    { name = "docling-core" },
     { name = "faiss-cpu" },
     { name = "google-genai" },
     { name = "loguru" },
@@ -486,6 +483,7 @@ dependencies = [
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
     { name = "docling", specifier = ">=2.15.1" },
+    { name = "docling-core", git = "https://github.com/Adolar13/docling-core.git?rev=feat%2Fexport-page-markers" },
     { name = "faiss-cpu", specifier = ">=1.10.0" },
     { name = "google-genai", specifier = ">=1.5.0" },
     { name = "loguru", specifier = ">=0.7.3" },

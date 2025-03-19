@@ -20,6 +20,7 @@ dependencies = [
     "rapidfuzz>=3.12.2",
     "docling>=2.15.1",
     "pypdf2>=3.0.1",
+    "docling-core",
 ]
 
 [project.scripts]
@@ -47,6 +48,9 @@ line-ending = "auto"
 
 [tool.uv]
 package = true
+
+[tool.uv.sources]
+docling-core = { git = "https://github.com/Adolar13/docling-core.git", rev = "feat/export-page-markers" }
 
 [build-system]
 requires = ["hatchling"]
