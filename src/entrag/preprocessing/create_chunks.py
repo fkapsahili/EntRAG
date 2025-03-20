@@ -50,6 +50,21 @@ def _create_chunk_boundaries(sentences: list[str], sentence_embeddings, chunking
     return boundaries
 
 
+def split_document_in_pages(document_text: str) -> list[tuple[int, str]]:
+    pages = re.split(r"(##PAGE \d+##)", document_text)
+    page_texts = []
+    current_page = None
+
+    for section in pages:
+        match = re.match(r"##PAGE (\d+)##", section)
+        if match:
+            current_page = int(match.group(1))
+        else:
+            if section.strip():  # Ignore empty pages
+                page_texts.append((current_page, section.strip()))
+    return page_texts  # list of (page_number, page_content)
+
+
 def _process_sentences_segment(
     sentences: list,
     start: int,
@@ -124,19 +139,19 @@ def _load_document_chunks(config: ChunkingConfig) -> list[Chunk]:
 
 
 def semantic_chunking(
-    document: str, chunking_config: ChunkingConfig, model: SentenceTransformer, tokenizer: AutoTokenizer
+    document_page: str, chunking_config: ChunkingConfig, model: SentenceTransformer, tokenizer: AutoTokenizer
 ):
     """
     Create chunks based on semantic similarity.
     """
-    document = _clean_text(document)
+    document = _clean_text(document_page)
     sentences = [s.strip() for s in sent_tokenize(document) if s.strip()]
 
     if not sentences:
         logger.warning("No sentences found in the document after cleaning.")
         return []
 
-    logger.debug(f"Processing document with {len(sentences)} sentences.")
+    logger.debug(f"Processing document page with {len(sentences)} sentences.")
     sentence_embeddings = model.encode(sentences, convert_to_tensor=True).cpu().numpy()
     chunk_boundaries = _create_chunk_boundaries(sentences, sentence_embeddings, chunking_config)
     logger.debug(f"Found {len(chunk_boundaries) - 1} chunk boundaries.")
@@ -192,20 +207,24 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
     dataset = create_dataset(config)
     for index, document in enumerate(dataset):
         logger.debug(f"Processing document {index + 1}/{len(dataset)}.")
-        chunks = semantic_chunking(document.document_text, config.chunking, model, tokenizer)
-        logger.debug(f"Found {len(chunks)} chunks for the document.")
+        pages = split_document_in_pages(document.document_text)
 
-        chunks_formatted = [
-            Chunk(
-                document_id=document.document_id,
-                document_name=document.document_name,
-                chunk_location_id=i,
-                chunk_text=chunk,
-                chunk_length_tokens=len(gpt2_tokenizer.encode(chunk)),
-            )
-            for i, chunk in enumerate(chunks)
-        ]
-        chunks_list.extend(chunks_formatted)
+        for page_number, page_text in pages:
+            chunks = semantic_chunking(page_text, config.chunking, model, tokenizer)
+            logger.debug(f"Found {len(chunks)} chunks for the document.")
+
+            chunks_formatted = [
+                Chunk(
+                    document_id=document.document_id,
+                    document_name=document.document_name,
+                    document_page=page_number,
+                    chunk_location_id=i,
+                    chunk_text=chunk,
+                    chunk_length_tokens=len(gpt2_tokenizer.encode(chunk)),
+                )
+                for i, chunk in enumerate(chunks)
+            ]
+            chunks_list.extend(chunks_formatted)
 
     logger.info(f"Document chunking completed. Created {len(chunks_list)} chunks.")
     _save_document_chunks(config, chunks_list)

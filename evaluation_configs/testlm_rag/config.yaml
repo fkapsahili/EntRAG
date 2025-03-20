@@ -2,12 +2,12 @@ config_name: testlm_rag
 
 tasks:
   question_answering:
-    dataset_path: datasets/20250301-entrag-dev.json 
+    dataset_path: datasets/20250319-entrag-dev.json 
 
 chunking:
-  enabled: false
-  files_directory: data/entrag_test
-  output_directory: data/output
+  enabled: true
+  files_directory: data/entrag_test_v4
+  output_directory: data/output_v2
   dataset_name: entrag_test
   model_name: sentence-transformers/all-MiniLM-L6-v2
   min_tokens: 256 # tokens

@@ -8,6 +8,7 @@
     "reference_answer": "Apple reported total revenue of approximately $394,3 billion in fiscal year 2022.",
     "sources": [
       {
+        "id": "1",
         "filename": "Apple_Annual_Report_2022.pdf",
         "pages": [24, 25]
       }
@@ -22,6 +23,7 @@
     "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $249,7 million in revenue in 2022.",
     "sources": [
       {
+        "id": "2",
         "filename": "UnitedHealthGroup_Annual_Report_2022.pdf",
         "pages": [6]
       }
@@ -36,11 +38,13 @@
     "reference_answer": "Apple's net income for fiscal year 2022 was about $99,8 billion, while Alphabet's net income was around $59,97 billion—meaning Apple's net income was roughly 66.5% higher than Alphabet's.",
     "sources": [
       {
+        "id": "3",
         "filename": "Apple_Annual_Report_2022.pdf",
         "pages": [32, 33, 35, 36]
       },
 
       {
+        "id": "4",
         "filename": "Alphabet_Annual_Report_2022.pdf",
         "pages": [65, 83, 84, 85]
       }
@@ -55,10 +59,12 @@
     "reference_answer": "ExxonMobil reported total revenue of 344,582 billion and CVS Health $357,776 billion in 2023; together, their combined total revenue is $702,358 billion.",
     "sources": [
       {
+        "id": "5",
         "filename": "ExxonMobil_Annual_Report_2023.pdf",
         "pages": [80]
       },
       {
+        "id": "6",
         "filename": "CVSHealth_Annual_Report_2023.pdf",
         "pages": [77, 81, 109, 130]
       }

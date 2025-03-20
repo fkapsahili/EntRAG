@@ -43,7 +43,7 @@ def load_documents_from_directory(directory_path: str, output_directory) -> int:
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
             with open(file_path, "w", encoding="utf-8") as f:
-                f.write(f"# {filename}\n\n{markdown}")
+                f.write(markdown)
                 logger.info(f"Document saved as markdown: {file_path}")
                 count += 1
     return count

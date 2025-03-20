@@ -3,6 +3,16 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
+class Source(BaseModel):
+    """
+    Model for a single source.
+    """
+
+    id: str = Field(description="The unique identifier for the source")
+    filename: str = Field(description="The original filename of the source document, e.g. 'document.pdf'")
+    pages: list[int] = Field(description="The page numbers in the source document that contain the answer")
+
+
 class QuestionAnswerPair(BaseModel):
     """
     Model for a single question-answer pair.
@@ -14,6 +24,7 @@ class QuestionAnswerPair(BaseModel):
     domain: Literal["Finance"]
     dynamism: Literal["static", "dynamic"]
     reference_answer: str = Field(description="The reference answer to the question")
+    sources: list[Source] = Field(description="The original source references that contain the answer")
 
 
 class InferenceResult(BaseModel):
@@ -24,3 +35,12 @@ class InferenceResult(BaseModel):
     question_id: str = Field(description="The unique identifier for the question")
     answer: str = Field(description="The answer to the question")
     sources: list[str] = Field(description="The sources / document IDs used to generate the answer")
+
+
+class EvaluationResult(BaseModel):
+    """
+    Model for the result of an evaluator on a question.
+    """
+
+    evaluator: str = Field(description="The name of the evaluator")
+    score: float = Field(description="The evaluation score for the question")

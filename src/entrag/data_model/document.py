@@ -29,6 +29,7 @@ class Chunk(BaseModel):
 
     document_id: str
     document_name: str
+    document_page: int
     chunk_location_id: int
     chunk_text: str
     chunk_length_tokens: int
