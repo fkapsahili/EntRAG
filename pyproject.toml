@@ -21,6 +21,7 @@ dependencies = [
     "docling>=2.15.1",
     "pypdf2>=3.0.1",
     "docling-core",
+    "matplotlib>=3.10.1",
 ]
 
 [project.scripts]
