@@ -8,7 +8,11 @@ def plot_evaluation_results(results: list[EvaluationResult]):
     """
     Plot the evaluation results.
     """
-    df = pd.DataFrame(results)
+    if not results:
+        print("No evaluation results to plot.")
+        return
+
+    df = pd.DataFrame([r.model_dump() for r in results])
 
     if df.empty:
         print("No evaluation results to plot.")

@@ -34,7 +34,7 @@ class InferenceResult(BaseModel):
 
     question_id: str = Field(description="The unique identifier for the question")
     answer: str = Field(description="The answer to the question")
-    sources: list[str] = Field(description="The sources / document IDs used to generate the answer")
+    sources: list[Source] = Field(description="The used source references to generate the answer")
 
 
 class EvaluationResult(BaseModel):

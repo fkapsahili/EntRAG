@@ -33,7 +33,7 @@ def main() -> None:
     model = TestLMRAG()
     model.build_store(chunks)
 
-    # evaluate_question_answering(model, config)
+    evaluate_question_answering(model, config)
 
 
 if __name__ == "__main__":

@@ -97,11 +97,19 @@ class TestLMRAG(RAGLM):
         return self.index
 
     def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
-        search_query = self._query_expansion(query)
+        # search_query = self._query_expansion(query)
+        search_query = query
         query_vector = np.array(self.embed_query(search_query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
+        for chunk in retrieved_chunks:
+            print()
+            print(chunk.document_name)
+            print(chunk.document_page)
+            print(chunk.chunk_text)
+            print()
+            print("-" * 80)
         return retrieved_chunks
 
     def _query_expansion(self, query: str) -> str:

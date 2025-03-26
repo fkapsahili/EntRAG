@@ -3,7 +3,7 @@ import json
 from entrag.api.model import RAGLM
 from entrag.config.evaluation_config import EvaluationConfig
 from entrag.data_model.document import Chunk
-from entrag.data_model.question_answer import InferenceResult, QuestionAnswerPair
+from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair, Source
 from entrag.evaluators import answer_correctenss_llm_evaluator, ndcg_k_evaluator, recall_k_evaluator
 from entrag.prompts.default_prompts import SIMPLE_QA_PROMPT
 from entrag.utils.prompt import get_query_time
@@ -13,7 +13,7 @@ from entrag.visualization import plot_evaluation_results
 def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
     prompts = []  # TODO: Parallelize the model inference
     evaluators = [answer_correctenss_llm_evaluator]
-    results = []
+    results: list[EvaluationResult] = []
 
     with open(config.tasks.question_answering.dataset_path, "r") as file:
         dataset_ = json.load(file)
@@ -28,7 +28,12 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
             )
             answer = model.generate(prompt)
             result = InferenceResult(
-                question_id=example.id, answer=answer, sources=[chunk.document_id for chunk in retrieved_chunks]
+                question_id=example.id,
+                answer=answer,
+                sources=[
+                    Source(id=str(idx), filename=chunk.document_name, pages=[chunk.document_page])
+                    for idx, chunk in enumerate(retrieved_chunks)
+                ],
             )
             for evaluator in evaluators:
                 eval_result = evaluator(example, result)
@@ -39,7 +44,10 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
                 ndcg_k_evaluator(example, result, k=5),
             ])
 
-    plot_evaluation_results(results)
+    print("Evaluation results:")
+    for result in results:
+        print(result)
+    # plot_evaluation_results(results)
 
 
 def _get_formatted_chunks(chunks: list[Chunk]) -> str:

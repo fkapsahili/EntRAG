@@ -5,7 +5,7 @@ tasks:
     dataset_path: datasets/20250319-entrag-dev.json 
 
 chunking:
-  enabled: true
+  enabled: false
   files_directory: data/entrag_test_v5
   output_directory: data/output_v3
   dataset_name: entrag_test
