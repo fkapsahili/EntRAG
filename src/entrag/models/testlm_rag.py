@@ -97,35 +97,11 @@ class TestLMRAG(RAGLM):
         return self.index
 
     def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
-        # search_query = self._query_expansion(query)
-        search_query = query
-        query_vector = np.array(self.embed_query(search_query), dtype=np.float32).reshape(1, -1)
+        query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
-        for chunk in retrieved_chunks:
-            print()
-            print(chunk.document_name)
-            print(chunk.document_page)
-            print(chunk.chunk_text)
-            print()
-            print("-" * 80)
         return retrieved_chunks
-
-    def _query_expansion(self, query: str) -> str:
-        prompt = """
-        Given the following query:
-        {}
-        Please generate a query which is suitable for retrieving relevant information
-        in a vector-based retrieval system.
-
-        Only respond with the query text.
-        """.format(query)
-        completion = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
-        )
-        logger.info(f"Expanded query: {completion.choices[0].message.content}")
-        return completion.choices[0].message.content
 
     def generate(self, prompt: str) -> str:
         completion = self.openai_client.chat.completions.create(

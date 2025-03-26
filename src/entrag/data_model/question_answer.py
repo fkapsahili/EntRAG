@@ -42,5 +42,6 @@ class EvaluationResult(BaseModel):
     Model for the result of an evaluator on a question.
     """
 
+    question_id: str = Field(description="The ID of the question this evaluation result refers to")
     evaluator: str = Field(description="The name of the evaluator")
     score: float = Field(description="The evaluation score for the question")

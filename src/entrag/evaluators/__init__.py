@@ -24,7 +24,7 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
     )
     logger.debug(f"Answer correctness response: {answer}")
     answer_float = float(answer.text.strip())  # TODO: Use structured outputs
-    return EvaluationResult(evaluator="answer_correctness_llm", score=answer_float)
+    return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=answer_float)
 
 
 def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:
@@ -32,8 +32,6 @@ def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, 
     Compute how frequently the correct chunks appear within the top-k retrieved chunks.
     """
 
-    print("example.sources", example.sources)
-    print("result.sources", result.sources)
     correct_pages_by_file = {normalize_filename(source.filename): set(source.pages) for source in example.sources}
     correct_chunks = 0
     for src in result.sources[:k]:
@@ -43,7 +41,7 @@ def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, 
                 correct_chunks += 1
 
     recall_at_k = correct_chunks / len(example.sources) if example.sources else 0.0
-    return EvaluationResult(evaluator="recall_at_k", score=recall_at_k)
+    return EvaluationResult(question_id=example.id, evaluator="recall_at_k", score=recall_at_k)
 
 
 def ndcg_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:
@@ -60,4 +58,4 @@ def ndcg_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k:
 
     ideal_dcg = sum(1 / np.log2(i + 2) for i in range(min(len(example.sources), k)))
     score = dcg / ideal_dcg if ideal_dcg > 0 else 0.0
-    return EvaluationResult(evaluator="ndcg_at_k", score=score)
+    return EvaluationResult(question_id=example.id, evaluator="ndcg_at_k", score=score)

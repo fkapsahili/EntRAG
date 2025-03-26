@@ -7,7 +7,7 @@ from entrag.data_model.question_answer import EvaluationResult, InferenceResult,
 from entrag.evaluators import answer_correctenss_llm_evaluator, ndcg_k_evaluator, recall_k_evaluator
 from entrag.prompts.default_prompts import SIMPLE_QA_PROMPT
 from entrag.utils.prompt import get_query_time
-from entrag.visualization import plot_evaluation_results
+from entrag.visualization import plot_evaluation_results, print_evaluation_table
 
 
 def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
@@ -31,7 +31,7 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
                 question_id=example.id,
                 answer=answer,
                 sources=[
-                    Source(id=str(idx), filename=chunk.document_name, pages=[chunk.document_page])
+                    Source(id=str(idx + 1), filename=chunk.document_name, pages=[chunk.document_page])
                     for idx, chunk in enumerate(retrieved_chunks)
                 ],
             )
@@ -44,10 +44,8 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
                 ndcg_k_evaluator(example, result, k=5),
             ])
 
-    print("Evaluation results:")
-    for result in results:
-        print(result)
-    # plot_evaluation_results(results)
+    print_evaluation_table(results)
+    plot_evaluation_results(results)
 
 
 def _get_formatted_chunks(chunks: list[Chunk]) -> str:
