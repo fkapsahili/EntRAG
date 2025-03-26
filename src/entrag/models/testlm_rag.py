@@ -96,7 +96,7 @@ class TestLMRAG(RAGLM):
         logger.info(f"Built vector store with {self.index.ntotal} chunks, dimension: {vector_dim}")
         return self.index
 
-    def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
+    def retrieve(self, query: str, top_k: int = 10) -> list[Chunk]:
         query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]

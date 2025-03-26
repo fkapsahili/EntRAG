@@ -52,4 +52,4 @@ def _get_formatted_chunks(chunks: list[Chunk]) -> str:
     """
     Format the chunks in an LLM-readable format.
     """
-    return "\n".join([f"  - {chunk.chunk_text}" for chunk in chunks])
+    return "\n\n".join([f"{chunk.document_name}\n{chunk.chunk_text}" for chunk in chunks])
