@@ -7,46 +7,89 @@ import os
 import click
 from docling.document_converter import DocumentConverter
 from loguru import logger
+from pypdf import PdfReader, PdfWriter
 
 
-def load_documents_from_directory(directory_path: str, output_directory) -> int:
+def split_pdf_to_pages(pdf_path, output_dir):
     """
-    Load documents from a directory containing files,
-    extract their text, and save them as markdown in the specified output directory.
+    Splits a PDF into individual pages and saves them as separate PDF files.
     """
+    reader = PdfReader(pdf_path)
+    num_pages = len(reader.pages)
+    base_filename = os.path.splitext(os.path.basename(pdf_path))[0]
 
+    page_files = []
+    for i in range(num_pages):
+        writer = PdfWriter()
+        writer.add_page(reader.pages[i])
+
+        page_filename = os.path.join(output_dir, f"{base_filename}_page_{i + 1}.pdf")
+        with open(page_filename, "wb") as f:
+            writer.write(f)
+        page_files.append(page_filename)
+
+    return page_files
+
+
+def process_pdf_content(pdf_path: str) -> str:
+    """
+    Processes a PDF file with Docling and returns the extracted markdown content.
+    """
     converter = DocumentConverter()
-    count = 0
-    for root, _, files in os.walk(directory_path):
+    result = converter.convert(pdf_path)
+    markdown = result.document.export_to_markdown(add_page_markers=False)
+    return markdown
+
+
+def process_documents(input_dir, output_dir):
+    """
+    Processes each PDF in the input directory, splits it into pages,
+    runs Docling on each page, and reassembles the content with page markers.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+
+    for root, _, files in os.walk(input_dir):
         for file in files:
-            # Skip non-PDF files
+            # Skip non-PDF files for now
             if not file.endswith(".pdf"):
                 continue
 
             full_path = os.path.join(root, file)
-            filename = os.path.splitext(file)[0]
-            output_filename = f"{filename}.md"
-
-            file_path = os.path.join(output_directory, output_filename)
-
-            if os.path.exists(file_path):
-                logger.warning(f"Document already exists: {file_path}. Skipping document.")
-                continue
-
+            output_filename = os.path.splitext(file)[0] + ".md"
+            output_filepath = os.path.join(output_dir, output_filename)
             logger.info(f"Processing file: {full_path}")
-            result = converter.convert(full_path)
-            markdown = result.document.export_to_markdown(add_page_markers=True)
-            if not markdown:
-                logger.warning(f"No text extracted from {full_path}. Skipping document.")
+
+            if os.path.exists(output_filepath):
+                logger.warning(f"Output file already exists: {output_filepath}. Skipping document.")
                 continue
 
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # Split PDF into individual pages
+            page_files = split_pdf_to_pages(full_path, output_dir)
+            if not page_files:
+                logger.warning(f"No pages found in {full_path}. Skipping document.")
+                continue
 
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(markdown)
-                logger.info(f"Document saved as markdown: {file_path}")
-                count += 1
-    return count
+            # Process each page with Docling and assemble content
+            assembled_content = ""
+            for i, page_file in enumerate(page_files):
+                logger.debug(f"Processing page {i + 1} of {len(page_files)}")
+                page_markdown = process_pdf_content(page_file)
+                if page_markdown.strip():
+                    assembled_content += f"##PAGE {i + 1}##\n{page_markdown}\n"
+                else:
+                    logger.warning(f"No text extracted from {page_file}.")
+
+                # Optionally, remove the individual page file after processing
+                os.remove(page_file)
+
+            if not assembled_content.strip():
+                logger.warning(f"No content extracted from {full_path}. Skipping document.")
+                continue
+
+            # Save the assembled markdown content
+            with open(output_filepath, "w", encoding="utf-8") as f:
+                f.write(assembled_content)
+                logger.info(f"Document saved as markdown: {output_filepath}")
 
 
 @click.command()
@@ -60,15 +103,15 @@ def load_documents_from_directory(directory_path: str, output_directory) -> int:
     "--output-dir",
     type=click.Path(writable=True),
     required=True,
-    help="Output file path. The documents will be saved as markdown.",
+    help="Output directory where markdown files will be saved.",
 )
 def main(input_dir: str, output_dir: str) -> None:
     """
-    Process raw PDF files and save them in a structured format.
+    Process raw PDF files, split them into pages, run Docling on each page,
+    and save the structured data as markdown with page markers.
     """
-    os.makedirs(output_dir, exist_ok=True)
-    count = load_documents_from_directory(input_dir, output_dir)
-    logger.info(f"Processed {count} documents.")
+    process_documents(input_dir, output_dir)
+    logger.info("Processing completed.")
 
 
 if __name__ == "__main__":

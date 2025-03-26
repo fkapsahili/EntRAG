@@ -3,8 +3,8 @@ import pickle
 
 import faiss
 import numpy as np
-from google.genai import Client
 from loguru import logger
+from openai import Client
 
 from entrag.api.model import RAGLM
 from entrag.data_model.document import Chunk
@@ -15,20 +15,21 @@ class TestLMRAG(RAGLM):
         super().__init__()
         self.index = None
         self.chunk_store = []
-        self.genai_client = Client(api_key=os.getenv("GEMINI_API_KEY"))
+        self.openai_client = Client(api_key=os.getenv("OPENAI_API_KEY"))
         self.index_path = os.path.join(storage_dir, "faiss_index.bin")
         self.chunks_path = os.path.join(storage_dir, "chunks.pkl")
 
         self.load_store()
 
     def embed_chunks(self, chunks: list[Chunk]) -> list[list[float]]:
-        embeddings = self.genai_client.models.embed_content(
-            model="text-embedding-004", contents=[chunk.chunk_text for chunk in chunks]
+        response = self.openai_client.embeddings.create(
+            input=[chunk.chunk_text for chunk in chunks], model="text-embedding-3-small"
         )
-        return [embedding.values for embedding in embeddings.embeddings]
+        return [x.embedding for x in response.data]
 
     def embed_query(self, query: str) -> list[float]:
-        return self.genai_client.models.embed_content(model="text-embedding-004", contents=query).embeddings[0].values
+        response = self.openai_client.embeddings.create(input=query, model="text-embedding-3-small")
+        return response.data[0].embedding
 
     def persist_store(self) -> None:
         """
@@ -58,7 +59,7 @@ class TestLMRAG(RAGLM):
                 logger.error(f"Failed to load vector store: {e}")
         return False
 
-    def build_store(self, chunks: list[Chunk], batch_size=100) -> faiss.Index | None:
+    def build_store(self, chunks: list[Chunk], batch_size=4) -> faiss.Index | None:
         """
         Build a vector store for the provided chunks.
         Uses FAISS for the vector store creation.
@@ -112,11 +113,16 @@ class TestLMRAG(RAGLM):
 
         Only respond with the query text.
         """.format(query)
-        response = self.genai_client.models.generate_content(model="gemini-2.0-flash", contents=[prompt])
-        logger.info(f"Expanded query: {response.text}")
-        return response.text
+        completion = self.openai_client.chat.completions.create(
+            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
+        )
+        logger.info(f"Expanded query: {completion.choices[0].message.content}")
+        return completion.choices[0].message.content
 
     def generate(self, prompt: str) -> str:
-        response = self.genai_client.models.generate_content(model="gemini-2.0-flash", contents=[prompt])
-        logger.info(f"Generated response: {response.text}")
-        return response.text
+        completion = self.openai_client.chat.completions.create(
+            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
+        )
+        response = completion.choices[0].message.content
+        logger.info(f"Generated response: {response}")
+        return response

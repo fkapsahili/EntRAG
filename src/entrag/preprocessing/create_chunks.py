@@ -15,6 +15,10 @@ from entrag.preprocessing.create_dataset import create_dataset
 nltk.download("punkt_tab")
 
 
+def _clean_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def split_document_in_pages(document_text: str) -> list[tuple[int, str]]:
     pages = re.split(r"(##PAGE \d+##)", document_text)
     page_texts = []
@@ -73,25 +77,39 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
     logger.debug("Initializing GPT2 tokenizer.")
     gpt2_tokenizer = GPT2Tokenizer.from_pretrained("openai-community/gpt2")
 
+    max_tokens = config.chunking.max_tokens
     chunks_list = []
     logger.info(f"Loading documents from: {source_directory}")
     dataset = create_dataset(config)
     for index, document in enumerate(dataset):
-        logger.debug(f"Processing document {index + 1}/{len(dataset)}.")
+        logger.debug(f"Processing document [{document.document_name}] {index + 1}/{len(dataset)}.")
         pages = split_document_in_pages(document.document_text)
+        logger.debug(f"Found {len(pages)} pages in document [{index + 1}].")
 
         for page_number, page_text in pages:
             logger.debug(f"Processing page [{page_number}] of document [{index + 1}].")
-            chunks_list.append(
-                Chunk(
-                    document_id=document.document_id,
-                    document_name=document.document_name,
-                    document_page=page_number,
-                    chunk_location_id=0,
-                    chunk_text=page_text,
-                    chunk_length_tokens=len(gpt2_tokenizer.encode(page_text)),
+            cleaned_page_text = _clean_text(page_text)
+            tokens = gpt2_tokenizer.encode(cleaned_page_text)
+            logger.debug(f"Page token length: {len(tokens)}")
+            num_chunks = (len(tokens) + max_tokens - 1) // max_tokens
+            logger.debug(f"Found {num_chunks} chunks for page [{page_number}].")
+
+            for chunk_id in range(num_chunks):
+                start = chunk_id * max_tokens
+                end = start + max_tokens
+                chunk_tokens = tokens[start:end]
+                chunk_text = gpt2_tokenizer.decode(chunk_tokens)
+
+                chunks_list.append(
+                    Chunk(
+                        document_id=document.document_id,
+                        document_name=document.document_name,
+                        document_page=page_number,
+                        chunk_location_id=chunk_id,
+                        chunk_text=chunk_text,
+                        chunk_length_tokens=len(chunk_tokens),
+                    )
                 )
-            )
 
     logger.info(f"Document chunking completed. Created {len(chunks_list)} chunks.")
     _save_document_chunks(config, chunks_list)

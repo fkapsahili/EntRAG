@@ -30,8 +30,8 @@ def main() -> None:
     chunks = create_chunks_for_documents(config)
     logger.info(f"Loaded {len(chunks)} chunks.")
 
-    # model = TestLMRAG()
-    # model.build_store(chunks)
+    model = TestLMRAG()
+    model.build_store(chunks)
 
     # evaluate_question_answering(model, config)
 
