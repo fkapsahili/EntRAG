@@ -558,6 +558,7 @@ version = "0.0.0"
 source = { editable = "packages/entrag-mock-api" }
 dependencies = [
     { name = "click" },
+    { name = "fastapi" },
     { name = "loguru" },
     { name = "yfinance" },
 ]
@@ -565,6 +566,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
+    { name = "fastapi", specifier = ">=0.115.12" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "yfinance", specifier = ">=0.2.55" },
 ]
@@ -612,6 +614,20 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/2e/34/5b1463c450c9a6de3109caf8f38fbf0c329ef940ed1973fcf8c8ec7fa27e/faiss_cpu-1.10.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:449f3eb778d6d937e01a16a3170de4bb8aabfe87c7cb479b458fb790276310c5", size = 3671461 },
     { url = "https://files.pythonhosted.org/packages/78/d9/0b78c474289f23b31283d8fb64c8e6a522a7fa47b131a3c6c141c8e6639d/faiss_cpu-1.10.0-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:9899c340f92bd94071d6faf4bef0ccb5362843daea42144d4ba857a2a1f67511", size = 30663859 },
     { url = "https://files.pythonhosted.org/packages/17/f0/194727b9e6e282e2877bc001ba886228f6af52e9a6730bbdb223e38591c3/faiss_cpu-1.10.0-cp312-cp312-win_amd64.whl", hash = "sha256:345a52dbfa980d24b93c94410eadf82d1eef359c6a42e5e0768cca96539f1c3c", size = 13687087 },
+]
+
+[[package]]
+name = "fastapi"
+version = "0.115.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f4/55/ae499352d82338331ca1e28c7f4a63bfd09479b16395dce38cf50a39e2c2/fastapi-0.115.12.tar.gz", hash = "sha256:1e2c2a2646905f9e83d32f04a3f86aff4a286669c6c950ca95b5fd68c2602681", size = 295236 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/b3/b51f09c2ba432a576fe63758bddc81f78f0c6309d9e5c10d194313bf021e/fastapi-0.115.12-py3-none-any.whl", hash = "sha256:e94613d6c05e27be7ffebdd6ea5f388112e5e430c8f7d6494a9d1d88d43e814d", size = 95164 },
 ]
 
 [[package]]
@@ -2164,6 +2180,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e2/da/05607641a8db8fcc6898016fde7ea9b2e42d87cd1a1a275f0505a13389d8/speechrecognition-3.14.1.tar.gz", hash = "sha256:c767f8558e111a65e9a56905b04eaec2331f87d5011379381621f47aded6c4fe", size = 32858706 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/09/47/5dcfcd8a2c8c2981986fc196e98fc57bc1ecb5233b2d54dac0c0d448b019/SpeechRecognition-3.14.1-py3-none-any.whl", hash = "sha256:2b5d16a7dce2dbf5f90d9c4d5aefe96325518abdc963059ec16dad9e4f2c09d3", size = 32853180 },
+]
+
+[[package]]
+name = "starlette"
+version = "0.46.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/04/1b/52b27f2e13ceedc79a908e29eac426a63465a1a01248e5f24aa36a62aeb3/starlette-0.46.1.tar.gz", hash = "sha256:3c88d58ee4bd1bb807c0d1acb381838afc7752f9ddaec81bbe4383611d833230", size = 2580102 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/4b/528ccf7a982216885a1ff4908e886b8fb5f19862d1962f56a3fce2435a70/starlette-0.46.1-py3-none-any.whl", hash = "sha256:77c74ed9d2720138b25875133f3a2dae6d854af2ec37dceb56aef370c1d8a227", size = 71995 },
 ]
 
 [[package]]
