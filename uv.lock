@@ -8,6 +8,13 @@ resolution-markers = [
     "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
 ]
 
+[manifest]
+members = [
+    "entrag",
+    "entrag-mock-api",
+    "entrag-root",
+]
+
 [[package]]
 name = "annotated-types"
 version = "0.7.0"
@@ -368,7 +375,7 @@ wheels = [
 [[package]]
 name = "docling-core"
 version = "2.23.0"
-source = { git = "https://github.com/Adolar13/docling-core.git?rev=feat%2Fexport-page-markers#507ebc87f8ee13aa087300062874d43ff5f0c196" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonref" },
     { name = "jsonschema" },
@@ -381,6 +388,10 @@ dependencies = [
     { name = "tabulate" },
     { name = "typer" },
     { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/20/2e/edca276605a7a8619eb9bf29af84875ead2ba75d9c5f0970a3c505999598/docling_core-2.23.0.tar.gz", hash = "sha256:16a5dbca0a639aa5c49b58ceb7a98e7e1dd24cd956912c68f573f77164c96526", size = 92476 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/92/5e/4f0d655b9e843767690db1ab58f9e4d2bb3b8a275856c1eee428e4f620b3/docling_core-2.23.0-py3-none-any.whl", hash = "sha256:de17e2821216cc1817f99e226d2bad28f226289644fbffdf442ad282c842a79a", size = 115595 },
 ]
 
 [package.optional-dependencies]
@@ -487,8 +498,8 @@ wheels = [
 
 [[package]]
 name = "entrag"
-version = "0.1.0"
-source = { editable = "." }
+version = "0.0.0"
+source = { editable = "packages/entrag" }
 dependencies = [
     { name = "click" },
     { name = "docling", version = "2.15.1", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
@@ -511,11 +522,16 @@ dependencies = [
     { name = "transformers" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "entrag-mock-api" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
     { name = "docling", specifier = ">=2.15.1" },
-    { name = "docling-core", git = "https://github.com/Adolar13/docling-core.git?rev=feat%2Fexport-page-markers" },
+    { name = "docling-core" },
     { name = "faiss-cpu", specifier = ">=1.10.0" },
     { name = "google-genai", specifier = ">=1.5.0" },
     { name = "loguru", specifier = ">=0.7.3" },
@@ -531,6 +547,33 @@ requires-dist = [
     { name = "rapidfuzz", specifier = ">=3.12.2" },
     { name = "sentence-transformers", specifier = ">=3.4.1" },
     { name = "transformers", specifier = ">=4.49.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "entrag-mock-api", editable = "packages/entrag-mock-api" }]
+
+[[package]]
+name = "entrag-mock-api"
+version = "0.0.0"
+source = { editable = "packages/entrag-mock-api" }
+
+[[package]]
+name = "entrag-root"
+version = "0.0.0"
+source = { virtual = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "entrag" },
+    { name = "entrag-mock-api" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "entrag", editable = "packages/entrag" },
+    { name = "entrag-mock-api", editable = "packages/entrag-mock-api" },
 ]
 
 [[package]]

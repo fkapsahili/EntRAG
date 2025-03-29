@@ -1,32 +1,25 @@
 [project]
-name = "entrag"
-version = "0.1.0"
-description = "Add your description here"
+name = "entrag-root"
+version = "0.0.0"
+description = "EntRAG - Enterprise RAG Benchmark"
+authors = [
+    { name = "Fabio Kapsahili", email = "fabio.kapsahili@protonmail.com" },
+]
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = [
-    "click>=8.1.8",
-    "numpy>=2.2.3",
-    "faiss-cpu>=1.10.0",
-    "loguru>=0.7.3",
-    "pymupdf>=1.25.3",
-    "nltk>=3.9.1",
-    "pydantic>=2.10.6",
-    "pyyaml>=6.0.2",
-    "sentence-transformers>=3.4.1",
-    "transformers>=4.49.0",
-    "markitdown[all]>=0.0.1a5",
-    "google-genai>=1.5.0",
-    "rapidfuzz>=3.12.2",
-    "docling>=2.15.1",
-    "pypdf2>=3.0.1",
-    "docling-core",
-    "matplotlib>=3.10.1",
-    "pypdf>=5.4.0",
-]
 
-[project.scripts]
-evaluation = "entrag.main:main"
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+entrag = { workspace = true }
+entrag-mock-api = { workspace = true }
+
+[tool.uv]
+dev-dependencies = [
+    "entrag",
+    "entrag-mock-api",
+]
 
 [tool.ruff]
 line-length = 119
@@ -36,6 +29,8 @@ lint.ignore = ["E501", "C901", "F841"]
 lint.select = ["C", "E", "F", "I", "W"]
 lint.fixable = ["A", "B", "C", "D", "E", "F", "I", "W"]
 preview = true
+
+target-version = "py312"
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
@@ -47,13 +42,3 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
-
-[tool.uv]
-package = true
-
-[tool.uv.sources]
-docling-core = { git = "https://github.com/Adolar13/docling-core.git", rev = "feat/export-page-markers" }
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"

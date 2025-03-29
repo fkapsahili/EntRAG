@@ -1,0 +1,12 @@
+config_name: default
+
+tasks:
+  question_answering:
+    dataset_path: datasets/20250319-entrag-dev.json 
+
+chunking:
+  enabled: false
+  files_directory: data/entrag_test_v5
+  output_directory: data/output_v3
+  dataset_name: entrag_test
+  max_tokens: 2048 # tokens
