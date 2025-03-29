@@ -79,12 +79,6 @@ def collect_all_data(tickers: tuple[str], include_history: bool = False) -> dict
     }
 
 
-def save_data(data: dict[str, Any], output_path: str) -> None:
-    """
-    Write the structured data to a JSON file.
-    """
-
-
 @click.command()
 @click.option("--output", default=f"{DATA_DIR}/finance_data.json", help="Output path for the collected data")
 @click.option("--tickers", multiple=True, default=DEFAULT_TICKERS, help="List of tickers to collect data for")
