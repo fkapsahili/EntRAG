@@ -1,0 +1,195 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "collected_at": "2025-03-29T15:27:11.564912+00:00Z",
+    "include_history": true
+  },
+  "data": {
+    "BRK.B": {
+      "ticker": "BRK.B",
+      "company_name": "",
+      "metrics": {
+        "eps": null,
+        "pe_ratio": null,
+        "dividend": null,
+        "market_cap": null
+      }
+    },
+    "MSFT": {
+      "ticker": "MSFT",
+      "company_name": "Microsoft Corporation",
+      "metrics": {
+        "eps": 12.42,
+        "pe_ratio": 30.499193,
+        "dividend": 3.32,
+        "market_cap": 2815991480320.0
+      },
+      "historical_eps": {
+        "2024-06-30": 88136000000.0,
+        "2023-06-30": 72361000000.0,
+        "2022-06-30": 72738000000.0,
+        "2021-06-30": 61271000000.0
+      }
+    },
+    "UNH": {
+      "ticker": "UNH",
+      "company_name": "UnitedHealth Group Incorporated",
+      "metrics": {
+        "eps": 15.53,
+        "pe_ratio": 33.22859,
+        "dividend": 8.4,
+        "market_cap": 472027955200.0
+      },
+      "historical_eps": {
+        "2024-12-31": 14405000000.0,
+        "2023-12-31": 22381000000.0,
+        "2022-12-31": 20120000000.0,
+        "2021-12-31": 17285000000.0
+      }
+    },
+    "TSLA": {
+      "ticker": "TSLA",
+      "company_name": "Tesla, Inc.",
+      "metrics": {
+        "eps": 2.03,
+        "pe_ratio": 129.82758,
+        "dividend": null,
+        "market_cap": 847713796096.0
+      },
+      "historical_eps": {
+        "2024-12-31": 7130000000.0,
+        "2023-12-31": 14999000000.0,
+        "2022-12-31": 12583000000.0,
+        "2021-12-31": 5524000000.0
+      }
+    },
+    "WMT": {
+      "ticker": "WMT",
+      "company_name": "Walmart Inc.",
+      "metrics": {
+        "eps": 2.41,
+        "pe_ratio": 35.33195,
+        "dividend": 0.94,
+        "market_cap": 682634772480.0
+      },
+      "historical_eps": {
+        "2025-01-31": 19436000000.0,
+        "2024-01-31": 15511000000.0,
+        "2023-01-31": 11680000000.0,
+        "2022-01-31": 13673000000.0
+      }
+    },
+    "GOOGL": {
+      "ticker": "GOOGL",
+      "company_name": "Alphabet Inc.",
+      "metrics": {
+        "eps": 8.04,
+        "pe_ratio": 19.195274,
+        "dividend": 0.8,
+        "market_cap": 1890789490688.0
+      },
+      "historical_eps": {
+        "2024-12-31": 100118000000.0,
+        "2023-12-31": 73795000000.0,
+        "2022-12-31": 59972000000.0,
+        "2021-12-31": 76033000000.0
+      }
+    },
+    "VWAGY": {
+      "ticker": "VWAGY",
+      "company_name": "Volkswagen AG",
+      "metrics": {
+        "eps": 2.29,
+        "pe_ratio": 4.6593885,
+        "dividend": 0.98,
+        "market_cap": 54386487296.0
+      },
+      "historical_eps": {
+        "2024-12-31": 11351000000.0,
+        "2023-12-31": 16532000000.0,
+        "2022-12-31": 15457000000.0,
+        "2021-12-31": 15382000000.0
+      }
+    },
+    "XOM": {
+      "ticker": "XOM",
+      "company_name": "Exxon Mobil Corporation",
+      "metrics": {
+        "eps": 7.84,
+        "pe_ratio": 15.016582,
+        "dividend": 3.96,
+        "market_cap": 510846992384.0
+      },
+      "historical_eps": {
+        "2024-12-31": 33680000000.0,
+        "2023-12-31": 36010000000.0,
+        "2022-12-31": 55740000000.0,
+        "2021-12-31": 23040000000.0
+      }
+    },
+    "AMZN": {
+      "ticker": "AMZN",
+      "company_name": "Amazon.com, Inc.",
+      "metrics": {
+        "eps": 5.53,
+        "pe_ratio": 34.849907,
+        "dividend": null,
+        "market_cap": 2042388676608.0
+      },
+      "historical_eps": {
+        "2024-12-31": 59248000000.0,
+        "2023-12-31": 30425000000.0,
+        "2022-12-31": -2722000000.0,
+        "2021-12-31": 33364000000.0
+      }
+    },
+    "CVS": {
+      "ticker": "CVS",
+      "company_name": "CVS Health Corporation",
+      "metrics": {
+        "eps": 3.66,
+        "pe_ratio": 18.344261,
+        "dividend": 2.66,
+        "market_cap": 84650115072.0
+      },
+      "historical_eps": {
+        "2024-12-31": 4614000000.0,
+        "2023-12-31": 8344000000.0,
+        "2022-12-31": 4311000000.0,
+        "2021-12-31": 8001000000.0
+      }
+    },
+    "AAPL": {
+      "ticker": "AAPL",
+      "company_name": "Apple Inc.",
+      "metrics": {
+        "eps": 6.3,
+        "pe_ratio": 34.5873,
+        "dividend": 1.0,
+        "market_cap": 3273315581952.0
+      },
+      "historical_eps": {
+        "2024-09-30": 93736000000.0,
+        "2023-09-30": 96995000000.0,
+        "2022-09-30": 99803000000.0,
+        "2021-09-30": 94680000000.0
+      }
+    },
+    "META": {
+      "ticker": "META",
+      "company_name": "Meta Platforms, Inc.",
+      "metrics": {
+        "eps": 23.88,
+        "pe_ratio": 24.151592,
+        "dividend": 2.1,
+        "market_cap": 1461263007744.0
+      },
+      "historical_eps": {
+        "2024-12-31": 62360000000.0,
+        "2023-12-31": 39098000000.0,
+        "2022-12-31": 23200000000.0,
+        "2021-12-31": 39370000000.0
+      }
+    }
+  }
+}
