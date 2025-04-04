@@ -34,7 +34,7 @@ target-version = "py312"
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
-known-first-party = ["entrag"]
+known-first-party = ["entrag", "entrag_mock_api"]
 split-on-trailing-comma = true
 
 [tool.ruff.format]

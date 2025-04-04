@@ -8,8 +8,13 @@ dependencies = [
     "click>=8.1.8",
     "fastapi>=0.115.12",
     "loguru>=0.7.3",
+    "pydantic>=2.10.6",
+    "uvicorn>=0.34.0",
     "yfinance>=0.2.55",
 ]
+
+[project.scripts]
+start = "entrag_mock_api.main:start"
 
 [tool.ruff]
 extend = "../../pyproject.toml"
