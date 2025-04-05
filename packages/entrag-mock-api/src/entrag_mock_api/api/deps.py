@@ -1,11 +1,11 @@
 import json
-import os
+
+from entrag_mock_api.config import DATA_PATH
 
 
 def _load_finance_data() -> dict[str, dict]:
-    data_path = os.path.join(os.path.dirname(__file__), "../../datasets/finance_data.json")
     try:
-        with open(data_path, "r") as f:
+        with open(DATA_PATH, "r") as f:
             full_data = json.load(f)
             return full_data.get("data", {})
     except Exception as e:

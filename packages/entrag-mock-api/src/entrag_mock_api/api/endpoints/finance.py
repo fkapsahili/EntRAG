@@ -4,11 +4,12 @@ from entrag_mock_api.api.deps import get_finance_data
 from entrag_mock_api.schema import CompanyMetrics, MetricResponse, TimeseriesResponse
 
 
-router = APIRouter(prefix="/finance", tags=["Finance"])
+router = APIRouter(tags=["Finance"])
 
 
 @router.get("/company/{ticker}", response_model=CompanyMetrics)
 def get_company_metrics(ticker: str, data=Depends(get_finance_data)):
+    print("Landed in ticker")
     ticker = ticker.upper()
     company = data.get(ticker)
     if not company:
