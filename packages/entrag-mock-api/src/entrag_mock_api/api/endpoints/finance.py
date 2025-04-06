@@ -7,11 +7,17 @@ from entrag_mock_api.schema import CompanyMetrics, MetricResponse, TimeseriesRes
 router = APIRouter(tags=["Finance"])
 
 
+def find_company(ticker_or_name: str, data: dict):
+    ticker_or_name = ticker_or_name.lower()
+    for ticker, details in data.items():
+        if ticker.lower() == ticker_or_name or ticker_or_name in details.get("company_name", "").lower():
+            return ticker, details
+    return None, None
+
+
 @router.get("/company/{ticker}", response_model=CompanyMetrics)
 def get_company_metrics(ticker: str, data=Depends(get_finance_data)):
-    print("Landed in ticker")
-    ticker = ticker.upper()
-    company = data.get(ticker)
+    ticker, company = find_company(ticker, data)
     if not company:
         raise HTTPException(status_code=404, detail="Ticker not found")
     return company.get("metrics", {})
@@ -21,8 +27,7 @@ def get_company_metrics(ticker: str, data=Depends(get_finance_data)):
 def get_metric_by_date(
     ticker: str, metric: str = Query(..., enum=["eps"]), date: str = Query(...), data=Depends(get_finance_data)
 ):
-    ticker = ticker.upper()
-    company = data.get(ticker)
+    ticker, company = find_company(ticker, data)
     if not company:
         raise HTTPException(status_code=404, detail="Ticker not found")
 
@@ -43,13 +48,11 @@ def get_timeseries(
     end: str | None = None,
     data=Depends(get_finance_data),
 ):
-    ticker = ticker.upper()
-    company = data.get(ticker)
+    ticker, company = find_company(ticker, data)
     if not company:
         raise HTTPException(status_code=404, detail="Ticker not found")
 
     historical_eps = company.get("historical_eps", {})
-
     results = {
         date: value
         for date, value in historical_eps.items()

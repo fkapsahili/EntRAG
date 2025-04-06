@@ -1,0 +1,137 @@
+[
+  {
+    "id": "1",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to Apple's 2022 Form 10-K, what was the total revenue for the fiscal year 2022?",
+    "reference_answer": "Apple reported total revenue of approximately $394,3 billion in fiscal year 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Annual_Report_2022.pdf",
+        "pages": [24, 25, 32, 40, 52]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Annual_Report_2023.pdf",
+        "pages": [24, 25, 31, 38, 51]
+      },
+      {
+        "id": "3",
+        "filename": "Apple_Annual_Report_2024.pdf",
+        "pages": [25, 26, 32, 38, 50]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "From UnitedHealth Group's 2022 Form 10-K, what was the revenue specifically attributable to its Medical Benefits segment (excluding revenue from Pharmacy and other services)?",
+    "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $249,7 million in revenue in 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "UnitedHealthGroup_Annual_Report_2022.pdf",
+        "pages": [32, 33, 72]
+      },
+      {
+        "id": "2",
+        "filename": "UnitedHealthGroup_Annual_Report_2023.pdf",
+        "pages": [29, 30, 67]
+      },
+      {
+        "id": "3",
+        "filename": "UnitedHealthGroup_Annual_Report_2024.pdf",
+        "pages": [30, 31, 68]
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does Apple's net income reported in its 2022 Form 10-K compare to Alphabet's net income for the same fiscal year?",
+    "reference_answer": "Apple's net income for fiscal year 2022 was about $99,8 billion, while Alphabet's net income was around $59,97 billion—meaning Apple's net income was roughly 66.5% higher than Alphabet's.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Annual_Report_2022.pdf",
+        "pages": [32, 33, 35, 36, 38]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Annual_Report_2023.pdf",
+        "pages": [31, 32, 34, 35, 38]
+      },
+      {
+        "id": "3",
+        "filename": "Apple_Annual_Report_2024.pdf",
+        "pages": [32, 33, 35, 36, 39]
+      },
+      {
+        "id": "4",
+        "filename": "Alphabet_Annual_Report_2022.pdf",
+        "pages": [65, 83, 84, 85, 86]
+      },
+      {
+        "id": "5",
+        "filename": "Alphabet_Annual_Report_2023.pdf",
+        "pages": [35, 53, 54, 55, 56]
+      },
+      {
+        "id": "6",
+        "filename": "Alphabet_Annual_Report_2024.pdf",
+        "pages": [54, 55, 56, 57, 83]
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "Based on the 2023 Form 10-K filings, what is the combined total revenue of ExxonMobil and CVS Health?",
+    "reference_answer": "ExxonMobil reported total revenue of 344,582 billion and CVS Health $357,776 billion in 2023; together, their combined total revenue is $702,358 billion.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "ExxonMobil_Annual_Report_2023.pdf",
+        "pages": [80]
+      },
+      {
+        "id": "2",
+        "filename": "ExxonMobil_Annual_Report_2024.pdf",
+        "pages": [79, 112]
+      },
+      {
+        "id": "3",
+        "filename": "CVSHealth_Annual_Report_2023.pdf",
+        "pages": [77, 81, 109, 130, 193]
+      },
+      {
+        "id": "4",
+        "filename": "CVSHealth_Annual_Report_2024.pdf",
+        "pages": [74, 78, 106, 127, 189]
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "What was Tesla’s EPS in 2024?",
+    "reference_answer": "Tesla’s EPS in 2024 was 2.03.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  }
+]

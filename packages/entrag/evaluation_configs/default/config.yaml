@@ -2,7 +2,11 @@ config_name: default
 
 tasks:
   question_answering:
+    run: false
     dataset_path: datasets/20250319-entrag-dev.json 
+  dynamic_question_answering:
+    run: true
+    dataset_path: datasets/20250405-entrag-dev.json
 
 chunking:
   enabled: false

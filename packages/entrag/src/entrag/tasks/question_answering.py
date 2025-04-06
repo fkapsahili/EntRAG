@@ -17,7 +17,8 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
 
     with open(config.tasks.question_answering.dataset_path, "r") as file:
         dataset_ = json.load(file)
-        dataset = [QuestionAnswerPair(**item) for item in dataset_]
+        # Filter out dynamic QA pairs
+        dataset = [QuestionAnswerPair(**item) for item in dataset_ if item["dynamism"] != "dynamic"]
 
         for example in dataset:
             retrieved_chunks = model.retrieve(example.question)

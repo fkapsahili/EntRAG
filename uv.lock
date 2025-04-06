@@ -561,6 +561,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "loguru" },
     { name = "pydantic" },
+    { name = "requests" },
     { name = "uvicorn" },
     { name = "yfinance" },
 ]
@@ -571,6 +572,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "pydantic", specifier = ">=2.10.6" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "uvicorn", specifier = ">=0.34.0" },
     { name = "yfinance", specifier = ">=0.2.55" },
 ]

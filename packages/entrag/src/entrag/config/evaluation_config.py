@@ -19,6 +19,7 @@ class QuestionAnsweringConfig(BaseModel):
     """
 
     dataset_path: str = Field(description="File path of the dataset to use.", default="dataset")
+    run: bool = Field(description="Flag to enable the question answering step.", default=True)
 
 
 class TasksConfig(BaseModel):
@@ -28,6 +29,9 @@ class TasksConfig(BaseModel):
 
     question_answering: QuestionAnsweringConfig = Field(
         description="Question answering configuration to use.", default=QuestionAnsweringConfig()
+    )
+    dynamic_question_answering: QuestionAnsweringConfig = Field(
+        description="Dynamic question answering configuration to use.", default=QuestionAnsweringConfig()
     )
 
 
