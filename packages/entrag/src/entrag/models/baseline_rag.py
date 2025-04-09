@@ -96,12 +96,12 @@ class BaselineRAG(RAGLM):
         logger.info(f"Built vector store with {self.index.ntotal} chunks, dimension: {vector_dim}")
         return self.index
 
-    def retrieve(self, query: str, top_k: int = 10) -> list[Chunk]:
+    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[str]]:
         query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunk_store[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
-        return retrieved_chunks
+        return retrieved_chunks, []
 
     def generate(self, prompt: str) -> str:
         completion = self.openai_client.chat.completions.create(

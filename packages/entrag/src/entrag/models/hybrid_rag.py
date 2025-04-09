@@ -61,11 +61,13 @@ class HybridRAG(BaselineRAG):
         ticker = entities["ticker"][0] if entities["ticker"] else None
         metric = entities["metric"][0] if entities["metric"] else None
 
-        print("Ticker:", ticker)
-        print("Metric:", metric)
-
         if ticker is not None:
-            company_metrics = self.api_client.get_finance_company_metrics(ticker)
+            try:
+                company_metrics = self.api_client.get_finance_company_metrics(ticker)
+            except Exception as e:
+                logger.error(f"Failed to retrieve company metrics for {ticker}: {e}")
+                return []
+
             if metric is not None:
                 metric_value = getattr(company_metrics, metric, None)
                 if metric_value is not None:
@@ -74,14 +76,12 @@ class HybridRAG(BaselineRAG):
 
         return []
 
-    def retrieve(self, query: str, top_k: int = 10) -> list[Chunk]:
+    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[str]]:
         entities = self.run_entity_extraction(query=query)
         results = self.get_api_results(entities)
-        print("API Results:", results)
 
-        chunks = super().retrieve(query, top_k)
-        print("Number of retrieved chunks:", len(chunks))
-        return chunks
+        chunks, _ = super().retrieve(query, top_k)
+        return chunks, results
 
     def extract_entity_from_attrs(self, entity_attributes: list[str]) -> dict:
         if len(entity_attributes) < 3 or entity_attributes[0] != '"entity"':

@@ -41,12 +41,28 @@ def collect_company_data(ticker: str, include_history: bool = False) -> dict[str
 
         if include_history:
             income_statement = company.income_stmt
+            balance_sheet = company.balance_sheet
+
             if not income_statement.empty and "Net Income" in income_statement.index:
-                historical_eps = {
-                    str(date.date()): float(income_statement.loc["Net Income", date])
-                    for date in income_statement.columns
-                    if not pd.isna(income_statement.loc["Net Income", date])
-                }
+                historical_eps = {}
+
+                for date in income_statement.columns:
+                    net_income = income_statement.loc["Net Income", date]
+
+                    # Find the closest matching date in balance sheet
+                    matching_dates = [d for d in balance_sheet.columns if d.year == date.year]
+                    if matching_dates:
+                        closest_date = matching_dates[0]
+                        shares_outstanding = None
+                        for key in ["Ordinary Shares Number", "Common Stock"]:
+                            if key in balance_sheet.index:
+                                shares_outstanding = balance_sheet.loc[key, closest_date]
+                                break
+
+                        if pd.notna(net_income) and shares_outstanding and pd.notna(shares_outstanding):
+                            date_str = date.strftime("%Y-%m-%d")
+                            historical_eps[date_str] = float(net_income / shares_outstanding)
+
                 data["historical_eps"] = historical_eps
 
         return data

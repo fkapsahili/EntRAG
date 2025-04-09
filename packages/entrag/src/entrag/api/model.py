@@ -35,10 +35,12 @@ class RAGLM(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def retrieve(self, query: str, top_k: int = 5) -> list[Chunk]:
+    def retrieve(self, query: str, top_k: int = 5) -> tuple[list[Chunk], list[str]]:
         """
         Retrieve relevant chunks based on the input query.
         Retrieval logic can be vector-based, graph-based, or hybrid.
+
+        Returns a tuple of (retrieved chunks, additional results).
         """
         pass
 

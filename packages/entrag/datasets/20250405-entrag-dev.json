@@ -133,5 +133,80 @@
         "pages": []
       }
     ]
+  },
+  {
+    "id": "6",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "What was Microsoft’s EPS in 2023?",
+    "reference_answer": "Microsoft’s EPS in 2023 was 9.74.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "dynamic",
+    "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "dynamic",
+    "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "dynamic",
+    "question": "What is the combined EPS of Tesla and Amazon in 2024?",
+    "reference_answer": "Tesla’s EPS was 2.22 and Amazon’s was 5.59, resulting in a combined EPS of 7.81.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What was Walmart’s EPS in 2024, and was it higher than in 2023?",
+    "reference_answer": "Walmart’s EPS in 2024 was 1.93, which is higher than its 2023 EPS of 1.44.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
   }
 ]

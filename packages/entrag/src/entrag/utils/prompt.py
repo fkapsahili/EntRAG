@@ -2,6 +2,8 @@ import datetime
 
 import pytz
 
+from entrag.data_model.document import Chunk
+
 
 def get_query_time() -> str:
     """
@@ -9,3 +11,10 @@ def get_query_time() -> str:
     """
     query_time = datetime.datetime.now(pytz.timezone("Europe/Zurich"))
     return query_time.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def get_formatted_chunks(chunks: list[Chunk]) -> str:
+    """
+    Format the chunks in an LLM-readable format.
+    """
+    return "\n\n".join([f"{chunk.document_name}\n{chunk.chunk_text}" for chunk in chunks])
