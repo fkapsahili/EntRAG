@@ -1,0 +1,307 @@
+[
+  {
+    "id": "1",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to Apple's 2022 Form 10-K, what was the total revenue for the fiscal year 2022?",
+    "reference_answer": "Apple reported total revenue of approximately $394,3 billion in fiscal year 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Annual_Report_2022.pdf",
+        "pages": [24, 25, 32, 40, 52]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Annual_Report_2023.pdf",
+        "pages": [24, 25, 31, 38, 51]
+      },
+      {
+        "id": "3",
+        "filename": "Apple_Annual_Report_2024.pdf",
+        "pages": [25, 26, 32, 38, 50]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "From UnitedHealth Group's 2022 Form 10-K, what was the revenue specifically attributable to its Medical Benefits segment (excluding revenue from Pharmacy and other services)?",
+    "reference_answer": "UnitedHealth Group's Medical Benefits segment generated approximately $249,7 million in revenue in 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "UnitedHealthGroup_Annual_Report_2022.pdf",
+        "pages": [32, 33, 72]
+      },
+      {
+        "id": "2",
+        "filename": "UnitedHealthGroup_Annual_Report_2023.pdf",
+        "pages": [29, 30, 67]
+      },
+      {
+        "id": "3",
+        "filename": "UnitedHealthGroup_Annual_Report_2024.pdf",
+        "pages": [30, 31, 68]
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does Apple's net income reported in its 2022 Form 10-K compare to Alphabet's net income for the same fiscal year?",
+    "reference_answer": "Apple's net income for fiscal year 2022 was about $99,8 billion, while Alphabet's net income was around $59,97 billion—meaning Apple's net income was roughly 66.5% higher than Alphabet's.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Annual_Report_2022.pdf",
+        "pages": [32, 33, 35, 36, 38]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Annual_Report_2023.pdf",
+        "pages": [31, 32, 34, 35, 38]
+      },
+      {
+        "id": "3",
+        "filename": "Apple_Annual_Report_2024.pdf",
+        "pages": [32, 33, 35, 36, 39]
+      },
+      {
+        "id": "4",
+        "filename": "Alphabet_Annual_Report_2022.pdf",
+        "pages": [65, 83, 84, 85, 86]
+      },
+      {
+        "id": "5",
+        "filename": "Alphabet_Annual_Report_2023.pdf",
+        "pages": [35, 53, 54, 55, 56]
+      },
+      {
+        "id": "6",
+        "filename": "Alphabet_Annual_Report_2024.pdf",
+        "pages": [54, 55, 56, 57, 83]
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "Based on the 2023 Form 10-K filings, what is the combined total revenue of ExxonMobil and CVS Health?",
+    "reference_answer": "ExxonMobil reported total revenue of 344,582 billion and CVS Health $357,776 billion in 2023; together, their combined total revenue is $702,358 billion.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "ExxonMobil_Annual_Report_2023.pdf",
+        "pages": [80]
+      },
+      {
+        "id": "2",
+        "filename": "ExxonMobil_Annual_Report_2024.pdf",
+        "pages": [79, 112]
+      },
+      {
+        "id": "3",
+        "filename": "CVSHealth_Annual_Report_2023.pdf",
+        "pages": [77, 81, 109, 130, 193]
+      },
+      {
+        "id": "4",
+        "filename": "CVSHealth_Annual_Report_2024.pdf",
+        "pages": [74, 78, 106, 127, 189]
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "What was Tesla’s EPS in 2024?",
+    "reference_answer": "Tesla’s EPS in 2024 was 2.03.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "What was Microsoft’s EPS in 2023?",
+    "reference_answer": "Microsoft’s EPS in 2023 was 9.74.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "dynamic",
+    "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "dynamic",
+    "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "dynamic",
+    "question": "What is the combined EPS of Tesla and Amazon in 2024?",
+    "reference_answer": "Tesla’s EPS was 2.22 and Amazon’s was 5.59, resulting in a combined EPS of 7.81.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What was Walmart’s EPS in 2024, and was it higher than in 2023?",
+    "reference_answer": "Walmart’s EPS in 2024 was 1.93, which is higher than its 2023 EPS of 1.44.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "finance_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "domain": "Documentation",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "What is one of the known issues with Wallet & Apple Pay in the iOS 18 Release?",
+    "reference_answer": "Users with an Apple Watch might be prompted to reauthorize Connected Accounts in Wallet on iPhone.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [29]
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "domain": "Documentation",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "What is one of the known issues with iCloud Backups in the iOS & iPadOS 17 Release?",
+    "reference_answer": "The first backup on a post beta 4 build when users have been on beta 4 prior might taker a longer time to complete if there are a large number of message attachments. Both automatic and manual backups might take a longer time to complete and get deferred over days which can lead to users seeing that the device has not been backed up in a while.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "iOS_&_iPadOS_17_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [10]
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "domain": "Documentation",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "Which issue affecting the Files app is marked as a known issue in iOS 18.0 and confirmed as resolved in iOS 18.1?",
+    "reference_answer": "Creating local files in the Files app failed in the iOS 18 simulators if the host wasn’t upgraded to macOS Sequoia Beta.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [10]
+      },
+      {
+        "id": "2",
+        "filename": "iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [10]
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "domain": "Documentation",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to the warranty guide, does Volkswagen cover issues caused by using aftermarket suspension kits if those modifications later damage the vehicle?",
+    "reference_answer": "No, Volkswagen does not cover issues resulting from suspension modifications, including the installation of aftermarket springs, shock absorbers, or lowering kits.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "pages": [13, 19]
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "domain": "Documentation",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "If a part fails due to bird droppings or tree sap, can you get it repaired under warranty?",
+    "reference_answer": "No, environmental damage such as bird droppings or tree sap is not covered by the Volkswagen limited warranty.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "pages": [16]
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "domain": "Documentation",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does warranty coverage differ between brake pads and wiper blades for wear and tear repairs?",
+    "reference_answer": "Wear and tear repairs for brake pads/shoes and discs/drums are covered for up to 1 year or 12,000 miles. Wiper blades replaced for wear and tear are only covered for up to 6 months or 6,000 miles.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "pages": [10, 11]
+      }
+    ]
+  }
+]
