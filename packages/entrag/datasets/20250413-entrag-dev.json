@@ -358,5 +358,120 @@
         "pages": [4, 5, 6, 7]
       }
     ]
+  },
+  {
+    "id": "19",
+    "domain": "Environment",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does Amazon's 2023 Environmental Report detail progress on reducing plastic packaging compared to 2022, and is this level of detail reflected in the 2023 Annual Report?",
+    "reference_answer": "The 2023 Environmental Report details specific plastic reduction progress, such as eliminating 99% of North American plastic air pillows and reducing plastic use per shipment by 11.6% globally, building on 2022's EU plastic mailer phase-out. The 2023 Annual Report references overall operational efficiencies and cost reductions, which packaging improvements contribute to, but lacks specific details on plastic packaging initiatives.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_Annual_Report_2023.pdf",
+        "pages": [2]
+      },
+      {
+        "id": "2",
+        "filename": "Amazon_Environmental_Report_2022.pdf",
+        "pages": [16]
+      },
+      {
+        "id": "3",
+        "filename": "Amazon_Environmental_Report_2023.pdf",
+        "pages": [7]
+      }
+    ]
+  },
+  {
+    "id": "20",
+    "domain": "Environment",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "According to the 2023 Annual Report, what percentage in all-electric vehicle deliveries did the Volkswagen Group achieve compared to the previous year?",
+    "reference_answer": "34.7%",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Environmental_Report_2023.pdf",
+        "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "What were the key drivers behind the Volkswagen Passenger Cars brand's improved operating result in 2023 compared to the previous year?",
+    "reference_answer": "The improved operating result of Volkswagen Passenger Cars in 2023 was driven by higher volume and price effects, as well as lower fixed costs.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2023.pdf",
+        "pages": [23]
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "How did commodity derivatives affect Volkswagen Group's operating result differently in 2023 compared to 2022?",
+    "reference_answer": "Commodity derivatives negatively impacted Volkswagen's operating result by €3.2 billion in 2023, whereas they boosted earnings by €1.8 billion in 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2023.pdf",
+        "pages": [22, 138, 151]
+      }
+    ]
+  },
+  {
+    "id": "23",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "By how much did the Volkswagen Group's net liquidity change between 2021 and 2022, and what was the primary reason?",
+    "reference_answer": "Volkswagen Group's net liquidity increased from €26.7 billion at the end of 2021 to €43.0 billion at the end of 2022, primarily due to cash inflows from the IPO of Porsche AG.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2022.pdf",
+        "pages": [141, 148, 2, 100, 144, 153, 284]
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How many all-electric vehicles did the Volkswagen Group deliver in 2023 compared to the previous year?",
+    "reference_answer": "Volkswagen delivered 771,062 all-electric vehicles in 2023, an increase of 34.7% compared to the 572,110 delivered in 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2023.pdf",
+        "pages": [6, 118]
+      }
+    ]
+  },
+  {
+    "id": "25",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How many all-electric vehicles did the Volkswagen Group deliver in 2022 compared to the year 2021?",
+    "reference_answer": "Volkswagen delivered approximately 572,100 all-electric vehicles in 2022, a 26% increase compared to around 453,000 vehicles delivered in 2021.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2022.pdf",
+        "pages": [7, 126]
+      }
+    ]
   }
 ]
