@@ -8,4 +8,3 @@
 ```bash
 python scripts/document-ingestion.py --input-dir data/raw --output-dir data/processed
 ```
-

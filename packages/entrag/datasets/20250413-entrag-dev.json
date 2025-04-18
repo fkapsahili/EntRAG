@@ -124,8 +124,8 @@
     "domain": "Finance",
     "question_type": "simple",
     "dynamism": "dynamic",
-    "question": "What was Tesla’s EPS in 2024?",
-    "reference_answer": "Tesla’s EPS in 2024 was 2.03.",
+    "question": "What was Tesla's EPS in 2024?",
+    "reference_answer": "Tesla's EPS in 2024 was 2.03.",
     "sources": [
       {
         "id": "api-1",
@@ -139,8 +139,8 @@
     "domain": "Finance",
     "question_type": "simple",
     "dynamism": "dynamic",
-    "question": "What was Microsoft’s EPS in 2023?",
-    "reference_answer": "Microsoft’s EPS in 2023 was 9.74.",
+    "question": "What was Microsoft's EPS in 2023?",
+    "reference_answer": "Microsoft's EPS in 2023 was 9.74.",
     "sources": [
       {
         "id": "api-1",
@@ -155,7 +155,7 @@
     "question_type": "comparison",
     "dynamism": "dynamic",
     "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
-    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet's 8.20.",
     "sources": [
       {
         "id": "api-1",
@@ -170,7 +170,7 @@
     "question_type": "comparison",
     "dynamism": "dynamic",
     "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
-    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet’s 8.20.",
+    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet's 8.20.",
     "sources": [
       {
         "id": "api-1",
@@ -185,7 +185,7 @@
     "question_type": "aggregation",
     "dynamism": "dynamic",
     "question": "What is the combined EPS of Tesla and Amazon in 2024?",
-    "reference_answer": "Tesla’s EPS was 2.22 and Amazon’s was 5.59, resulting in a combined EPS of 7.81.",
+    "reference_answer": "Tesla's EPS was 2.22 and Amazon's was 5.59, resulting in a combined EPS of 7.81.",
     "sources": [
       {
         "id": "api-1",
@@ -199,8 +199,8 @@
     "domain": "Finance",
     "question_type": "simple_w_condition",
     "dynamism": "dynamic",
-    "question": "What was Walmart’s EPS in 2024, and was it higher than in 2023?",
-    "reference_answer": "Walmart’s EPS in 2024 was 1.93, which is higher than its 2023 EPS of 1.44.",
+    "question": "What was Walmart's EPS in 2024, and was it higher than in 2023?",
+    "reference_answer": "Walmart's EPS in 2024 was 1.93, which is higher than its 2023 EPS of 1.44.",
     "sources": [
       {
         "id": "api-1",
@@ -211,7 +211,7 @@
   },
   {
     "id": "10",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "simple",
     "dynamism": "static",
     "question": "What is one of the known issues with Wallet & Apple Pay in the iOS 18 Release?",
@@ -226,7 +226,7 @@
   },
   {
     "id": "11",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "simple",
     "dynamism": "static",
     "question": "What is one of the known issues with iCloud Backups in the iOS & iPadOS 17 Release?",
@@ -241,7 +241,7 @@
   },
   {
     "id": "12",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "simple_w_condition",
     "dynamism": "static",
     "question": "Which issue affecting the Files app is marked as a known issue in iOS 18.0 and confirmed as resolved in iOS 18.1?",
@@ -261,7 +261,7 @@
   },
   {
     "id": "13",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "simple",
     "dynamism": "static",
     "question": "According to the warranty guide, does Volkswagen cover issues caused by using aftermarket suspension kits if those modifications later damage the vehicle?",
@@ -276,7 +276,7 @@
   },
   {
     "id": "14",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "simple",
     "dynamism": "static",
     "question": "If a part fails due to bird droppings or tree sap, can you get it repaired under warranty?",
@@ -291,7 +291,7 @@
   },
   {
     "id": "15",
-    "domain": "Documentation",
+    "domain": "Technical Documentation",
     "question_type": "comparison",
     "dynamism": "static",
     "question": "How does warranty coverage differ between brake pads and wiper blades for wear and tear repairs?",
@@ -301,6 +301,61 @@
         "id": "1",
         "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
         "pages": [10, 11]
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "domain": "Technical Documentation",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "What are the differences in voice assistant support between Fitbit Inspire 3 and Versa 4?",
+    "reference_answer": "The Versa 4 supports Amazon Alexa Built-in, allowing users to interact with Alexa directly on the watch. The Inspire 3 does not support any voice assistant functionality.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Versa 4 User Manual - Version 2.1.pdf",
+        "pages": [27, 19, 33]
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "domain": "Environment",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "How does Alphabet explain the increase in total greenhouse gas emissions in 2023 despite its net-zero by 2030 goal?",
+    "reference_answer": "Alphabet's annual report states its 2030 net-zero goal, while the environmental report shows that emissions rose 48% above 2019 levels in 2023 due to data center and supply chain growth.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Alphabet_Annual_Report_2024.pdf",
+        "pages": [16]
+      },
+      {
+        "id": "2",
+        "filename": "Alphabet_Environmental_Report_2024.pdf",
+        "pages": [31]
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "domain": "Environment",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "How does Apple's 2023 Annual Report reference its renewable energy initiatives, and where are those initiatives detailed?",
+    "reference_answer": "Apple's annual report references its environmental commitment generally, while the environmental report details actions like using 100% renewable electricity and supplier clean energy programs.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Annual_Report_2023.pdf",
+        "pages": [5]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Environmental_Report_2023.pdf",
+        "pages": [4, 5, 6, 7]
       }
     ]
   }
