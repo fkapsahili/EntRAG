@@ -205,7 +205,7 @@
     "sources": [
       {
         "id": "1",
-        "filename": "iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
         "pages": [29]
       }
     ]
@@ -220,7 +220,7 @@
     "sources": [
       {
         "id": "1",
-        "filename": "iOS_&_iPadOS_17_Release_Notes_Apple_Developer_Documentation.pdf",
+        "filename": "Apple_iOS_&_iPadOS_17_Release_Notes_Apple_Developer_Documentation.pdf",
         "pages": [10]
       }
     ]
@@ -235,12 +235,12 @@
     "sources": [
       {
         "id": "1",
-        "filename": "iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
         "pages": [10]
       },
       {
         "id": "2",
-        "filename": "iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
         "pages": [10]
       }
     ]
@@ -255,7 +255,7 @@
     "sources": [
       {
         "id": "1",
-        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "filename": "Volkswagen_USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
         "pages": [13, 19]
       }
     ]
@@ -265,12 +265,12 @@
     "domain": "Technical Documentation",
     "question_type": "simple",
     "dynamism": "static",
-    "question": "If a part fails due to bird droppings or tree sap, can you get it repaired under warranty?",
+    "question": "According to Volkswagen's warranty guide, if a part fails due to bird droppings or tree sap, can you get it repaired under warranty?",
     "reference_answer": "No, environmental damage such as bird droppings or tree sap is not covered by the Volkswagen limited warranty.",
     "sources": [
       {
         "id": "1",
-        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "filename": "Volkswagen_USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
         "pages": [16]
       }
     ]
@@ -280,12 +280,12 @@
     "domain": "Technical Documentation",
     "question_type": "comparison",
     "dynamism": "static",
-    "question": "How does warranty coverage differ between brake pads and wiper blades for wear and tear repairs?",
+    "question": "How does Volkswagen's warranty coverage differ between brake pads and wiper blades for wear and tear repairs?",
     "reference_answer": "Wear and tear repairs for brake pads/shoes and discs/drums are covered for up to 1 year or 12,000 miles. Wiper blades replaced for wear and tear are only covered for up to 6 months or 6,000 miles.",
     "sources": [
       {
         "id": "1",
-        "filename": "USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
+        "filename": "Volkswagen_USA_VW_MY25_WM_25VWELEWMUSEN_ENG.pdf",
         "pages": [10, 11]
       }
     ]
@@ -300,7 +300,7 @@
     "sources": [
       {
         "id": "1",
-        "filename": "Versa 4 User Manual - Version 2.1.pdf",
+        "filename": "Alphabet_Versa_4_User_Manual_Version_2.1.pdf",
         "pages": [27, 19, 33]
       }
     ]
@@ -335,7 +335,7 @@
     "sources": [
       {
         "id": "1",
-        "filename": "Annual_Report_2023.pdf",
+        "filename": "Apple_Annual_Report_2023.pdf",
         "pages": [5]
       },
       {
@@ -552,6 +552,166 @@
         "id": "3",
         "filename": "Walmart_Earnings_Presentation_FY25_Q3.pdf",
         "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "31",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "Who was the moderator for the CVS Health Q3 2024 Earnings Call?",
+    "reference_answer": "The moderator for the CVS Health Q3 2024 Earnings Call was Brika.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_2024_Q3_Earnings_Call_Transcript.pdf",
+        "pages": [3]
+      }
+    ]
+  },
+  {
+    "id": "32",
+    "domain": "Finance",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "Which corporate participants listed at the beginning of the Q1 2024 earnings call transcript held the title of 'Executive Vice President'?",
+    "reference_answer": "Thomas F. Cowhey (EVP & CFO), Brian A. Kane (EVP & President-Aetna), J. David Joyner (EVP & President-CVS Caremark), and Michael T. Pykosz (EVP & President-Health Care Delivery).",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_2024_Q1_Earnings_Call_Transcript.pdf",
+        "pages": [2]
+      }
+    ]
+  },
+  {
+    "id": "33",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to the Q2 2024 earnings call, who is eligible for the $25 insulin offered through the CVS Health Reduced Rx program?",
+    "reference_answer": "The program provides access to $25 insulin to every customer, whether insured, under-insured, or uninsured.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_2024_Q2_Earnings_Call_Transcript.pdf",
+        "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "34",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "Following the departure of the previous CEO mentioned near the start of the Q3 2024 earnings call, who was listed as President and CEO in the Q3 2024 transcript, and what title did Prem Shah hold in the Q3 transcript compared to his title listed in the Q2 2024 transcript?",
+    "reference_answer": "J. David Joyner was listed as President and CEO in the Q3 2024 transcript and Prem Shah, who was listed as EVP, Chief Pharmacy Officer & President-Pharmacy and Consumer Wellness in the Q2 transcript, held the title of Group President in the Q3 transcript.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_2024_Q2_Earnings_Call_Transcript.pdf",
+        "pages": [2]
+      },
+      {
+        "id": "2",
+        "filename": "CVSHealth_2024_Q3_Earnings_Call_Transcript.pdf",
+        "pages": [2, 3]
+      }
+    ]
+  },
+  {
+    "id": "35",
+    "domain": "Environment",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "How many peer-reviewed scientific papers has ExxonMobil published related to product safety according to its Sustainability Report 2023?",
+    "reference_answer": "22",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "ExxonMobil_Environmental_Report_2023.pdf",
+        "pages": [10]
+      }
+    ]
+  },
+  {
+    "id": "36",
+    "domain": "Environment",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "In which areas with high biodiversity does ExxonMobil follow the mitigation hierarchy of the Cross Sector Biodiversity Initiative according to its Sustainability Report 2023?",
+    "reference_answer": "In areas of high biodiversity like critical habitats.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "ExxonMobil_Environmental_Report_2023.pdf",
+        "pages": [51]
+      }
+    ]
+  },
+  {
+    "id": "37",
+    "domain": "Finance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "How did ExxonMobil's investment and strategy for lower-emission initiatives change between 2023 and 2024?",
+    "reference_answer": "In 2023, ExxonMobil planned $17B in low-emission investments through 2027. In 2024, it increased this to $30B by 2030 and added new technologies like Proxxima systems and carbon materials, supported by the Pioneer acquisition.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "ExxonMobil_Environmental_Report_2023.pdf",
+        "pages": [70]
+      },
+      {
+        "id": "2",
+        "filename": "ExxonMobil_Environmental_Report_2023.pdf",
+        "pages": [3, 47, 71, 82, 91, 120]
+      }
+    ]
+  },
+  {
+    "id": "38",
+    "domain": "Technical Documentation",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "Which issue with Siri was fixed in the iOS 18.1 release?",
+    "reference_answer": "Siri result snippets could appear in the wrong position.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [3]
+      }
+    ]
+  },
+  {
+    "id": "39",
+    "domain": "Technical Documentation",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "What is the ID of the issue with Siri result snippets appearing in the wrong place in the iOS 18.1 version?",
+    "reference_answer": "135035793",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [3]
+      }
+    ]
+  },
+  {
+    "id": "40",
+    "domain": "Finance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "What is the difference in megawatts (MW) between the total Facility Net Capacity and the total Net Owned Capacity shown in the Berkshire Hathaway Energy table for facilities operating at December 31 2024?",
+    "reference_answer": "The difference between the total Facility Net Capacity (43,135 MW) and the total Net Owned Capacity (36,312 MW) shown in the table is 6,823 MW.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "BerkshireHathaway_Annual_Report_2023.pdf",
+        "pages": [51]
       }
     ]
   }
