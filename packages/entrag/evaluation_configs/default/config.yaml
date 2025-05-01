@@ -3,14 +3,20 @@ config_name: default
 tasks:
   question_answering:
     run: false
-    dataset_path: datasets/20250319-entrag-dev.json 
+    dataset_path: datasets/20250413-entrag-dev.json 
   dynamic_question_answering:
-    run: true
-    dataset_path: datasets/20250405-entrag-dev.json
+    run: false
+    dataset_path: datasets/20250413-entrag-dev.json
 
 chunking:
   enabled: false
-  files_directory: data/entrag_test_v5
-  output_directory: data/output_v3
+  files_directory: data/entrag_dev_v6
+  output_directory: data/output_v4
   dataset_name: entrag_test
   max_tokens: 2048 # tokens
+
+embedding:
+  enabled: true
+  model: text-embedding-3-small
+  batch_size: 8
+  output_directory: data/embeddings

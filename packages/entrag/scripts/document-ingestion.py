@@ -3,6 +3,9 @@ This script processes raw PDF files from a specified input directory and saves t
 """
 
 import os
+import tempfile
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from functools import partial
 
 import click
 from docling.document_converter import DocumentConverter
@@ -10,9 +13,10 @@ from loguru import logger
 from pypdf import PdfReader, PdfWriter
 
 
-def split_pdf_to_pages(pdf_path, output_dir):
+def split_pdf_to_pages(pdf_path, temp_dir):
     """
     Splits a PDF into individual pages and saves them as separate PDF files.
+    Returns a list of page file paths.
     """
     reader = PdfReader(pdf_path)
     num_pages = len(reader.pages)
@@ -23,73 +27,130 @@ def split_pdf_to_pages(pdf_path, output_dir):
         writer = PdfWriter()
         writer.add_page(reader.pages[i])
 
-        page_filename = os.path.join(output_dir, f"{base_filename}_page_{i + 1}.pdf")
+        page_filename = os.path.join(temp_dir, f"{base_filename}_page_{i + 1}.pdf")
         with open(page_filename, "wb") as f:
             writer.write(f)
-        page_files.append(page_filename)
+        page_files.append((i + 1, page_filename))
 
     return page_files
 
 
-def process_pdf_content(pdf_path: str) -> str:
+def process_page(page_tuple):
     """
-    Processes a PDF file with Docling and returns the extracted markdown content.
+    Process a single page with Docling.
+    Returns the page number and the markdown content.
     """
-    converter = DocumentConverter()
-    result = converter.convert(pdf_path)
-    markdown = result.document.export_to_markdown(add_page_markers=False)
-    return markdown
+    page_num, page_file = page_tuple
+    try:
+        converter = DocumentConverter()
+        result = converter.convert(page_file)
+        markdown = result.document.export_to_markdown()
+        return page_num, markdown, page_file
+    except Exception as e:
+        logger.error(f"Error processing page {page_num}: {e}")
+        return page_num, "", page_file
 
 
-def process_documents(input_dir, output_dir):
+def process_pdf(pdf_path, temp_dir, max_workers=None):
     """
-    Processes each PDF in the input directory, splits it into pages,
-    runs Docling on each page, and reassembles the content with page markers.
+    Process a single PDF file, splitting it into pages and processing each page in parallel.
+    """
+    logger.info(f"Processing file: {pdf_path}")
+
+    # Split PDF into individual pages
+    page_files = split_pdf_to_pages(pdf_path, temp_dir)
+    if not page_files:
+        logger.warning(f"No pages found in {pdf_path}.")
+        return None
+
+    # Process each page with Docling in parallel
+    results = {}
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        future_to_page = {executor.submit(process_page, page_tuple): page_tuple for page_tuple in page_files}
+
+        for future in as_completed(future_to_page):
+            page_num, markdown, page_file = future.result()
+            results[page_num] = markdown
+            # Clean up the page file after processing
+            try:
+                os.remove(page_file)
+            except Exception as e:
+                logger.warning(f"Error removing temporary page file {page_file}: {e}")
+
+    # Assemble content in correct page order
+    assembled_content = ""
+    for page_num in sorted(results.keys()):
+        markdown = results[page_num]
+        if markdown.strip():
+            assembled_content += f"##PAGE {page_num}##\n{markdown}\n"
+        else:
+            logger.warning(f"No text extracted from page {page_num}.")
+
+    return assembled_content
+
+
+def process_documents(input_dir, output_dir, max_workers=None, batch_size=5):
+    """
+    Processes each PDF in the input directory, processing multiple PDFs concurrently.
     """
     os.makedirs(output_dir, exist_ok=True)
 
+    # Collect all PDF files to process
+    pdf_files = []
     for root, _, files in os.walk(input_dir):
         for file in files:
-            # Skip non-PDF files for now
-            if not file.endswith(".pdf"):
-                continue
+            if file.endswith(".pdf"):
+                full_path = os.path.join(root, file)
+                output_filename = os.path.splitext(file)[0] + ".md"
+                output_filepath = os.path.join(output_dir, output_filename)
 
-            full_path = os.path.join(root, file)
-            output_filename = os.path.splitext(file)[0] + ".md"
-            output_filepath = os.path.join(output_dir, output_filename)
-            logger.info(f"Processing file: {full_path}")
+                if os.path.exists(output_filepath):
+                    logger.warning(f"Output file already exists: {output_filepath}. Skipping document.")
+                    continue
 
-            if os.path.exists(output_filepath):
-                logger.warning(f"Output file already exists: {output_filepath}. Skipping document.")
-                continue
+                pdf_files.append((full_path, output_filepath))
 
-            # Split PDF into individual pages
-            page_files = split_pdf_to_pages(full_path, output_dir)
-            if not page_files:
-                logger.warning(f"No pages found in {full_path}. Skipping document.")
-                continue
+    logger.info(f"Found {len(pdf_files)} PDF files to process")
 
-            # Process each page with Docling and assemble content
-            assembled_content = ""
-            for i, page_file in enumerate(page_files):
-                logger.debug(f"Processing page {i + 1} of {len(page_files)}")
-                page_markdown = process_pdf_content(page_file)
-                if page_markdown.strip():
-                    assembled_content += f"##PAGE {i + 1}##\n{page_markdown}\n"
-                else:
-                    logger.warning(f"No text extracted from {page_file}.")
+    # Process PDFs in batches to avoid memory issues
+    for i in range(0, len(pdf_files), batch_size):
+        batch = pdf_files[i : i + batch_size]
+        logger.info(f"Processing batch {i // batch_size + 1}/{(len(pdf_files) - 1) // batch_size + 1}")
 
-                # Optionally, remove the individual page file after processing
-                os.remove(page_file)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Process each PDF in the batch
+            with ProcessPoolExecutor(max_workers=max_workers) as executor:
+                process_pdf_partial = partial(process_single_pdf, temp_dir=temp_dir, max_workers=1)
+                futures = {
+                    executor.submit(process_pdf_partial, pdf_path, output_path): pdf_path
+                    for pdf_path, output_path in batch
+                }
 
-            if not assembled_content.strip():
-                logger.warning(f"No content extracted from {full_path}. Skipping document.")
-                continue
+                for future in as_completed(futures):
+                    pdf_path = futures[future]
+                    try:
+                        future.result()
+                    except Exception as e:
+                        logger.error(f"Error processing {pdf_path}: {e}")
 
-            # Save the assembled markdown content
-            with open(output_filepath, "w", encoding="utf-8") as f:
+
+def process_single_pdf(pdf_path, output_path, temp_dir, max_workers):
+    """
+    Helper function to process a single PDF and save it to the output path.
+    """
+    try:
+        assembled_content = process_pdf(pdf_path, temp_dir, max_workers)
+        if assembled_content and assembled_content.strip():
+            with open(output_path, "w", encoding="utf-8") as f:
                 f.write(assembled_content)
-                logger.info(f"Document saved as markdown: {output_filepath}")
+            logger.info(f"Document saved as markdown: {output_path}")
+            return True
+        else:
+            logger.warning(f"No content extracted from {pdf_path}. Skipping document.")
+            return False
+    except Exception as e:
+        logger.error(f"Failed to process {pdf_path}: {e}")
+        return False
 
 
 @click.command()
@@ -105,12 +166,25 @@ def process_documents(input_dir, output_dir):
     required=True,
     help="Output directory where markdown files will be saved.",
 )
-def main(input_dir: str, output_dir: str) -> None:
+@click.option(
+    "--workers",
+    type=int,
+    default=None,
+    help="Maximum number of worker processes. Defaults to number of CPU cores.",
+)
+@click.option(
+    "--batch-size",
+    type=int,
+    default=5,
+    help="Number of PDFs to process in parallel. Default is 5.",
+)
+def main(input_dir: str, output_dir: str, workers: int, batch_size: int) -> None:
     """
     Process raw PDF files, split them into pages, run Docling on each page,
     and save the structured data as markdown with page markers.
     """
-    process_documents(input_dir, output_dir)
+    logger.info(f"Starting PDF processing with batch size: {batch_size}, workers: {workers or "auto"}")
+    process_documents(input_dir, output_dir, max_workers=workers, batch_size=batch_size)
     logger.info("Processing completed.")
 
 

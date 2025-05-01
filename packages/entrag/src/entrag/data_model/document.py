@@ -33,3 +33,15 @@ class Chunk(BaseModel):
     chunk_location_id: int
     chunk_text: str
     chunk_length_tokens: int
+
+
+class ChunkEmbedding(BaseModel):
+    """
+    A chunk embedding.
+    """
+
+    document_id: str
+    document_name: str
+    document_page: int
+    chunk_location_id: int
+    embedding: list[float]

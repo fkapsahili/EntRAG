@@ -47,7 +47,7 @@ def _save_document_chunks(config: EvaluationConfig, chunks: list[Chunk]):
     logger.debug("Document chunks saved successfully.")
 
 
-def _load_document_chunks(config: ChunkingConfig) -> list[Chunk]:
+def load_document_chunks(config: ChunkingConfig) -> list[Chunk]:
     """
     Load the document chunks from disk.
     """
@@ -69,7 +69,7 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
 
     if not config.chunking.enabled:
         logger.info("Chunking is disabled. Loading existing chunks.")
-        return _load_document_chunks(config.chunking)
+        return load_document_chunks(config.chunking)
 
     source_directory = config.chunking.files_directory
     logger.debug(f"Using chunking configuration: {config.chunking}")

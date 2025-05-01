@@ -19,14 +19,6 @@ class RAGLM(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def embed_chunks(self, chunk: Chunk) -> list[list[float]] | None:
-        """
-        Encode chunks into a vector or other meaningful representation.
-        Each subclass must define its own encoding logic or return `None` if not applicable.
-        """
-        pass
-
-    @abc.abstractmethod
     def build_store(self, chunks: list[Chunk]) -> None:
         """
         Build a retrieval store from chunks.

@@ -13,6 +13,17 @@ class ChunkingConfig(BaseModel):
     max_tokens: int = Field(description="Maximum number of tokens in a chunk.", default=1024)
 
 
+class EmbeddingConfig(BaseModel):
+    """
+    Configuration section for embeddings.
+    """
+
+    enabled: bool = Field(description="Flag to enable the embedding step.", default=True)
+    model: str = Field(description="Model to use for embeddings.", default="text-embedding-3-small")
+    batch_size: int = Field(description="Batch size for embedding.", default=4)
+    output_directory: str = Field(description="Output directory for the embeddings.", default="data/embeddings")
+
+
 class QuestionAnsweringConfig(BaseModel):
     """
     Configuration section for question answering.
@@ -43,4 +54,5 @@ class EvaluationConfig(BaseModel):
     config_name: str
 
     chunking: ChunkingConfig = Field(description="Chunking configuration to use.", default=ChunkingConfig())
+    embedding: EmbeddingConfig = Field(description="Embedding configuration to use.", default=EmbeddingConfig())
     tasks: TasksConfig = Field(description="Tasks configuration to use.", default=TasksConfig())
