@@ -34,14 +34,15 @@ def precision_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, 
     """
 
     correct_pages_by_file = {normalize_filename(source.filename): set(source.pages) for source in example.sources}
-    correct_chunks = 0
+    matches = set()
     for src in result.sources[:k]:
         filename = normalize_filename(src.filename)
         if filename in correct_pages_by_file:
-            if any(page in correct_pages_by_file[filename] for page in src.pages):
-                correct_chunks += 1
-
-    precision_at_k = correct_chunks / k if k > 0 else 0.0
+            for page in src.pages:
+                if page in correct_pages_by_file[filename] and (filename, page) not in matches:
+                    matches.add((filename, page))
+                    break
+    precision_at_k = len(matches) / k if k > 0 else 0.0
     return EvaluationResult(question_id=example.id, evaluator="precision_at_k", score=precision_at_k)
 
 
@@ -51,14 +52,14 @@ def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, 
     """
 
     correct_pages_by_file = {normalize_filename(source.filename): set(source.pages) for source in example.sources}
-    correct_chunks = 0
+    matches = set()
     for src in result.sources[:k]:
         filename = normalize_filename(src.filename)
         if filename in correct_pages_by_file:
-            if any(page in correct_pages_by_file[filename] for page in src.pages):
-                correct_chunks += 1
-
-    recall_at_k = correct_chunks / len(example.sources) if example.sources else 0.0
+            for page in src.pages:
+                if page in correct_pages_by_file[filename]:
+                    matches.add((filename, page))
+    recall_at_k = len(matches) / sum(len(pages) for pages in correct_pages_by_file.values()) if k > 0 else 0.0
     return EvaluationResult(question_id=example.id, evaluator="recall_at_k", score=recall_at_k)
 
 

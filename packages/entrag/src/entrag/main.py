@@ -16,8 +16,6 @@ from entrag.visualization import (
     plot_model_comparison,
     plot_question_level_scores,
     plot_radar_comparison,
-    print_evaluation_table,
-    print_summary_table,
 )
 from entrag.visualization.utils import (
     create_run_id,
@@ -74,12 +72,6 @@ def main() -> None:
             qa_results = evaluate_question_answering(model, config)
             model_results.extend(qa_results)
 
-            # Visualize individual model results
-            print_evaluation_table(qa_results, model_name=model_name)
-            plot_evaluation_results(qa_results, model_name=model_name)
-            plot_question_level_scores(qa_results, model_name=model_name)
-            plot_evaluator_distribution(qa_results, model_name=model_name)
-
         if config.tasks.dynamic_question_answering.run:
             dqa_results = evaluate_dynamic_question_answering(model, config)
             model_results.extend(dqa_results)
@@ -88,14 +80,24 @@ def main() -> None:
             save_model_results(model_name, model_results, output_dir)
             all_results[model_name] = model_results
 
-    # If we have results from multiple models, create comparison visualizations
+            # Visualize individual model results
+            plot_evaluation_results(
+                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_results.png"
+            )
+            plot_question_level_scores(
+                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_question_scores.png"
+            )
+            plot_evaluator_distribution(
+                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_evaluator_distribution.png"
+            )
+
+    # If we have results from multiple models
     if len(all_results) > 1:
         logger.info("Creating model comparison visualizations")
 
         save_combined_results(all_results, output_dir)
-        print_summary_table(all_results)
 
-        # Generate comparison plots
+        # Generate additional comparison plots
         plot_model_comparison(all_results, figsize=(14, 8), output_file=output_dir / "model_comparison.png")
         plot_radar_comparison(
             all_results, top_n_models=len(all_results), output_file=output_dir / "radar_comparison.png"

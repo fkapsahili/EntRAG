@@ -6,29 +6,9 @@ from loguru import logger
 from entrag.data_model.question_answer import EvaluationResult
 
 
-def print_evaluation_table(results: list[EvaluationResult], *, model_name: str | None = None):
-    """
-    Print evaluation results as a formatted table.
-    """
-    if not results:
-        print("No evaluation results to display.")
-        return
-
-    prefix = f"[{model_name}] " if model_name else ""
-
-    df = pd.DataFrame([r.model_dump() for r in results])
-    df = pd.DataFrame([r.model_dump() for r in results])
-    df = df[["question_id", "evaluator", "score"]]
-
-    summary = df.groupby("evaluator")["score"].agg(["mean", "min", "max", "std"]).round(4)
-
-    print(f"\n{prefix}Evaluation Results Summary:\n")
-    print(summary.to_string(float_format="%.4f"))
-    print(f"\n{prefix}Detailed Evaluation Results:\n")
-    print(df.to_string(index=False, float_format="%.4f"))
-
-
-def plot_evaluation_results(results: list[EvaluationResult,], *, model_name: str | None = None):
+def plot_evaluation_results(
+    results: list[EvaluationResult,], *, model_name: str | None = None, output_file: str | None = None
+):
     """
     Plot the evaluation results for different evaluator types.
     LLM evaluators (with 'llm' suffix) are scaled from 0-10, while others use 0-1.
@@ -106,8 +86,8 @@ def plot_evaluation_results(results: list[EvaluationResult,], *, model_name: str
         ]
         plt.legend(handles=legend_elements, loc="best")
 
-    plt.tight_layout()
-    plt.show()
+    if output_file:
+        plt.savefig(output_file, dpi=300, bbox_inches="tight")
 
 
 def plot_question_level_scores(
@@ -155,8 +135,6 @@ def plot_question_level_scores(
 
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches="tight")
-
-    plt.show()
 
 
 def plot_evaluator_distribution(
@@ -222,35 +200,6 @@ def plot_evaluator_distribution(
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches="tight")
 
-    plt.show()
-
-
-def print_summary_table(results_dict: dict[str, list[EvaluationResult]], group_by: str = "model") -> pd.DataFrame:
-    """
-    Print a summary table of evaluation results.
-    """
-    if not results_dict:
-        logger.warning("No results available to summarize")
-        return pd.DataFrame()
-
-    all_results = []
-    for model_name, results in results_dict.items():
-        for result in results:
-            result_dict = result.model_dump()
-            result_dict["model"] = model_name
-            all_results.append(result_dict)
-
-    df = pd.DataFrame(all_results)
-
-    summary = df.pivot_table(values="score", index=group_by, columns="evaluator", aggfunc="mean").round(4)
-    summary["average"] = summary.mean(axis=1).round(4)
-    summary = summary.sort_values("average", ascending=False)
-
-    print(f"\nEvaluation Summary (grouped by {group_by}):\n")
-    print(summary.to_string(float_format="%.4f"))
-
-    return summary
-
 
 def plot_model_comparison(
     results_dict: dict[str, list[EvaluationResult]],
@@ -313,8 +262,6 @@ def plot_model_comparison(
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches="tight")
         logger.info(f"Saved comparison plot to {output_file}")
-
-    plt.show()
 
 
 def plot_radar_comparison(
@@ -379,6 +326,3 @@ def plot_radar_comparison(
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches="tight")
         logger.info(f"Saved radar plot to {output_file}")
-
-    plt.tight_layout()
-    plt.show()
