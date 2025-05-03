@@ -1,15 +1,24 @@
 import json
 
+from loguru import logger
+
 from entrag.api.model import RAGLM
 from entrag.config.evaluation_config import EvaluationConfig
 from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair, Source
-from entrag.evaluators import answer_correctenss_llm_evaluator, ndcg_k_evaluator, recall_k_evaluator
+from entrag.evaluators import (
+    answer_correctenss_llm_evaluator,
+    ndcg_k_evaluator,
+    precision_k_evaluator,
+    recall_k_evaluator,
+)
 from entrag.prompts.default_prompts import SIMPLE_QA_PROMPT
 from entrag.utils.prompt import get_formatted_chunks, get_query_time
-from entrag.visualization import plot_evaluation_results, print_evaluation_table
 
 
-def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
+def evaluate_question_answering(model: RAGLM, config: EvaluationConfig) -> list[EvaluationResult]:
+    """
+    Evaluate the question answering task using the provided model and configuration.
+    """
     prompts = []  # TODO: Parallelize the model inference
     evaluators = [answer_correctenss_llm_evaluator]
     results: list[EvaluationResult] = []
@@ -18,6 +27,7 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
         dataset_ = json.load(file)
         # Filter out dynamic QA pairs
         dataset = [QuestionAnswerPair(**item) for item in dataset_ if item["dynamism"] != "dynamic"]
+        logger.info(f"Loaded {len(dataset)} static QA pairs.")
 
         for example in dataset:
             retrieved_chunks, _ = model.retrieve(example.question)
@@ -40,9 +50,9 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig):
                 results.append(eval_result)
 
             results.extend([
+                precision_k_evaluator(example, result, k=5),
                 recall_k_evaluator(example, result, k=5),
                 ndcg_k_evaluator(example, result, k=5),
             ])
 
-    print_evaluation_table(results)
-    plot_evaluation_results(results)
+    return results

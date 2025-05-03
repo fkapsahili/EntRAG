@@ -46,6 +46,16 @@ class TasksConfig(BaseModel):
     )
 
 
+class ModelEvaluationConfig(BaseModel):
+    """
+    Configuration section for model evaluation.
+    """
+
+    output_directory: str = Field(
+        description="Output directory for the evaluation results.", default="evaluation_results"
+    )
+
+
 class EvaluationConfig(BaseModel):
     """
     Model for the evaluation configuration.
@@ -56,3 +66,6 @@ class EvaluationConfig(BaseModel):
     chunking: ChunkingConfig = Field(description="Chunking configuration to use.", default=ChunkingConfig())
     embedding: EmbeddingConfig = Field(description="Embedding configuration to use.", default=EmbeddingConfig())
     tasks: TasksConfig = Field(description="Tasks configuration to use.", default=TasksConfig())
+    model_evaluation: ModelEvaluationConfig = Field(
+        description="Model evaluation configuration to use.", default=ModelEvaluationConfig()
+    )

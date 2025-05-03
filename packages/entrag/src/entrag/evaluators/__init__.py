@@ -1,8 +1,8 @@
 import os
 
 import numpy as np
-from google import genai
 from loguru import logger
+from openai import Client
 
 from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair
 from entrag.evaluators.utils import normalize_filename
@@ -19,12 +19,30 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
         answer=result.answer,
     )
     logger.debug(f"Answer correctness prompt: {prompt}")
-    answer = genai.Client(api_key=os.getenv("GEMINI_API_KEY")).models.generate_content(
-        model="gemini-2.0-flash", contents=[prompt]
+    completion = Client(api_key=os.getenv("OPENAI_API_KEY")).chat.completions.create(
+        model="gpt-4o", messages=[{"role": "system", "content": prompt}]
     )
+    answer = completion.choices[0].message.content
     logger.debug(f"Answer correctness response: {answer}")
-    answer_float = float(answer.text.strip())  # TODO: Use structured outputs
+    answer_float = float(answer.strip())  # TODO: Use structured outputs
     return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=answer_float)
+
+
+def precision_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:
+    """
+    Compute how frequently the correct chunks appear within the top-k retrieved chunks.
+    """
+
+    correct_pages_by_file = {normalize_filename(source.filename): set(source.pages) for source in example.sources}
+    correct_chunks = 0
+    for src in result.sources[:k]:
+        filename = normalize_filename(src.filename)
+        if filename in correct_pages_by_file:
+            if any(page in correct_pages_by_file[filename] for page in src.pages):
+                correct_chunks += 1
+
+    precision_at_k = correct_chunks / k if k > 0 else 0.0
+    return EvaluationResult(question_id=example.id, evaluator="precision_at_k", score=precision_at_k)
 
 
 def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:

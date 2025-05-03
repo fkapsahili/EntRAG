@@ -2,7 +2,7 @@ config_name: default
 
 tasks:
   question_answering:
-    run: false
+    run: true
     dataset_path: datasets/20250413-entrag-dev.json 
   dynamic_question_answering:
     run: false
@@ -20,3 +20,6 @@ embedding:
   model: text-embedding-3-small
   batch_size: 8
   output_directory: data/embeddings
+
+model_evaluation:
+  output_directory: evaluation_results

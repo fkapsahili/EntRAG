@@ -32,7 +32,7 @@ def create_embeddings_for_chunks(config: EvaluationConfig) -> list[ChunkEmbeddin
         with open(output_file, "r", encoding="utf-8") as file:
             for line in file:
                 embedding_data = json.loads(line)
-                key = f"{embedding_data["document_id"]}:{embedding_data["chunk_location_id"]}"
+                key = f"{embedding_data["document_id"]}:{embedding_data["document_page"]}:{embedding_data["chunk_location_id"]}"
                 existing_embeddings[key] = embedding_data
 
     # Identify chunks that we need to embed
@@ -40,7 +40,7 @@ def create_embeddings_for_chunks(config: EvaluationConfig) -> list[ChunkEmbeddin
     chunk_indices = []
 
     for i, chunk in enumerate(chunks):
-        key = f"{chunk.document_id}:{chunk.chunk_location_id}"
+        key = f"{chunk.document_id}:{chunk.document_page}:{chunk.chunk_location_id}"
         if key not in existing_embeddings:
             chunks_to_embed.append(chunk)
             chunk_indices.append(i)
@@ -58,7 +58,7 @@ def create_embeddings_for_chunks(config: EvaluationConfig) -> list[ChunkEmbeddin
 
     with open(output_file, "w", encoding="utf-8") as file:
         for i, chunk in enumerate(chunks):
-            key = f"{chunk.document_id}:{chunk.chunk_location_id}"
+            key = f"{chunk.document_id}:{chunk.document_page}:{chunk.chunk_location_id}"
 
             if key in existing_embeddings:
                 # Reuse the embedding

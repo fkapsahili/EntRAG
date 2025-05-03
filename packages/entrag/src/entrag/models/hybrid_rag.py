@@ -12,7 +12,7 @@ from entrag_mock_api.client import MockAPIClient
 
 class HybridRAG(BaselineRAG):
     """
-    Hybrid RAG approach that combines vector-search and entity extraction.
+    Hybrid RAG approach that combines both vector-search and entity extraction.
     """
 
     def __init__(self) -> None:

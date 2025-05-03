@@ -61,7 +61,7 @@ class BaselineRAG(RAGLM):
             return self.index
 
         try:
-            vectors = np.array(embeddings, dtype=np.float32)
+            vectors = np.array([emb.embedding for emb in embeddings], dtype=np.float32)
         except Exception as exc:
             logger.error("Failed to convert embeddings to numpy array: %s", exc)
             return None
