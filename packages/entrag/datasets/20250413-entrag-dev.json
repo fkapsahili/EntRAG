@@ -714,5 +714,190 @@
         "pages": [51]
       }
     ]
+  },
+  {
+    "id": "41",
+    "domain": "Technical Documentation",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "Are there any known iCloud sync issues in iOS 18.1 that remain unresolved in iOS 18.2?",
+    "reference_answer": "Yes, some persisted iCloud sync issues remain unresolved in iOS 18.2.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [10, 11, 12]
+      },
+      {
+        "id": "api-1",
+        "filename": "search_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "42",
+    "domain": "Technical Documentation",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "Is the Files app issue from iOS 18.1 still unresolved in iOS 18.2?",
+    "reference_answer": "No, the Files app issue was resolved in iOS 18.2.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "search_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "43",
+    "domain": "Technical Documentation",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "dynamic",
+    "question": "What issues related to Swift 6 compatibility appeared in iOS 18.0, and were any of these resolved in subsequent versions 18.1 or 18.2?",
+    "reference_answer": "In iOS 18.0, there were Swift 6 compatibility issues with HealthKit API calls (131794283) and with the Entity class in RealityKit (128787131). The HealthKit issue was fixed in iOS 18.1, while the Entity class issue was resolved in iOS 18.2. The issue with @Entry macro was fixed in iOS 18.0 to work with non-Sendable types if the type is declared explicitly (129073803).",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [9, 17]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [2]
+      },
+      {
+        "id": "api-1",
+        "filename": "search_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "44",
+    "domain": "Technical Documentation",
+    "question_type": "comparison",
+    "dynamism": "dynamic",
+    "question": "How have popover arrow edge behaviors changed between iOS 18.0, 18.1, and 18.2, and which issue IDs were associated with these fixes?",
+    "reference_answer": "In iOS 18.0, the popover modifier didn't respect arrowEdge arguments (issue 66839017/FB8350757). iOS 18.1 added proper support for explicit arrow edges in apps compiled against pre-18.0 SDKs (issue 133295608). In iOS 18.2, the fix was completed with issue 135231043, ensuring apps compiled against iOS 18.2 and run against iOS 18.1 or later properly respect the arrowEdge argument.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [23]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [4]
+      },
+      {
+        "id": "api-1",
+        "filename": "search_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "45",
+    "domain": "Technical Documentation",
+    "question_type": "post_processing",
+    "dynamism": "dynamic",
+    "question": "What percentage of Files app issues from iOS 18.0 were resolved by iOS 18.1, and what was the issue ID of the one fixed in 18.1?",
+    "reference_answer": "100% of Files app issues from iOS 18.0 were resolved by iOS 18.1. Issue #132561244 was fixed in iOS 18.1.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [6]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": [2]
+      }
+    ]
+  },
+  {
+    "id": "46",
+    "domain": "Technical Documentation",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "How did the Holographic Display API introduced in iOS 18.0 evolve in iOS 18.1?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_iOS_&_iPadOS_18_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": []
+      },
+      {
+        "id": "2",
+        "filename": "Apple_iOS_&_iPadOS_18.1_Release_Notes_Apple_Developer_Documentation.pdf",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "47",
+    "domain": "Finance",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "According to Volkswagen's 2023 Annual Report, how did their carbon-neutral car division impact their overall profitability compared to the previous fiscal year?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Annual_Report_2023.pdf",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "48",
+    "domain": "Finance",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "According to CVS Health's Q1 2024 earnings call, how did their crypto-based pharmacy payment system launched in January 2024 impact their ability to process insurance claims during the Change Healthcare cyberattack?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVS_Health_Q1_2024_Earnings_Call_Transcript.pdf",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "49",
+    "domain": "Finance",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "According to Walmart's FY25 Q3 financial presentation, how did their new blockchain-based inventory management system impact their gross profit rate compared to Q2?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Walmart_Earnings_Presentation_FY25_Q3.pdf",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "50",
+    "domain": "Finance",
+    "question_type": "post_processing",
+    "dynamism": "dynamic",
+    "question": "What was Walmart's adjusted operating income growth in Q4 FY25 on a constant currency basis, and how much did they spend on share repurchases during the quarter?",
+    "reference_answer": "9.4% growth for adjusted operating income (cc); $1.4 billion spent on share repurchases.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Walmart_FY25_Q4_Financial_Presentation.pdf",
+        "pages": [6, 9]
+      }
+    ]
   }
 ]

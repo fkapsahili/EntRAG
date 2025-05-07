@@ -8,7 +8,7 @@ referred to as "Query Time". The query time is formatted as "yyyy-mm-dd hh:mm:ss
 answer the question accurately.
 
 Please follow these guidelines when formatting your answer:
-1. If the question contains a false premise or assumption, answer "invalid question".
+1. If the question contains a false premise or factual contradiction, answer "invalid question".
 2. If you are uncertain or don't know the answer, answer "I don't know".
 
 ### Question

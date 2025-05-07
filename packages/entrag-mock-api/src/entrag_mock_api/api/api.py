@@ -1,5 +1,6 @@
-from entrag_mock_api.api.endpoints import finance
 from fastapi import APIRouter
+
+from entrag_mock_api.api.endpoints import finance
 
 
 api_router = APIRouter()
