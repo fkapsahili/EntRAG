@@ -20,7 +20,13 @@ class QuestionAnswerPair(BaseModel):
 
     id: str = Field(description="The unique identifier for the question")
     question_type: Literal[
-        "simple", "simple_w_condition", "comparison", "aggregation", "multi_hop_reasoning", "factual_contradiction"
+        "simple",
+        "simple_w_condition",
+        "comparison",
+        "aggregation",
+        "multi_hop_reasoning",
+        "factual_contradiction",
+        "post_processing",
     ]
     question: str = Field(description="The question to answer")
     domain: Literal["Finance", "Technical Documentation", "Environment"]

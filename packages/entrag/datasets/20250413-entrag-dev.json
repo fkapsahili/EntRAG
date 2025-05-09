@@ -899,5 +899,165 @@
         "pages": [6, 9]
       }
     ]
+  },
+  {
+    "id": "51",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "If a customer objects to data processing for marketing purposes, what specific steps must Volkswagen take according to their privacy policy?",
+    "reference_answer": "Volkswagen must immediately stop processing the customer's data for direct marketing purposes.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Privacy_Policy_Direct_Customers.pdf",
+        "pages": [10]
+      }
+    ]
+  },
+  {
+    "id": "52",
+    "domain": "Legal & Compliance",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "How many years does Volkswagen retain pseudonymous data for corporate management evaluations?",
+    "reference_answer": "3 years",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Privacy_Policy_Direct_Customers.pdf",
+        "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "53",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "Explain how the 'commercial guarantee' definition differs from the 'legal guarantee' in the context of consumer rights.",
+    "reference_answer": "A commercial guarantee is a voluntary additional commitment beyond the legal requirement, while a legal guarantee is a mandatory protection ensuring products meet specified performance standards.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Google_terms_of_service_en_eu.pdf",
+        "pages": [23, 24, 14]
+      }
+    ]
+  },
+  {
+    "id": "54",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "What changes did Google make to its policies around AI technologies from 2022 to 2024?",
+    "reference_answer": "They prohibitions against jailbreaking, adversarial prompting, and prompt injection for AI systems in the 2024 Terms. Users cannot use AI-generated content from Google to develop machine learning models or related AI technology.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Google_terms_of_service_en_eu_2022.pdf",
+        "pages": [5, 6]
+      },
+      {
+        "id": "2",
+        "filename": "Google_terms_of_service_en_eu.pdf",
+        "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "55",
+    "domain": "Legal & Compliance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "Does Google allow users to create fake reviews on their platform?",
+    "reference_answer": "No.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Google_terms_of_service_en_eu.pdf",
+        "pages": [6]
+      }
+    ]
+  },
+  {
+    "id": "56",
+    "domain": "Legal & Compliance",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "What features does Google's Holographic User Interface mention in its 2022 Terms of Service?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Google_terms_of_service_en_eu_2022.pdf",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "57",
+    "domain": "Legal & Compliance",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "Extract all the different ways Amazon collects location information according to their privacy policy and categorize them by collection method.",
+    "reference_answer": "Direct: User-provided location in accounts. Automatic: Device location tracking, location metadata in uploaded files, in-store tracking via cameras/sensors. Third-party: Location updates from carriers and delivery services.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_Privacy_Notice.pdf",
+        "pages": [5, 6]
+      }
+    ]
+  },
+  {
+    "id": "58",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "Under which circumstances could Amazon collect personal information from children under the age of 13?",
+    "reference_answer": "Amazon offers some services intended for children, in which situations, children may share personal information.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_Privacy_Notice.pdf",
+        "pages": [4]
+      },
+      {
+        "id": "2",
+        "filename": "Amazon_Childrens_Privacy_Disclosure.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "59",
+    "domain": "Legal & Compliance",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "According to Amazon's Conditions of Sale, calculate the maximum potential fees a customer could incur if they experience all possible payment-related penalty charges.",
+    "reference_answer": "7.50 EUR",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_Conditions_of_Use_and_Sale.pdf",
+        "pages": [9, 10]
+      }
+    ]
+  },
+  {
+    "id": "60",
+    "domain": "Legal & Compliance",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "According to Microsoft's Services Agreement, what is the minimum total number of times a user would need to log in over a 3-year period to keep all their Microsoft services active?",
+    "reference_answer": "13 logins",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Microsoft_Services_Agreement.pdf",
+        "pages": [5, 16, 20]
+      }
+    ]
   }
 ]
