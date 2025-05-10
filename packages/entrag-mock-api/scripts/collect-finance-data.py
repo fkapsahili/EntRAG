@@ -14,7 +14,7 @@ from loguru import logger
 
 
 DEFAULT_TICKERS = ["MSFT", "AAPL", "GOOGL", "AMZN", "BRK.B", "CVS", "XOM", "UNH", "VWAGY", "WMT", "TSLA", "META"]
-DATA_DIR = "datasets"
+DATA_DIR = "datasets/json"
 SCHEMA_VERSION = "1.0"
 
 

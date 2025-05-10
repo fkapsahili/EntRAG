@@ -1,0 +1,99 @@
+{
+  "10-K": [],
+  "10-Q": [
+    {
+      "company": "Apple Inc",
+      "cik": "0000320193",
+      "filing_type": "10-Q",
+      "filing_date": "2025-05-02",
+      "accession_number": "0000320193-25-000057",
+      "primary_document": "aapl-20250329.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000057/aapl-20250329.htm"
+    },
+    {
+      "company": "Microsoft Corp",
+      "cik": "0000789019",
+      "filing_type": "10-Q",
+      "filing_date": "2025-04-30",
+      "accession_number": "0000950170-25-061046",
+      "primary_document": "msft-20250331.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025061046/msft-20250331.htm"
+    },
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "10-Q",
+      "filing_date": "2025-04-25",
+      "accession_number": "0001652044-25-000043",
+      "primary_document": "goog-20250331.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000043/goog-20250331.htm"
+    }
+  ],
+  "8-K": [
+    {
+      "company": "Apple Inc",
+      "cik": "0000320193",
+      "filing_type": "8-K",
+      "filing_date": "2025-05-01",
+      "accession_number": "0000320193-25-000055",
+      "primary_document": "aapl-20250501.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000055/aapl-20250501.htm"
+    },
+    {
+      "company": "Microsoft Corp",
+      "cik": "0000789019",
+      "filing_type": "8-K",
+      "filing_date": "2025-04-30",
+      "accession_number": "0000950170-25-061032",
+      "primary_document": "msft-20250430.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025061032/msft-20250430.htm"
+    },
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "8-K",
+      "filing_date": "2025-05-06",
+      "accession_number": "0001193125-25-113864",
+      "primary_document": "d859422d8k.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312525113864/d859422d8k.htm"
+    },
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "8-K",
+      "filing_date": "2025-05-01",
+      "accession_number": "0001193125-25-110020",
+      "primary_document": "d884388d8k.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312525110020/d884388d8k.htm"
+    },
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "8-K",
+      "filing_date": "2025-04-24",
+      "accession_number": "0001652044-25-000040",
+      "primary_document": "goog-20250423.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000040/goog-20250423.htm"
+    },
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "8-K",
+      "filing_date": "2025-04-18",
+      "accession_number": "0001652044-25-000033",
+      "primary_document": "goog-20250417.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000033/goog-20250417.htm"
+    }
+  ],
+  "DEF 14A": [
+    {
+      "company": "Alphabet Inc",
+      "cik": "0001652044",
+      "filing_type": "DEF 14A",
+      "filing_date": "2025-04-25",
+      "accession_number": "0001308179-25-000511",
+      "primary_document": "goog012701-def14a.htm",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000130817925000511/goog012701-def14a.htm"
+    }
+  ]
+}
