@@ -1059,5 +1059,165 @@
         "pages": [5, 16, 20]
       }
     ]
+  },
+  {
+    "id": "61",
+    "domain": "Legal & Compliance",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "How many different warranty or refund time periods are mentioned throughout Microsoft's Services Agreement?",
+    "reference_answer": "9",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Microsoft_Services_Agreement.pdf",
+        "pages": [5, 8, 9, 12, 16, 20, 22]
+      }
+    ]
+  },
+  {
+    "id": "62",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "Does Apple offer a 24-month warranty-equivalent remedy period in both UK and Australia?",
+    "reference_answer": "No, only Australia states that Apple offers a 24-month remedy period after purchase.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Products_and_Consumer_Laws_United_Kingdom.pdf",
+        "pages": [1]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Products_and_Consumer_Laws_Australia.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "63",
+    "domain": "Legal & Compliance",
+    "question_type": "comparison",
+    "dynamism": "static",
+    "question": "What document must parents review versus what educational institutions must agree to for creating children's Apple accounts?",
+    "reference_answer": "Parents must review the Family Privacy Disclosure for Children and educational institutions must agree to the Managed Apple IDs for Students Disclosure.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_privacy-policy-en-ww.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "64",
+    "domain": "Legal & Compliance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "How does Apple treat data when non-personal cookie data is combined with personal data?",
+    "reference_answer": "Apple treats the combined data as personal data.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_privacy-policy-en-ww.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "65",
+    "domain": "Legal & Compliance",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "What functionality becomes unavailable when you block all cookies on Amazon versus Apple websites?",
+    "reference_answer": "On Amazon, you cannot add items to cart, checkout, or use services requiring sign-in, and on Apple, certain website features may not be available.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_privacy-policy-en-ww.pdf",
+        "pages": [1]
+      },
+      {
+        "id": "2",
+        "filename": "Amazon_Cookie_Policy.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "66",
+    "domain": "Legal & Compliance",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "Which company filed the most recent 8-K report, and what date was it filed?",
+    "reference_answer": "Alphabet Inc on 2025-06-06.",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "filings_type_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "67",
+    "domain": "Legal & Compliance",
+    "question_type": "aggregation",
+    "dynamism": "dynamic",
+    "question": "How many 8-K filings did Alphabet Inc submit in the last 30 days?",
+    "reference_answer": "4",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "filings_search_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "68",
+    "domain": "Legal & Compliance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "Which companies have filed their Q1 2025 quarterly reports (10-Q)?",
+    "reference_answer": "Apple Inc, Microsoft Corp, and Alphabet Inc",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "filings_type_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "69",
+    "domain": "Legal & Compliance",
+    "question_type": "simple",
+    "dynamism": "dynamic",
+    "question": "Has Alphabet Inc filed a proxy statement (DEF 14A) recently?",
+    "reference_answer": "Yes, on 2025-04-25",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "filings_type_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "70",
+    "domain": "Legal & Compliance",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What is the document URL for Microsoft's latest 10-Q filing?",
+    "reference_answer": "https://www.sec.gov/Archives/edgar/data/789019/000095017025061046/msft-20250331.htm",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "filings_type_api",
+        "pages": []
+      }
+    ]
   }
 ]

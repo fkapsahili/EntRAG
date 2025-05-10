@@ -36,7 +36,11 @@ def main(dataset: str) -> None:
         total_count = len(questions)
 
         # Create a figure with two subplots side by side
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
+        fig = plt.figure(figsize=(24, 8))
+        gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 0.6])
+        ax1 = fig.add_subplot(gs[0])
+        ax2 = fig.add_subplot(gs[1])
+        ax3 = fig.add_subplot(gs[2])
 
         # 1. Plot counts by question type
         question_types = [item.question_type for item in questions]
@@ -60,6 +64,15 @@ def main(dataset: str) -> None:
         ax2.set_xlabel("Domain")
         ax2.set_ylabel("Count")
         ax2.tick_params(axis="x", rotation=45)
+
+        # 3. Plot counts by dynamism
+        dynamism = [item.dynamism for item in questions]
+        dynamism_count = {item: dynamism.count(item) for item in set(dynamism)}
+        ax3.bar(dynamism_count.keys(), dynamism_count.values())
+        ax3.set_title(f"Question Dynamism Count (Total: {total_count})")
+        ax3.set_xlabel("Dynamism")
+        ax3.set_ylabel("Count")
+        ax3.tick_params(axis="x", rotation=45)
 
         plt.tight_layout()
         plt.show()
