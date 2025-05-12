@@ -1219,5 +1219,90 @@
         "pages": []
       }
     ]
+  },
+  {
+    "id": "71",
+    "domain": "Human Resources",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "dynamic",
+    "question": "How big is the difference between the mean pay gap at Microsoft between 2024 and 2025 in the UK?",
+    "reference_answer": "0.5",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Microsoft_UK-Gender-Pay-Gap-Report-2024.pdf",
+        "pages": [3]
+      },
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "72",
+    "domain": "Human Resources",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What percentage of male employees at Microsoft UK received a bonus payment during the year to 5th April 2025?",
+    "reference_answer": "96.8%",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "73",
+    "domain": "Human Resources",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What is the difference between the proportion of men receiving Benefits in Kind at Microsoft Ireland in 2024 versus men receiving bonus pay at Microsoft UK in 2025?",
+    "reference_answer": "91.2% of men at Microsoft Ireland received Benefits in Kind and 96.8% of men at Microsoft UK received bonus pay.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Microsoft_Ireland-Gender-Pay-Gap-Report-2024.pdf",
+        "pages": [2, 3]
+      },
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "74",
+    "domain": "Human Resources",
+    "question_type": "simple_w_condition",
+    "dynamism": "dynamic",
+    "question": "What percentage is the mean gender hourly pay gap at Apple (UK) LIMITED in 2025?",
+    "reference_answer": "15",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "75",
+    "domain": "Human Resources",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "According to the Volkswagen Group's Code of Conduct, how many of the 7 questions of the self-test for decision support must be answered with 'yes' for the behavior to be considered compliant?",
+    "reference_answer": "6",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Code_of_Conduct_for_Employees.pdf",
+        "pages": [30]
+      }
+    ]
   }
 ]
