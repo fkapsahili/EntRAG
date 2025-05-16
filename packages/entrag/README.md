@@ -1,9 +1,8 @@
 # EntRAG Benchmark
 
-## Quickstart
+## Available Poe Tasks
 
-1. Run the document ingestion to parse the documents and store them as markdown:
-
-```bash
-python scripts/document-ingestion.py --input-dir data/raw --output-dir data/processed
-```
+- `analyze-dataset`: Analyze the distribution of the questions in the dataset.
+- `build-raw-documents`: Build the raw documents from the dataset.
+- `document-ingestion`: Process the raw documents and save them in a structured markdown format.
+- `entrag`: Run the EntRAG pipeline with the specified config file.

@@ -4,7 +4,11 @@ EntRAG is a benchmark for evaluating the performance of Retrieval-Augmented Gene
 
 ## Installation
 
-The project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) to manage dependencies. Make sure you have it installed on your local development machine.
+The project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) for the project management. Make sure you have it installed on your local development machine.
+
+## Poe Tasks
+
+The project uses [Poe](https://poethepoet.natn.io/) for task management. The tasks are defined in the `pyproject.toml` file. You can run the tasks using the `poe <task-name>` command.
 
 ## Quickstart
 
@@ -28,7 +32,11 @@ echo "GEMINI_API_KEY=<your_gemini_api_key>" >> .env
 
 4. Run the pipeline with the default config
 ```bash
-uv run entrag --config example/configs/default.yaml 
+# Navigate to the benchmark package
+cd packages/entrag
+
+# Run the pipeline
+poe entrag --config example/configs/default.yaml 
 ```
 
 ## Packages

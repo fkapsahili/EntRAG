@@ -19,6 +19,7 @@ entrag-mock-api = { workspace = true }
 dev-dependencies = [
     "entrag",
     "entrag-mock-api",
+    "poethepoet>=0.34.0",
 ]
 
 [tool.ruff]

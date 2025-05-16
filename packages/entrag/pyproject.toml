@@ -27,12 +27,13 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    "entrag-mock-api",
-]
+dev = ["entrag-mock-api"]
 
-[project.scripts]
-evaluation = "entrag.main:main"
+[tool.poe.tasks]
+analyze-dataset = { shell = "python scripts/analyze_dataset.py" }
+build-raw-documents = { shell = "python scripts/build-raw-documents.py" }
+document-ingestion = { shell = "python scripts/document-ingestion.py" }
+entrag = { shell = "python -m entrag.main" }
 
 [tool.ruff]
 extend = "../../pyproject.toml"
@@ -42,4 +43,3 @@ include = ["src/**"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
