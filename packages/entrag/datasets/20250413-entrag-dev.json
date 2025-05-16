@@ -1304,5 +1304,244 @@
         "pages": [30]
       }
     ]
+  },
+  {
+    "id": "76",
+    "domain": "Human Resources",
+    "question_type": "simple_w_condition",
+    "dynamism": "static",
+    "question": "What contribution should employees make in terms of Volkswagen's social commitment objectives regarding donations and social sponsorshiip?",
+    "reference_answer": "If someone considers a sponsorship to be worthy of support, they should get in contact with the relevant departments.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Code_of_Conduct_for_Employees.pdf",
+        "pages": [24]
+      }
+    ]
+  },
+  {
+    "id": "77",
+    "domain": "Human Resources",
+    "question_type": "factual_contradiction",
+    "dynamism": "static",
+    "question": "What are the average training hours per employee at Volkswagen Group in 2022, given that they exceeded their target of 22 hours?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_Chapter_People_engl.pdf",
+        "pages": [9]
+      }
+    ]
+  },
+  {
+    "id": "78",
+    "domain": "Human Resources",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "How does Volkswagen Group UK's approach to closing the ethnic pay gap compare to the approach to closing the gender pay gap based on the initiatives described in the 2021 and 2022 reports?",
+    "reference_answer": "Gender initiatives are more established and structural; ethnicity initiatives are newer and pipeline-focused.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_GenderPayGapReport2021.pdf",
+        "pages": [5, 9, 10, 11, 12, 13]
+      },
+      {
+        "id": "2",
+        "filename": "Volkswagen_GenderPayGapReport2022.pdf",
+        "pages": [2, 6, 10, 11]
+      }
+    ]
+  },
+  {
+    "id": "79",
+    "domain": "Human Resources",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "dynamic",
+    "question": "Did Volkswagen Group UK's mean gender pay gap improve or worsen between 2023 and 2024?",
+    "reference_answer": "The mean gender pay gap improved.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_GenderPayGapReport2023.pdf",
+        "pages": [5]
+      },
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "80",
+    "domain": "Human Resources",
+    "question_type": "post_processing",
+    "dynamism": "dynamic",
+    "question": "Did the Volkswagen Group UK's female representation in the top pay quartile improve from 2023 to 2024, and by how much?",
+    "reference_answer": "Yes, it improved by 2.5%.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Volkswagen_GenderPayGapReport2023.pdf",
+        "pages": [5]
+      },
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "81",
+    "domain": "Human Resources",
+    "question_type": "aggregation",
+    "dynamism": "dynamic",
+    "question": "What is the average gender pay gap (mean and median combined) at Amazon Data Services UK in 2024?",
+    "reference_answer": "-8.15%",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "82",
+    "domain": "Human Resources",
+    "question_type": "factual_contradiction",
+    "dynamism": "dynamic",
+    "question": "What is Amazon Data Services UK's ethnicity pay gap (mean and median combined) in 2024?",
+    "reference_answer": "invalid question",
+    "sources": [
+      {
+        "id": "api-1",
+        "filename": "gpg_statistics_api",
+        "pages": []
+      }
+    ]
+  },
+  {
+    "id": "83",
+    "domain": "Human Resources",
+    "question_type": "factual_contradiction",
+    "dynamism": "dynamic",
+    "question": "What is Microsoft LIMITED's LGBT+ pay gap in 2025?",
+    "reference_answer": "invalid question",
+    "sources": []
+  },
+  {
+    "id": "84",
+    "domain": "Human Resources",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "How much did Amazon UK's mean gender gay gap improve from 2018 to 2023?",
+    "reference_answer": "Improved by 1.0%",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_gender-pay-gap-reporting-2018.pdf",
+        "pages": [1]
+      },
+      {
+        "id": "1",
+        "filename": "Amazon_uk-gender-pay-gap-results-2023.pdf",
+        "pages": [1]
+      }
+    ]
+  },
+  {
+    "id": "85",
+    "domain": "Human Resources",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "What is the average safety investment that Amazon makes per year across all safety initiatives (2019-2023)?",
+    "reference_answer": "310 million dollars annually.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_safety-report-2022-v41.pdf",
+        "pages": [4]
+      }
+    ]
+  },
+  {
+    "id": "86",
+    "domain": "Human Resources",
+    "question_type": "multi_hop_reasoning",
+    "dynamism": "static",
+    "question": "How much did Amazon's global Lost Time Injury Rate improve from 2019 to 2022, and what specific technology investment was made to achieve this improvement?",
+    "reference_answer": "Improved 53% through robotic arm automation and collision avoidance systems.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_safety-report-2022-v41.pdf",
+        "pages": [8, 19, 20]
+      }
+    ]
+  },
+  {
+    "id": "87",
+    "domain": "Human Resources",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "What type of employee program does Amazon Business recommend setting up with budgets for new hire onboarding?",
+    "reference_answer": "Employee recognition program",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Amazon_Easy_Employee_Programs_and_Perks.pdf",
+        "pages": [13]
+      }
+    ]
+  },
+  {
+    "id": "88",
+    "domain": "Human Resources",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "What is the average annual percentage of White executives and vice presidents at CVS Health from 2022 to 2024?",
+    "reference_answer": "76.33%",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_Health-2024-Healthy-2030-Impact-Report-Appendix-Final.pdf",
+        "pages": [20]
+      }
+    ]
+  },
+  {
+    "id": "89",
+    "domain": "Human Resources",
+    "question_type": "aggregation",
+    "dynamism": "static",
+    "question": "What is the combined percentage of non-white Executive Leadership Team members and Vice President and Above employees at CVS Health in 2024?",
+    "reference_answer": "66%",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_Health-2024-Healthy-2030-Impact-Report-Appendix-Final.pdf",
+        "pages": [20]
+      }
+    ]
+  },
+  {
+    "id": "90",
+    "domain": "Environment",
+    "question_type": "post_processing",
+    "dynamism": "static",
+    "question": "What was the percentage change in overall recycling efficiency for hazardous waste at CVS Health from 2022 to 2024?",
+    "reference_answer": "It increased by 42.2%.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "CVSHealth_Health-2024-Healthy-2030-Impact-Report-Appendix-Final.pdf",
+        "pages": [38]
+      }
+    ]
   }
 ]
