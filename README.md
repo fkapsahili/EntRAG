@@ -10,7 +10,7 @@ The project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) t
 
 1. Clone the repository and navigate to the root directory:
 ```bash
-git clone https://https://github.com/fkapsahili/EntRAG.git
+git clone https://github.com/fkapsahili/EntRAG.git
 cd EntRAG
 ```
 
@@ -30,3 +30,9 @@ echo "GEMINI_API_KEY=<your_gemini_api_key>" >> .env
 ```bash
 uv run entrag --config example/configs/default.yaml 
 ```
+
+## Packages
+The project uses a Monorepo which is structured into several Python packages.
+
+- `entrag`: The main benchmark package, which contains the code for the pipeline and the evaluation.
+- `entrag-mock-api`: A mock API for the benchmark, which is used for the evaluation of dynamic questions, that require a call to an external API.
