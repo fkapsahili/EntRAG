@@ -2,7 +2,7 @@
 import textwrap
 
 
-SIMPLE_QA_PROMPT = textwrap.dedent("""
+DEFAULT_QA_PROMPT = textwrap.dedent("""
 You are given a Question, References and the time when it was asked in the Central European Time Zone,
 referred to as "Query Time". The query time is formatted as "yyyy-mm-dd hh:mm:ss". Your task is to
 answer the question accurately.

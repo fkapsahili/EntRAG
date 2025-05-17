@@ -9,7 +9,6 @@ from entrag.models.baseline_rag import BaselineRAG
 from entrag.models.zero_rag import ZeroRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
 from entrag.preprocessing.create_embeddings import create_embeddings_for_chunks
-from entrag.tasks.dynamic_question_answering import evaluate_dynamic_question_answering
 from entrag.tasks.question_answering import evaluate_question_answering
 from entrag.visualization import (
     plot_evaluation_results,
@@ -57,7 +56,7 @@ def main() -> None:
     model_kwargs = {"chunks": chunks}
     models = (
         ZeroRAG(),
-        BaselineRAG(**model_kwargs),
+        # BaselineRAG(**model_kwargs),
         # HybridRAG(),
     )
 
@@ -71,12 +70,10 @@ def main() -> None:
         model_results = []
 
         if config.tasks.question_answering.run:
-            qa_results = evaluate_question_answering(model, config)
+            qa_results = evaluate_question_answering(
+                model, config, output_file=f"{output_dir}/{model_name}_qa_logs.json"
+            )
             model_results.extend(qa_results)
-
-        if config.tasks.dynamic_question_answering.run:
-            dqa_results = evaluate_dynamic_question_answering(model, config)
-            model_results.extend(dqa_results)
 
         if model_results:
             save_model_results(model_name, model_results, output_dir)

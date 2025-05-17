@@ -5,7 +5,7 @@ from loguru import logger
 from openai import Client
 
 from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair
-from entrag.evaluators.utils import normalize_filename
+from entrag.evaluators.utils import is_api_source, normalize_filename
 from entrag.prompts.default_prompts import LLM_AS_JUDGE_CORRECTNESS_PROMPT
 
 
@@ -24,7 +24,8 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
     )
     answer = completion.choices[0].message.content
     logger.debug(f"Answer correctness response: {answer}")
-    answer_float = float(answer.strip())  # TODO: Use structured outputs
+    # TODO: Use structured outputs
+    answer_float = float(answer.strip())
     return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=answer_float)
 
 
@@ -38,10 +39,15 @@ def precision_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, 
     for src in result.sources[:k]:
         filename = normalize_filename(src.filename)
         if filename in correct_pages_by_file:
+            if is_api_source(filename) or not correct_pages_by_file[filename]:
+                matches.add((filename, 0))  # We use 0 as a dummy page number
+                continue
+
             for page in src.pages:
                 if page in correct_pages_by_file[filename] and (filename, page) not in matches:
                     matches.add((filename, page))
                     break
+
     precision_at_k = len(matches) / k if k > 0 else 0.0
     return EvaluationResult(question_id=example.id, evaluator="precision_at_k", score=precision_at_k)
 
@@ -56,10 +62,22 @@ def recall_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, 
     for src in result.sources[:k]:
         filename = normalize_filename(src.filename)
         if filename in correct_pages_by_file:
+            if is_api_source(filename) or not correct_pages_by_file[filename]:
+                matches.add((filename, 0))  # We use 0 as a dummy page number
+                continue
+
             for page in src.pages:
                 if page in correct_pages_by_file[filename]:
                     matches.add((filename, page))
-    recall_at_k = len(matches) / sum(len(pages) for pages in correct_pages_by_file.values()) if k > 0 else 0.0
+
+    total_expected = 0
+    for filename, pages in correct_pages_by_file.items():
+        if is_api_source(filename) or not pages:
+            total_expected += 1
+        else:
+            total_expected += len(pages)
+
+    recall_at_k = len(matches) / total_expected if total_expected > 0 and k > 0 else 0.0
     return EvaluationResult(question_id=example.id, evaluator="recall_at_k", score=recall_at_k)
 
 
@@ -72,9 +90,16 @@ def ndcg_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k:
     for i, src in enumerate(result.sources[:k]):
         filename = normalize_filename(src.filename)
         if filename in correct_pages_by_file:
+            if is_api_source(filename) or not correct_pages_by_file[filename]:
+                dcg += 1 / np.log2(i + 2)
+                continue
+
             if any(page in correct_pages_by_file[filename] for page in src.pages):
                 dcg += 1 / np.log2(i + 2)
 
-    ideal_dcg = sum(1 / np.log2(i + 2) for i in range(min(len(example.sources), k)))
+    total_ideal_sources = sum(
+        1 for filename, pages in correct_pages_by_file.items() if filename.startswith("api-") or pages
+    )
+    ideal_dcg = sum(1 / np.log2(i + 2) for i in range(min(total_ideal_sources, k)))
     score = dcg / ideal_dcg if ideal_dcg > 0 else 0.0
     return EvaluationResult(question_id=example.id, evaluator="ndcg_at_k", score=score)

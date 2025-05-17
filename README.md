@@ -10,6 +10,13 @@ The project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) f
 
 The project uses [Poe](https://poethepoet.natn.io/) for task management. The tasks are defined in the `pyproject.toml` file. You can run the tasks using the `poe <task-name>` command.
 
+### Available Poe Tasks
+
+- `check`: Check the codebase for linting and formatting errors with [ruff](https://docs.astral.sh/ruff/) 
+- `style`: Apply style fixes to the codebase with [Ruff](https://docs.astral.sh/ruff/)
+- `style-all`: Format and check the entire codebase for linting and formatting errors
+- `quality`: Check the quality of the entire codebase
+
 ## Quickstart
 
 1. Clone the repository and navigate to the root directory:

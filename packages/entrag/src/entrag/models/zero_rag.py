@@ -34,8 +34,8 @@ class ZeroRAG(RAGLM):
 
     def generate(self, prompt: str) -> str:
         completion = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
+            model="gpt-4o", messages=[{"role": "system", "content": prompt}]
         )
         response = completion.choices[0].message.content
-        logger.info(f"Generated response: {response}")
+        logger.debug(f"Generated response: {response}")
         return response
