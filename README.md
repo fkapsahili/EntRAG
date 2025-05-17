@@ -12,7 +12,7 @@ The project uses [Poe](https://poethepoet.natn.io/) for task management. The tas
 
 ### Available Poe Tasks
 
-- `check`: Check the codebase for linting and formatting errors with [ruff](https://docs.astral.sh/ruff/) 
+- `check`: Check the codebase for linting and formatting errors with [Ruff](https://docs.astral.sh/ruff/) 
 - `style`: Apply style fixes to the codebase with [Ruff](https://docs.astral.sh/ruff/)
 - `style-all`: Format and check the entire codebase for linting and formatting errors
 - `quality`: Check the quality of the entire codebase

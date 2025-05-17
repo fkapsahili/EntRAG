@@ -58,5 +58,5 @@ check = { shell = """
 # Format and check the entire codebase
 style-all = "poe style ."
 
-# Check quality of the entire codebase without fixes
+# Check quality of the entire codebase without fixes (for CI)
 quality = "poe check ."
