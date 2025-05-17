@@ -14,6 +14,6 @@ jobs:
       with:
         python-version-file: ".python-version"
     - name: Install the project
-      run: uv sync --locked --all-extras --dev
+      run: uv sync --locked --all-extras --all-groups
     - name: Analysing the code with Ruff
       run: uv run poe quality

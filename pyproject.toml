@@ -60,3 +60,8 @@ style-all = "poe style --file ."
 
 # Check quality of the entire codebase without fixes (for CI)
 quality = "poe check --file ."
+
+[dependency-groups]
+lint = [
+    "ruff>=0.11.10",
+]

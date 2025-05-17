@@ -27,7 +27,7 @@ cd EntRAG
 
 2. Install the dependencies using `uv`:
 ```bash
-uv sync
+uv sync --all-groups
 ```
 
 3. Get an API key for OpenAI and Gemini and add it to the .env file
