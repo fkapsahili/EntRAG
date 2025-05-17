@@ -3,7 +3,7 @@ name: CI/CD Runs
 on: [push]
 
 jobs:
-  lint:
+  quality:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -16,4 +16,4 @@ jobs:
     - name: Install the project
       run: uv sync --locked --all-extras --dev
     - name: Analysing the code with Ruff
-      run: uv run quality
+      run: uv run poe quality

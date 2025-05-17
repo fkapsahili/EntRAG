@@ -5,7 +5,6 @@ from pathlib import Path
 from loguru import logger
 
 from entrag.config.load_config import load_eval_config
-from entrag.models.baseline_rag import BaselineRAG
 from entrag.models.zero_rag import ZeroRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
 from entrag.preprocessing.create_embeddings import create_embeddings_for_chunks
