@@ -56,7 +56,7 @@ check = { shell = """
     """, args = [{ name = "file", default = "." }] }
 
 # Format and check the entire codebase
-style-all = "poe style ."
+style-all = "poe style --file ."
 
 # Check quality of the entire codebase without fixes (for CI)
-quality = "poe check ."
+quality = "poe check --file ."
