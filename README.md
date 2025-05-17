@@ -8,7 +8,7 @@ The project uses [uv](https://docs.astral.sh/uv/getting-started/installation/) f
 
 ## Poe Tasks
 
-The project uses [Poe](https://poethepoet.natn.io/) for task management. The tasks are defined in the `pyproject.toml` file. You can run the tasks using the `poe <task-name>` command.
+The project uses [Poe](https://poethepoet.natn.io/) for task management. The tasks are defined in the `pyproject.toml` file. You can run the tasks using the `uv run poe <task-name>` command.
 
 ### Available Poe Tasks
 
