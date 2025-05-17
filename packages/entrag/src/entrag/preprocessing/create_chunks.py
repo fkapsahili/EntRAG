@@ -34,7 +34,7 @@ def split_document_in_pages(document_text: str) -> list[tuple[int, str]]:
     return page_texts  # list of (page_number, page_content)
 
 
-def _save_document_chunks(config: EvaluationConfig, chunks: list[Chunk]):
+def _save_document_chunks(config: EvaluationConfig, chunks: list[Chunk]) -> None:
     """
     Save the created document chunks to disk.
     """
@@ -66,22 +66,34 @@ def create_chunks_for_documents(config: EvaluationConfig) -> list[Chunk]:
     Create chunks for the documents in the dataset.
     """
     logger.info("Starting document chunking.")
+    existing_chunks = load_document_chunks(config.chunking)
+    logger.info(f"Found [{len(existing_chunks)}] existing chunks.")
 
     if not config.chunking.enabled:
-        logger.info("Chunking is disabled. Loading existing chunks.")
-        return load_document_chunks(config.chunking)
+        logger.info("Chunking is disabled. Using existing chunks.")
+        return existing_chunks
+
+    existing_document_ids = set()
+    for chunk in existing_chunks:
+        existing_document_ids.add(chunk.document_id)
+
+    logger.info(f"Found [{len(existing_document_ids)}] unique document IDs in existing chunks.")
 
     source_directory = config.chunking.files_directory
     logger.debug(f"Using chunking configuration: {config.chunking}")
-
     logger.debug("Initializing GPT2 tokenizer.")
     gpt2_tokenizer = GPT2Tokenizer.from_pretrained("openai-community/gpt2")
-
     max_tokens = config.chunking.max_tokens
-    chunks_list = []
-    logger.info(f"Loading documents from: {source_directory}")
+
+    chunks_list = existing_chunks.copy()
+
+    logger.info(f"Loading documents from: [{source_directory}]")
     dataset = create_dataset(config)
-    for index, document in enumerate(dataset):
+
+    new_documents = [doc for doc in dataset if doc.document_id not in existing_document_ids]
+    logger.info(f"Found [{len(new_documents)}] new documents to process.")
+
+    for index, document in enumerate(new_documents):
         logger.debug(f"Processing document [{document.document_name}] {index + 1}/{len(dataset)}.")
         pages = split_document_in_pages(document.document_text)
         logger.debug(f"Found {len(pages)} pages in document [{index + 1}].")

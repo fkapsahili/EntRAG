@@ -83,5 +83,5 @@ def create_embeddings_for_chunks(config: EvaluationConfig) -> list[ChunkEmbeddin
             embedding_chunks.append(embedding_data)
             file.write(json.dumps(embedding_data.model_dump(), ensure_ascii=False) + "\n")
 
-    logger.info("Embeddings created and saved successfully.")
+    logger.success("Embeddings created and saved successfully.")
     return embedding_chunks

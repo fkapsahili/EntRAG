@@ -1,10 +1,10 @@
-import uuid
 from pathlib import Path
 
 from loguru import logger
 
 from entrag.config.evaluation_config import EvaluationConfig
 from entrag.data_model.document import DatasetDocument
+from entrag.preprocessing.utils import generate_document_id
 
 
 def read_files_directory(files_directory: str) -> list[tuple[str, str]]:
@@ -30,13 +30,12 @@ def create_dataset(config: EvaluationConfig) -> list[DatasetDocument]:
 
     files_dataset = [
         DatasetDocument(
-            document_id=str(uuid.uuid4()),
+            document_id=generate_document_id(file_data[0], file_data[1]),
             document_name=file_data[0],
             document_text=file_data[1],
         )
         for file_data in files_data
     ]
-
     logger.info(f"Created dataset with {len(files_dataset)} documents.")
 
     return files_dataset

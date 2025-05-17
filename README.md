@@ -30,7 +30,7 @@ echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env
 echo "GEMINI_API_KEY=<your_gemini_api_key>" >> .env
 ```
 
-4. Run the pipeline with the default config
+4. Run the pipeline with the default config:
 ```bash
 # Navigate to the benchmark package
 cd packages/entrag

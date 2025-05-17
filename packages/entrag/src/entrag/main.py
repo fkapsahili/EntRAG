@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -27,7 +28,7 @@ from entrag.visualization.utils import (
 logger.remove()  # Remove the default logger
 logger.add(
     sys.stderr,
-    level="DEBUG",
+    level=os.getenv("LOG_LEVEL", "INFO"),
     colorize=True,
     format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
     "<level>{level: <8}</level> | "
@@ -41,14 +42,15 @@ def main() -> None:
     Main entry point for the evaluation pipeline.
     """
 
+    # TODO: Make this a CLI argument
     config = load_eval_config("default")
 
     run_id = create_run_id()
     output_dir = Path(config.model_evaluation.output_directory) / str(run_id)
-    logger.info(f"Created evaluation run with ID: {run_id}")
+    logger.info(f"Created evaluation run with ID: [{run_id}]")
 
     chunks = create_chunks_for_documents(config)
-    logger.info(f"Loaded {len(chunks)} chunks.")
+    logger.info(f"Loaded [{len(chunks)}] chunks.")
 
     embeddings = create_embeddings_for_chunks(config)
 
@@ -103,7 +105,7 @@ def main() -> None:
             all_results, top_n_models=len(all_results), output_file=output_dir / "radar_comparison.png"
         )
 
-        logger.info(f"All evaluation visualizations saved to {output_dir}")
+        logger.info(f"All evaluation visualizations saved to [{output_dir}].")
 
 
 if __name__ == "__main__":
