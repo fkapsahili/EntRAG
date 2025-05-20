@@ -29,7 +29,14 @@ class QuestionAnswerPair(BaseModel):
         "post_processing",
     ]
     question: str = Field(description="The question to answer")
-    domain: Literal["Finance", "Technical Documentation", "Environment", "Legal & Compliance", "Human Resources"]
+    domain: Literal[
+        "Finance",
+        "Technical Documentation",
+        "Environment",
+        "Legal & Compliance",
+        "Human Resources",
+        "Marketing & Sales",
+    ]
     dynamism: Literal["static", "dynamic"]
     reference_answer: str = Field(description="The reference answer to the question")
     sources: list[Source] = Field(description="The original source references that contain the answer")

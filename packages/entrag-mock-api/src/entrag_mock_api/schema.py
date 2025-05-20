@@ -49,7 +49,7 @@ class GPGStatisticsResponse(BaseModel):
 
 class WebsiteResult(BaseModel):
     title: str
-    content: str
+    page_result: str
 
 
 class WebsiteSearchResponse(BaseModel):

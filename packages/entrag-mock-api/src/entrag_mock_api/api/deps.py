@@ -53,18 +53,17 @@ def get_gpg_statistics_data() -> pd.DataFrame:
 def _load_websites_data(websites_dir: str) -> list[WebsiteResult]:
     try:
         websites: list[WebsiteResult] = []
-        for path in websites_dir.glob("*.html"):
+        for path in websites_dir.glob("*.json"):
             with open(path, "r") as f:
                 websites.append(
                     WebsiteResult(
                         title=str(path).split("/")[-1],
-                        content=f.read(),
+                        **json.load(f),
                     )
                 )
         return websites
     except Exception as e:
         raise RuntimeError(f"Failed to load websites data: {e}") from e
-    return []
 
 
 def get_websites_data() -> list[WebsiteResult]:

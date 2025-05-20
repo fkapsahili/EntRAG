@@ -16,7 +16,7 @@ def search_websites(
     query: str = Query(..., min_length=3, max_length=100),
     data: list[WebsiteResult] = Depends(get_websites_data),
 ):
-    docs = [f"{website.title} {clean_html(website.content)}" for website in data]
+    docs = [f"{website.title} {clean_html(website.page_result)}" for website in data]
 
     # Compute relevance scores using TF-IDF weighted cosine similarity over both the website title and cleaned HTML.
     # We prioritize documents with semantically meaningful term overlap and filters out low-signal matches.
