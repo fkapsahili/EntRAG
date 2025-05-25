@@ -3,7 +3,7 @@ import json
 import pandas as pd
 
 from entrag_mock_api.config import FINANCE_DATA_PATH, GPG_DATA_PATH, SEC_DATA_PATH, WEBSITES_PATH
-from entrag_mock_api.schema import GPGStatistic, WebsiteResult
+from entrag_mock_api.schema import GPGStatistic, SECFiling, WebsiteResult
 
 
 def _load_finance_data() -> dict[str, dict]:
@@ -29,7 +29,7 @@ def _load_filings_data() -> dict[str, list[dict]]:
         raise RuntimeError(f"Failed to load filings data: {e}")
 
 
-def get_filings_data() -> dict[str, list[dict]]:
+def get_filings_data() -> dict[str, list[SECFiling]]:
     if not hasattr(get_filings_data, "cache"):
         get_filings_data.cache = _load_filings_data()
     return get_filings_data.cache

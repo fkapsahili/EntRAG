@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from datetime import date
+
+from pydantic import BaseModel, HttpUrl
 
 
 class CompanyMetrics(BaseModel):
@@ -54,3 +56,21 @@ class WebsiteResult(BaseModel):
 
 class WebsiteSearchResponse(BaseModel):
     results: list[WebsiteResult]
+
+
+class SECFiling(BaseModel):
+    company: str
+    cik: str
+    filing_type: str
+    filing_date: date
+    accession_number: str
+    primary_document: str
+    document_url: HttpUrl
+
+
+class FilingsByTypeResponse(BaseModel):
+    filings: list[SECFiling]
+
+
+class FilingSearchResponse(BaseModel):
+    results: list[SECFiling]

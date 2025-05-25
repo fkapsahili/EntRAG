@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from entrag_mock_api.api.deps import get_filings_data
+from entrag_mock_api.schema import FilingsByTypeResponse, FilingSearchResponse
 
 
 router = APIRouter(tags=["Filings"])
 
 
-@router.get("/type/{filing_type}")
+@router.get("/type/{filing_type}", response_model=FilingsByTypeResponse)
 def get_filings(filing_type: str, company: str = None, data=Depends(get_filings_data)):
     # Normalize filing type
     data = get_filings_data()
@@ -29,7 +30,7 @@ def get_filings(filing_type: str, company: str = None, data=Depends(get_filings_
     return {"filings": filings}
 
 
-@router.get("/search")
+@router.get("/search", response_model=FilingSearchResponse)
 def search_filings(filing_type: str = None, company: str = None, data=Depends(get_filings_data)):
     results = []
 
@@ -45,13 +46,5 @@ def search_filings(filing_type: str = None, company: str = None, data=Depends(ge
                 continue
 
             results.append(filing)
-
-    if not results:
-        detail = "No filings found"
-        if filing_type:
-            detail += f" for filing type '{filing_type}'"
-        if company:
-            detail += f" for company '{company}'"
-        raise HTTPException(status_code=404, detail=detail)
 
     return {"results": results}

@@ -9,7 +9,7 @@ import requests
 
 @click.command()
 @click.option("--days-back", default=30, help="Number of days to look back")
-@click.option("--output", default="datasets/json/sec_filings_data_data.json", help="Output JSON file")
+@click.option("--output", default="datasets/json/sec_filings_data.json", help="Output JSON file")
 @click.option("--filing-types", default="10-K,10-Q,8-K,DEF 14A", help="Comma-separated filing types")
 @click.option("--include-content", is_flag=True, help="Download actual filing content")
 @click.option(
