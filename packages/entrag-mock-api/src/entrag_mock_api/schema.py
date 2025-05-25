@@ -29,18 +29,18 @@ class GPGStatistic(BaseModel):
     Address: str
     PostCode: str
     CompanyNumber: str
-    DiffMeanHourlyPercent: float
-    DiffMedianHourlyPercent: float
-    DiffMedianHourlyPercent: float
-    DiffMedianBonusPercent: float
-    MaleBonusPercent: float
-    FemaleBonusPercent: float
-    MaleLowerQuartile: float
-    FemaleLowerQuartile: float
-    MaleLowerMiddleQuartile: float
-    FemaleUpperMiddleQuartile: float
-    MaleTopQuartile: float
-    FemaleTopQuartile: float
+    DiffMeanHourlyPercent: float | None
+    DiffMedianHourlyPercent: float | None
+    DiffMedianHourlyPercent: float | None
+    DiffMedianBonusPercent: float | None
+    MaleBonusPercent: float | None
+    FemaleBonusPercent: float | None
+    MaleLowerQuartile: float | None
+    FemaleLowerQuartile: float | None
+    MaleLowerMiddleQuartile: float | None
+    FemaleUpperMiddleQuartile: float | None
+    MaleTopQuartile: float | None
+    FemaleTopQuartile: float | None
     CurrentName: str
 
 

@@ -5,7 +5,7 @@ from loguru import logger
 from openai import Client
 
 from entrag.api.model import RAGLM
-from entrag.data_model.document import Chunk, ChunkEmbedding
+from entrag.data_model.document import Chunk, ChunkEmbedding, ExternalChunk
 
 
 class ZeroRAG(RAGLM):
@@ -29,7 +29,7 @@ class ZeroRAG(RAGLM):
         logger.info("Running [Zero-RAG]. Skipping vector store build.")
         return None
 
-    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[str]]:
+    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[ExternalChunk]]:
         return [], []
 
     def generate(self, prompt: str) -> str:

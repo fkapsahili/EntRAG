@@ -2,7 +2,7 @@ import abc
 import logging
 from typing import TypeVar
 
-from entrag.data_model.document import Chunk
+from entrag.data_model.document import Chunk, ExternalChunk
 
 
 eval_logger = logging.getLogger(__name__)
@@ -27,12 +27,12 @@ class RAGLM(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def retrieve(self, query: str, top_k: int = 5) -> tuple[list[Chunk], list[str]]:
+    def retrieve(self, query: str, top_k: int = 5) -> tuple[list[Chunk], list[ExternalChunk]]:
         """
         Retrieve relevant chunks based on the input query.
         Retrieval logic can be vector-based, graph-based, or hybrid.
 
-        Returns a tuple of (retrieved chunks, additional results).
+        Returns a tuple of (retrieved chunks, external chunks).
         """
         pass
 

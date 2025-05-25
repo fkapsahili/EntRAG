@@ -3,7 +3,7 @@ import textwrap
 
 
 DEFAULT_QA_PROMPT = textwrap.dedent("""
-You are given a Question, References and the time when it was asked in the Central European Time Zone,
+You are given a Question, References, additional context from an external API (if available), and the time when it was asked in the Central European Time Zone,
 referred to as "Query Time". The query time is formatted as "yyyy-mm-dd hh:mm:ss". Your task is to
 answer the question accurately.
 
@@ -20,31 +20,10 @@ Please follow these guidelines when formatting your answer:
 ### References
 {references}
 
-### Answer
-""")
-
-
-DYNAMIC_QA_PROMPT = textwrap.dedent("""
-You are given a question, references, additional context from an external API (if available), and the query time (in CET timezone, formatted as "yyyy-mm-dd hh:mm:ss").
-
-Your task:
-- Answer accurately using the provided references and additional context.
-- If the question contains incorrect assumptions, reply "invalid question".
-- If the provided information is insufficient, reply "I don't know".
-
-### Question:
-{query}
-
-### Query Time:
-{query_time}
-
-### References:
-{references}
-
 ### Additional Context (dynamic API data):
 {additional_context}
 
-### Answer:
+### Answer
 """)
 
 

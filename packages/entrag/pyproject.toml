@@ -1,7 +1,7 @@
 [project]
 name = "entrag"
 version = "0.0.0"
-description = "EntRAG benchmark implementation"
+description = "EntRAG Benchmarking Tools"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [

@@ -5,6 +5,8 @@ from pathlib import Path
 from loguru import logger
 
 from entrag.config.load_config import load_eval_config
+from entrag.models.baseline_rag import BaselineRAG
+from entrag.models.hybrid_rag import HybridRAG
 from entrag.models.zero_rag import ZeroRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
 from entrag.preprocessing.create_embeddings import create_embeddings_for_chunks
@@ -54,16 +56,16 @@ def main() -> None:
 
     model_kwargs = {"chunks": chunks}
     models = (
-        ZeroRAG(),
+        # ZeroRAG(),
         # BaselineRAG(**model_kwargs),
-        # HybridRAG(),
+        HybridRAG(**model_kwargs),
     )
 
     all_results = {}
 
     for model in models:
         model_name = model.__class__.__name__
-        logger.info(f"Evaluating model: {model_name}")
+        logger.info(f"Evaluating model: [{model_name}]")
         model.build_store(embeddings)
 
         model_results = []

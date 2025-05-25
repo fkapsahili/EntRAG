@@ -45,3 +45,12 @@ class ChunkEmbedding(BaseModel):
     document_page: int
     chunk_location_id: int
     embedding: list[float]
+
+
+class ExternalChunk(BaseModel):
+    """
+    A text chunk coming from an API response.
+    """
+
+    source: str
+    content: str

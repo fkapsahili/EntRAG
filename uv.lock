@@ -625,8 +625,6 @@ source = { virtual = "." }
 
 [package.dev-dependencies]
 dev = [
-    { name = "entrag" },
-    { name = "entrag-mock-api" },
     { name = "poethepoet" },
 ]
 lint = [
@@ -636,11 +634,7 @@ lint = [
 [package.metadata]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "entrag", editable = "packages/entrag" },
-    { name = "entrag-mock-api", editable = "packages/entrag-mock-api" },
-    { name = "poethepoet", specifier = ">=0.34.0" },
-]
+dev = [{ name = "poethepoet", specifier = ">=0.34.0" }]
 lint = [{ name = "ruff", specifier = ">=0.11.10" }]
 
 [[package]]

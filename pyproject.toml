@@ -16,7 +16,7 @@ entrag = { workspace = true }
 entrag-mock-api = { workspace = true }
 
 [tool.uv]
-dev-dependencies = ["entrag", "entrag-mock-api", "poethepoet>=0.34.0"]
+dev-dependencies = ["poethepoet>=0.34.0"]
 
 [tool.ruff]
 line-length = 119
@@ -62,6 +62,4 @@ style-all = "poe style --file ."
 quality = "poe check --file ."
 
 [dependency-groups]
-lint = [
-    "ruff>=0.11.10",
-]
+lint = ["ruff>=0.11.10"]

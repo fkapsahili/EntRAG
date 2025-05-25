@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException, Query
 
@@ -22,7 +24,10 @@ def get_gpg_statistics(
             detail=f"No GPG statistics found for employer name '{employer_name}'",
         )
 
-    filtered_df = filtered_df.where(pd.notnull(filtered_df), None)
-    records = filtered_df.to_dict(orient="records")
-    results = [GPGStatistic(**row) for row in records]
+    records = filtered_df.replace({float("nan"): None}).to_dict(orient="records")
+    cleaned_records = [
+        {k: (None if isinstance(v, float) and (math.isnan(v) or math.isinf(v)) else v) for k, v in row.items()}
+        for row in records
+    ]
+    results = [GPGStatistic(**row) for row in cleaned_records]
     return GPGStatisticsResponse(statistics=results, total_count=len(results))

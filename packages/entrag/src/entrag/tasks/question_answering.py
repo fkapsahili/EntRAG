@@ -14,7 +14,7 @@ from entrag.evaluators import (
     recall_k_evaluator,
 )
 from entrag.prompts.default_prompts import DEFAULT_QA_PROMPT
-from entrag.utils.prompt import get_formatted_chunks, get_query_time
+from entrag.utils.prompt import get_formatted_chunks, get_formatted_external_chunks, get_query_time
 
 
 def _log_evaluation_results(
@@ -119,21 +119,29 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig, *, outpu
         logger.info(f"Loaded [{len(dataset)}] QA pairs.")
 
         for example in dataset:
-            retrieved_chunks, _ = model.retrieve(example.question)
+            retrieved_chunks, ext_chunks = model.retrieve(example.question)
+            sources = [
+                Source(id=str(idx + 1), filename=chunk.document_name, pages=[chunk.document_page])
+                for idx, chunk in enumerate(retrieved_chunks)
+            ]
+            sources.extend(
+                Source(id=str(f"api-{idx + 1}"), filename=ext_chunk.source, pages=[])
+                for idx, ext_chunk in enumerate(ext_chunks)
+            )
+
             prompt = DEFAULT_QA_PROMPT.format(
                 query=example.question,
                 query_time=get_query_time(),
                 references=get_formatted_chunks(retrieved_chunks),
+                additional_context=get_formatted_external_chunks(ext_chunks),
             )
             answer = model.generate(prompt)
             inference_result = InferenceResult(
                 question_id=example.id,
                 answer=answer,
-                sources=[
-                    Source(id=str(idx + 1), filename=chunk.document_name, pages=[chunk.document_page])
-                    for idx, chunk in enumerate(retrieved_chunks)
-                ],
+                sources=sources,
             )
+
             for evaluator in evaluators:
                 eval_result = evaluator(example, inference_result)
                 results.append(eval_result)
