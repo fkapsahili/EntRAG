@@ -6,7 +6,7 @@ from loguru import logger
 
 from entrag.data_model.document import Chunk, ExternalChunk
 from entrag.models.baseline_rag import BaselineRAG
-from entrag.prompts.default_prompts import ENTITY_EXTRACTION_PROMPT
+from entrag.prompts.default_prompts import API_RERANKING_PROMPT, ENTITY_EXTRACTION_PROMPT
 from entrag.utils.entity_extraction import clean_str, split_content_by_markers
 from entrag_mock_api.client import MockAPIClient, MockAPIError
 
@@ -265,30 +265,29 @@ class HybridRAG(BaselineRAG):
 
         reranked = []
         for res in results:
-            prompt = f"Query: {query}\n\nAPI Result from {res.source}: {res.content}\n\nIs this API result relevant to the query? Answer only 'yes' or 'no'."
+            prompt = API_RERANKING_PROMPT.format(query=query, source=res.source, api_result=res.content)
             completion = self.openai_client.chat.completions.create(
                 model="gpt-4o-mini", messages=[{"role": "user", "content": prompt}], logprobs=True, max_tokens=1
             )
             response = completion.choices[0].message.content.strip().lower()
+
             if response == "yes" and completion.choices[0].logprobs.content:
                 yes_logprob = completion.choices[0].logprobs.content[0].logprob
                 logger.debug(f"API Result from: {res.source}, Response: {response}, Logprob: {yes_logprob}")
-                confidence = math.exp(yes_logprob)
-                logger.debug(f"Reranked API Result Confidence: {confidence}")
-
-                if confidence >= threshold:
-                    reranked.append((res, confidence))
+                prob = math.exp(yes_logprob)
+                logger.debug(f"Reranked API Result Confidence: {prob}")
+                if prob >= threshold:
+                    reranked.append((res, prob))
+            else:
+                logger.debug(f"API Result from: {res.source}, Response: {response} - Skipped")
 
         return [chunk for chunk, _ in sorted(reranked, key=lambda x: x[1], reverse=True)]
 
     def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[ExternalChunk]]:
         entities = self.run_entity_extraction(query=query)
-        api_results = self.get_api_results(entities, query)
-        chunks, _ = super().retrieve(query, top_k)
 
-        ext_chunks = [
-            ExternalChunk(source=result.source, content=result.content) for result in api_results if result.content
-        ]
+        ext_chunks = self.get_api_results(entities, query)
+        chunks, _ = super().retrieve(query, top_k)
         return chunks, ext_chunks
 
     def extract_entity_from_attrs(self, entity_attributes: list[str]) -> dict:
