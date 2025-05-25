@@ -9,7 +9,7 @@ import requests
 
 @click.command()
 @click.option("--days-back", default=30, help="Number of days to look back")
-@click.option("--output", default="datasets/json/mock_sec_data.json", help="Output JSON file")
+@click.option("--output", default="datasets/json/sec_filings_data_data.json", help="Output JSON file")
 @click.option("--filing-types", default="10-K,10-Q,8-K,DEF 14A", help="Comma-separated filing types")
 @click.option("--include-content", is_flag=True, help="Download actual filing content")
 @click.option(
@@ -69,7 +69,7 @@ def fetch_recent_filings(filing_type, days_back, companies, headers, include_con
                             "filing_date": filing_date,
                             "accession_number": recent_filings["accessionNumber"][i],
                             "primary_document": recent_filings["primaryDocument"][i],
-                            "document_url": f"https://www.sec.gov/Archives/edgar/data/{cik.lstrip("0")}/{recent_filings["accessionNumber"][i].replace("-", "")}/{recent_filings["primaryDocument"][i]}",
+                            "document_url": f"https://www.sec.gov/Archives/edgar/data/{cik.lstrip('0')}/{recent_filings['accessionNumber'][i].replace('-', '')}/{recent_filings['primaryDocument'][i]}",
                         }
 
                         if include_content:
