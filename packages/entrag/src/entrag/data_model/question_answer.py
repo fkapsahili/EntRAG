@@ -60,3 +60,12 @@ class EvaluationResult(BaseModel):
     question_id: str = Field(description="The ID of the question this evaluation result refers to")
     evaluator: str = Field(description="The name of the evaluator")
     score: float = Field(description="The evaluation score for the question")
+
+
+class LLMAnswerEvaluation(BaseModel):
+    """
+    Model used for structured outputs of an LLM-based evaluation.
+    """
+
+    score: int = Field(description="The score given by the evaluation for the answer")
+    reasoning: str = Field(description="A short reasoning for the score given by the evaluation")

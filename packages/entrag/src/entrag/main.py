@@ -56,8 +56,8 @@ def main() -> None:
 
     model_kwargs = {"chunks": chunks}
     models = (
-        # ZeroRAG(),
-        # BaselineRAG(**model_kwargs),
+        ZeroRAG(),
+        BaselineRAG(**model_kwargs),
         HybridRAG(**model_kwargs),
     )
 

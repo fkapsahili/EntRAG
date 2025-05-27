@@ -30,9 +30,9 @@ dependencies = [
 dev = ["entrag-mock-api"]
 
 [tool.poe.tasks]
-analyze-dataset = { shell = "python scripts/analyze_dataset.py" }
-build-raw-documents = { shell = "python scripts/build-raw-documents.py" }
-document-ingestion = { shell = "python scripts/document-ingestion.py" }
+analyze-dataset = { script = "scripts.analyze-dataset:main" }
+build-raw-documents = { script = "scripts.build-raw-documents:main" }
+document-ingestion = { script = "scripts.document-ingestion:main" }
 entrag = { shell = "python -m entrag.main" }
 
 [tool.ruff]

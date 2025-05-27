@@ -4,9 +4,14 @@ import numpy as np
 from loguru import logger
 from openai import Client
 
-from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair
+from entrag.data_model.question_answer import (
+    EvaluationResult,
+    InferenceResult,
+    LLMAnswerEvaluation,
+    QuestionAnswerPair,
+)
 from entrag.evaluators.utils import is_api_source, normalize_filename
-from entrag.prompts.default_prompts import LLM_AS_JUDGE_CORRECTNESS_PROMPT
+from entrag.prompts.default_prompts import LLM_AS_JUDGE_CORRECTNESS_PROMPT, LLM_AS_JUDGE_SYSTEM_PROMPT
 
 
 def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: InferenceResult) -> EvaluationResult:
@@ -19,14 +24,15 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
         answer=result.answer,
     )
     logger.debug(f"Answer correctness prompt: {prompt}")
-    completion = Client(api_key=os.getenv("OPENAI_API_KEY")).chat.completions.create(
-        model="gpt-4o", messages=[{"role": "system", "content": prompt}]
+
+    completion = Client(api_key=os.getenv("OPENAI_API_KEY")).beta.chat.completions.parse(
+        model="gpt-4o-mini",
+        messages=[{"role": "system", "content": LLM_AS_JUDGE_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
+        response_format=LLMAnswerEvaluation,
     )
-    answer = completion.choices[0].message.content
-    logger.debug(f"Answer correctness response: {answer}")
-    # TODO: Use structured outputs
-    answer_float = float(answer.strip())
-    return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=answer_float)
+    answer = completion.choices[0].message.parsed
+    logger.debug(f"Answer correctness response: {answer.score} - {answer.reasoning}")
+    return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=float(answer.score))
 
 
 def precision_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:

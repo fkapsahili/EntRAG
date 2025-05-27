@@ -13,7 +13,7 @@ from entrag_mock_api.client import MockAPIClient, MockAPIError
 
 class HybridRAG(BaselineRAG):
     """
-    Hybrid RAG approach that combines both vector-search and entity extraction with API selection.
+    Hybrid RAG approach that combines both similarity search and entity extraction with API selection.
     """
 
     def __init__(self, *, storage_dir="./test_rag_vector_store", chunks: list[Chunk]) -> None:
@@ -173,6 +173,9 @@ class HybridRAG(BaselineRAG):
             "Form 10-K": "10-K",
             "Form 10-Q": "10-Q",
             "Form 8-K": "8-K",
+            "10-K Form": "10-K",
+            "10-Q Form": "10-Q",
+            "8-K Form": "8-K",
             "proxy": "DEF 14A",
             "def14a": "DEF 14A",
             "8k": "8-K",
@@ -188,7 +191,7 @@ class HybridRAG(BaselineRAG):
                             results.append(
                                 ExternalChunk(
                                     content=f"Found {len(filings_data['filings'])} {normalized_type} filings for {company}",
-                                    source="filings_typi_api",
+                                    source="filings_type_api",
                                 )
                             )
                 else:
@@ -277,6 +280,7 @@ class HybridRAG(BaselineRAG):
                 prob = math.exp(yes_logprob)
                 logger.debug(f"Reranked API Result Confidence: {prob}")
                 if prob >= threshold:
+                    logger.debug(f"API Result from: {res.source} - Accepted with probability {prob}")
                     reranked.append((res, prob))
             else:
                 logger.debug(f"API Result from: {res.source}, Response: {response} - Skipped")
@@ -291,15 +295,17 @@ class HybridRAG(BaselineRAG):
         return chunks, ext_chunks
 
     def extract_entity_from_attrs(self, entity_attributes: list[str]) -> dict:
-        if len(entity_attributes) < 3 or entity_attributes[0] != '"entity"':
+        if len(entity_attributes) < 4 or entity_attributes[0] != '"entity"':
             return None
 
         try:
-            return {
+            entity = {
                 "entity_name": entity_attributes[1],
                 "entity_type": entity_attributes[2],
                 "description": entity_attributes[3],
             }
+            logger.debug(f"Extracted Entity: {entity}")
+            return entity
         except ValueError as e:
             logger.warning(f"Invalid entity data: {e}")
             return None

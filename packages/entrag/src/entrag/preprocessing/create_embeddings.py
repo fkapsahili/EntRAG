@@ -32,7 +32,7 @@ def create_embeddings_for_chunks(config: EvaluationConfig) -> list[ChunkEmbeddin
         with open(output_file, "r", encoding="utf-8") as file:
             for line in file:
                 embedding_data = json.loads(line)
-                key = f"{embedding_data["document_id"]}:{embedding_data["document_page"]}:{embedding_data["chunk_location_id"]}"
+                key = f"{embedding_data['document_id']}:{embedding_data['document_page']}:{embedding_data['chunk_location_id']}"
                 existing_embeddings[key] = embedding_data
 
     # Identify chunks that we need to embed

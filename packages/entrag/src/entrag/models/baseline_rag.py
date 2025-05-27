@@ -47,6 +47,15 @@ class BaselineRAG(RAGLM):
                 logger.error(f"Failed to load vector store: {e}")
         return False
 
+    def is_store_stale(self, new_embeddings: list[ChunkEmbedding]) -> bool:
+        """
+        Check if the current vector store is stale compared to the new embeddings.
+        A store is considered stale if it has fewer chunks than the new embeddings.
+        """
+        if not self.index:
+            return True
+        return self.index.ntotal < len(new_embeddings)
+
     def build_store(self, embeddings: list[ChunkEmbedding]) -> faiss.Index | None:
         """
         Build a vector store for the provided embeddings.
@@ -56,7 +65,7 @@ class BaselineRAG(RAGLM):
             logger.warning("No embeddings provided to build the vector store.")
             return None
 
-        if self.load_store():
+        if self.load_store() and not self.is_store_stale(embeddings):
             logger.info("Using existing vector store. Skipping build.")
             return self.index
 
@@ -87,7 +96,7 @@ class BaselineRAG(RAGLM):
 
     def generate(self, prompt: str) -> str:
         completion = self.openai_client.chat.completions.create(
-            model="gpt-4o", messages=[{"role": "system", "content": prompt}]
+            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
         )
         response = completion.choices[0].message.content
         logger.debug(f"Generated response: {response}")

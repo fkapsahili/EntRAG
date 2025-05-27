@@ -1310,7 +1310,7 @@
     "domain": "Human Resources",
     "question_type": "simple_w_condition",
     "dynamism": "static",
-    "question": "What contribution should employees make in terms of Volkswagen's social commitment objectives regarding donations and social sponsorshiip?",
+    "question": "What contribution should employees make in terms of Volkswagen's social commitment objectives regarding donations and social sponsorship?",
     "reference_answer": "If someone considers a sponsorship to be worthy of support, they should get in contact with the relevant departments.",
     "sources": [
       {

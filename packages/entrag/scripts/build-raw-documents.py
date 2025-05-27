@@ -17,7 +17,7 @@ import click
     required=True,
     help="Path to output directory where flattened files will be stored",
 )
-def build_raw_documents(input_dir: str, output_dir: str) -> None:
+def main(input_dir: str, output_dir: str) -> None:
     """
     Collects all files from company directories and copies them to the output directory
     with flattened names in the format: Company_Filename.ext
@@ -52,4 +52,4 @@ def build_raw_documents(input_dir: str, output_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    build_raw_documents()
+    main()
