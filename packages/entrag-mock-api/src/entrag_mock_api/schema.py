@@ -47,6 +47,7 @@ class GPGStatistic(BaseModel):
 class GPGStatisticsResponse(BaseModel):
     statistics: list[GPGStatistic]
     total_count: int
+    year: str
 
 
 class WebsiteResult(BaseModel):
