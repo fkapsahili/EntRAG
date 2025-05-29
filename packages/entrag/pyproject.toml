@@ -24,6 +24,8 @@ dependencies = [
     "matplotlib>=3.10.1",
     "pypdf>=5.4.0",
     "seaborn>=0.13.2",
+    "tiktoken>=0.9.0",
+    "networkx>=3.4.2",
 ]
 
 [dependency-groups]
@@ -33,6 +35,7 @@ dev = ["entrag-mock-api"]
 analyze-dataset = { script = "scripts.analyze-dataset:main" }
 build-raw-documents = { script = "scripts.build-raw-documents:main" }
 document-ingestion = { script = "scripts.document-ingestion:main" }
+compute-classification-metrics = { script = "scripts.compute-classification-metrics:main" }
 entrag = { shell = "python -m entrag.main" }
 
 [tool.ruff]

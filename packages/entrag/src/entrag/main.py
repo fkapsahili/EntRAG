@@ -1,12 +1,16 @@
 import os
 import sys
 from pathlib import Path
+from typing import Literal
 
 from loguru import logger
 
+from entrag.ai import GeminiEngine, OpenAIEngine
+from entrag.api.ai import BaseAIEngine
 from entrag.config.load_config import load_eval_config
 from entrag.models.baseline_rag import BaselineRAG
 from entrag.models.hybrid_rag import HybridRAG
+from entrag.models.graph_rag import GraphRAG
 from entrag.models.zero_rag import ZeroRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
 from entrag.preprocessing.create_embeddings import create_embeddings_for_chunks
@@ -37,6 +41,15 @@ logger.add(
 )
 
 
+def _create_ai_engine(provider: Literal["openai", "gemini"]) -> BaseAIEngine:
+    if provider == "openai":
+        return OpenAIEngine()
+    elif provider == "gemini":
+        return GeminiEngine()
+    else:
+        raise NotImplementedError(f"AI provider [{provider}] is not implemented yet.")
+
+
 def main() -> None:
     """
     Main entry point for the evaluation pipeline.
@@ -54,11 +67,23 @@ def main() -> None:
 
     embeddings = create_embeddings_for_chunks(config)
 
+    llm_kwargs = {
+        "model_name": config.model_evaluation.model_name,
+        "ai_engine": _create_ai_engine(config.model_evaluation.model_provider),
+    }
+    logger.info(f"Using LLM: [{llm_kwargs['model_name']}] from provider [{config.model_evaluation.model_provider}]")
+
     model_kwargs = {"chunks": chunks}
     models = (
-        ZeroRAG(),
-        BaselineRAG(**model_kwargs),
-        HybridRAG(**model_kwargs),
+        # ZeroRAG(**llm_kwargs),
+        # BaselineRAG(**model_kwargs, **llm_kwargs),
+        # HybridRAG(**model_kwargs, **llm_kwargs, reranking_model_name=config.model_evaluation.reranking_model_name),
+        GraphRAG(
+            **model_kwargs,
+            **llm_kwargs,
+            reranking_model_name=config.model_evaluation.reranking_model_name,
+            chunk_jsonl_path=config.chunking.output_directory + f"/{config.chunking.dataset_name}.jsonl",
+        ),
     )
 
     all_results = {}

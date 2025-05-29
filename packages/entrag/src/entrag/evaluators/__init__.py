@@ -7,11 +7,16 @@ from openai import Client
 from entrag.data_model.question_answer import (
     EvaluationResult,
     InferenceResult,
+    LLMAnswerClassification,
     LLMAnswerEvaluation,
     QuestionAnswerPair,
 )
 from entrag.evaluators.utils import is_api_source, normalize_filename
-from entrag.prompts.default_prompts import LLM_AS_JUDGE_CORRECTNESS_PROMPT, LLM_AS_JUDGE_SYSTEM_PROMPT
+from entrag.prompts.default_prompts import (
+    LLM_AS_JUDGE_CLASSIFICATION_PROMPT,
+    LLM_AS_JUDGE_CORRECTNESS_PROMPT,
+    LLM_AS_JUDGE_SYSTEM_PROMPT,
+)
 
 
 def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: InferenceResult) -> EvaluationResult:
@@ -26,13 +31,38 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
     logger.debug(f"Answer correctness prompt: {prompt}")
 
     completion = Client(api_key=os.getenv("OPENAI_API_KEY")).beta.chat.completions.parse(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         messages=[{"role": "system", "content": LLM_AS_JUDGE_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
         response_format=LLMAnswerEvaluation,
     )
     answer = completion.choices[0].message.parsed
     logger.debug(f"Answer correctness response: {answer.score} - {answer.reasoning}")
     return EvaluationResult(question_id=example.id, evaluator="answer_correctness_llm", score=float(answer.score))
+
+
+def answer_classification_llm_evaluator(example: QuestionAnswerPair, result: InferenceResult) -> EvaluationResult:
+    """
+    Classify the answer into perfect/acceptable/missing/incorrect categories.
+    """
+    prompt = LLM_AS_JUDGE_CLASSIFICATION_PROMPT.format(
+        query=example.question,
+        reference_answer=example.reference_answer,
+        answer=result.answer,
+    )
+
+    completion = Client(api_key=os.getenv("OPENAI_API_KEY")).beta.chat.completions.parse(
+        model="gpt-4.1-mini",
+        messages=[{"role": "system", "content": LLM_AS_JUDGE_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
+        response_format=LLMAnswerClassification,
+    )
+
+    classification = completion.choices[0].message.parsed
+    logger.debug(f"Answer classification: {classification.category} - {classification.reasoning}")
+
+    score_map = {"perfect": 1.0, "acceptable": 0.5, "missing": 0.0, "incorrect": -1.0}
+    return EvaluationResult(
+        question_id=example.id, evaluator="answer_classification_llm", score=score_map[classification.category]
+    )
 
 
 def precision_k_evaluator(example: QuestionAnswerPair, result: InferenceResult, *, k: int) -> EvaluationResult:

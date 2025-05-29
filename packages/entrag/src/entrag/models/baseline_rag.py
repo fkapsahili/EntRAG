@@ -5,17 +5,23 @@ import numpy as np
 from loguru import logger
 from openai import Client
 
+from entrag.api.ai import BaseAIEngine
 from entrag.api.model import RAGLM
 from entrag.data_model.document import Chunk, ChunkEmbedding, ExternalChunk
+from entrag.utils.prompt import truncate_to_token_limit
 
 
 class BaselineRAG(RAGLM):
-    def __init__(self, *, storage_dir="./test_rag_vector_store", chunks: list[Chunk]) -> None:
+    def __init__(
+        self, *, storage_dir="./test_rag_vector_store", chunks: list[Chunk], ai_engine: BaseAIEngine, model_name: str
+    ) -> None:
         super().__init__()
         self.index = None
         self.chunks = chunks
         self.openai_client = Client(api_key=os.getenv("OPENAI_API_KEY"))
         self.index_path = os.path.join(storage_dir, "faiss_index.bin")
+        self.ai_engine = ai_engine
+        self.model_name = model_name
 
         self.load_store()
 
@@ -71,6 +77,7 @@ class BaselineRAG(RAGLM):
 
         try:
             vectors = np.array([emb.embedding for emb in embeddings], dtype=np.float32)
+            faiss.normalize_L2(vectors)
         except Exception as exc:
             logger.error("Failed to convert embeddings to numpy array: %s", exc)
             return None
@@ -80,24 +87,25 @@ class BaselineRAG(RAGLM):
             return None
 
         vector_dim = vectors.shape[1]
-        self.index = faiss.IndexFlatL2(vector_dim)
+        self.index = faiss.IndexFlatIP(vector_dim)
         self.index.add(vectors)
         self.persist_store()
 
         logger.info(f"Built vector store with {self.index.ntotal} chunks, dimension: {vector_dim}")
         return self.index
 
-    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[ExternalChunk]]:
+    def retrieve(self, query: str, top_k: int) -> tuple[list[Chunk], list[ExternalChunk]]:
         query_vector = np.array(self.embed_query(query), dtype=np.float32).reshape(1, -1)
+        faiss.normalize_L2(query_vector)
         _, indices = self.index.search(query_vector, top_k)
         retrieved_chunks = [self.chunks[i] for i in indices[0]]
         logger.info(f"Retrieved {len(retrieved_chunks)} chunks for query: {query}")
         return retrieved_chunks, []
 
-    def generate(self, prompt: str) -> str:
-        completion = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini", messages=[{"role": "system", "content": prompt}]
-        )
-        response = completion.choices[0].message.content
+    def generate(self, *, system_prompt: str, user_prompt: str) -> str:
+        if self.model_name in ["gpt-4o-mini", "gpt-4o"]:
+            user_prompt = truncate_to_token_limit(user_prompt, model=self.model_name, max_tokens=124_000)
+
+        response = self.ai_engine.chat_completion(model=self.model_name, user=user_prompt, system=system_prompt)
         logger.debug(f"Generated response: {response}")
         return response

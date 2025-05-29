@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "domain": "Finance",
+    "question_type": "simple",
+    "dynamism": "static",
+    "question": "According to Apple's 2022 Form 10-K, what was the total revenue for the fiscal year 2022?",
+    "reference_answer": "Apple reported total revenue of approximately $394,3 billion in fiscal year 2022.",
+    "sources": [
+      {
+        "id": "1",
+        "filename": "Apple_Annual_Report_2022.pdf",
+        "pages": [24, 25, 32, 40, 52]
+      },
+      {
+        "id": "2",
+        "filename": "Apple_Annual_Report_2023.pdf",
+        "pages": [24, 25, 31, 38, 51]
+      },
+      {
+        "id": "3",
+        "filename": "Apple_Annual_Report_2024.pdf",
+        "pages": [25, 26, 32, 38, 50]
+      }
+    ]
+  }
+]

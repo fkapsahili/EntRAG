@@ -69,3 +69,14 @@ class LLMAnswerEvaluation(BaseModel):
 
     score: int = Field(description="The score given by the evaluation for the answer")
     reasoning: str = Field(description="A short reasoning for the score given by the evaluation")
+
+
+class LLMAnswerClassification(BaseModel):
+    """
+    Model used for structured outputs of an LLM-based answer classification.
+    """
+
+    category: Literal["perfect", "acceptable", "missing", "incorrect"] = Field(
+        description="The category of the answer based on the evaluation"
+    )
+    reasoning: str = Field(default="", description="A short reasoning for the category assigned to the answer")

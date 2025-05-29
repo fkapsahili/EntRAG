@@ -4,21 +4,36 @@ from collections import defaultdict
 
 from loguru import logger
 
+from entrag.api.ai import BaseAIEngine
 from entrag.data_model.document import Chunk, ExternalChunk
 from entrag.models.baseline_rag import BaselineRAG
-from entrag.prompts.default_prompts import API_RERANKING_PROMPT, ENTITY_EXTRACTION_PROMPT
+from entrag.prompts.default_prompts import (
+    API_RERANKING_SYSTEM_PROMPT,
+    API_RERANKING_USER_PROMPT,
+    ENTITY_EXTRACTION_PROMPT,
+)
 from entrag.utils.entity_extraction import clean_str, split_content_by_markers
+from entrag.utils.prompt import truncate_to_token_limit
 from entrag_mock_api.client import MockAPIClient, MockAPIError
 
 
 class HybridRAG(BaselineRAG):
     """
-    Hybrid RAG approach that combines both similarity search and entity extraction with API selection.
+    Hybrid RAG approach that combines both similarity search and entity extraction with dynamic API selection.
     """
 
-    def __init__(self, *, storage_dir="./test_rag_vector_store", chunks: list[Chunk]) -> None:
-        super().__init__(storage_dir=storage_dir, chunks=chunks)
+    def __init__(
+        self,
+        *,
+        storage_dir="./test_rag_vector_store",
+        chunks: list[Chunk],
+        ai_engine: BaseAIEngine,
+        model_name: str,
+        reranking_model_name: str,
+    ) -> None:
+        super().__init__(storage_dir=storage_dir, chunks=chunks, ai_engine=ai_engine, model_name=model_name)
         self.api_client = MockAPIClient()
+        self.reranking_model_name = reranking_model_name
 
     def run_entity_extraction(self, *, query: str) -> defaultdict[str, list[str]]:
         logger.info(f"Running Entity Extraction for Query: [{query}]")
@@ -29,9 +44,9 @@ class HybridRAG(BaselineRAG):
             "completion_delimiter": "<|COMPLETE|>",
             "entity_types": ",".join([
                 "ticker",
-                "metric",
+                "metric_symbol",
                 "company",
-                "filing_type",
+                "sec_form_type",
                 "employer",
                 "date",
                 "search_term",
@@ -39,10 +54,7 @@ class HybridRAG(BaselineRAG):
         }
 
         user_prompt = ENTITY_EXTRACTION_PROMPT.format(**query_context, query_text=query)
-        completion = self.openai_client.chat.completions.create(
-            model="gpt-4o-mini", messages=[{"role": "user", "content": user_prompt}]
-        )
-        response = completion.choices[0].message.content
+        response = self.ai_engine.chat_completion(model=self.model_name, user=user_prompt)
         logger.debug(f"Entity Extraction Response: {response}")
 
         entities = defaultdict(list)
@@ -72,24 +84,33 @@ class HybridRAG(BaselineRAG):
         logger.debug(f"Extracted Entities: [{entities}]")
         return entities
 
-    def get_api_results(self, entities: dict[str, list[str]], query: str, top_k: int = 5) -> list[ExternalChunk]:
+    def get_api_results(self, entities: dict[str, list[str]], query: str, top_k: int) -> list[ExternalChunk]:
         """
         Fetch APIs based on selection.
         """
-        results = []
+        results: list[ExternalChunk] = []
         results.extend(self._get_finance_results(entities))
         results.extend(self._get_filing_results(entities))
         results.extend(self._get_gpg_results(entities))
         results.extend(self._get_search_results(entities))
 
+        # Deduplicate the external results
+        seen = set()
+        unique_results: list[ExternalChunk] = []
+        for res in results:
+            identifier = (res.content, res.source)
+            if identifier not in seen:
+                seen.add(identifier)
+                unique_results.append(res)
+
         # Rank and return top k results
-        ranked_results = self._rerank_api_results(results, query)
+        ranked_results = self._rerank_api_results(unique_results, query)
         return ranked_results[:top_k]
 
     def _get_finance_results(self, entities: dict[str, list[str]]) -> list[ExternalChunk]:
         results = []
         tickers = entities.get("ticker", [])
-        metrics = entities.get("metric", [])
+        metrics = entities.get("metric_symbol", [])
         companies = entities.get("company", [])
         dates = entities.get("date", [])
 
@@ -102,10 +123,12 @@ class HybridRAG(BaselineRAG):
                         if dates:
                             for date in dates:
                                 try:
-                                    metric_response = self.api_client.get_finance_metric_by_date(ticker, metric, date)
+                                    metric_response = self.api_client.get_finance_metric_by_date(
+                                        ticker, metric.lower(), date
+                                    )
                                     results.append(
                                         ExternalChunk(
-                                            content=f"{ticker} {metric} on {date}: {metric_response.value}",
+                                            content=f"{ticker} {metric} on {date}: {metric_response.model_dump()}",
                                             source="finance_api",
                                         )
                                     )
@@ -113,20 +136,18 @@ class HybridRAG(BaselineRAG):
                                     continue
 
                         try:
-                            timeseries = self.api_client.get_finance_timeseries(ticker, metric)
+                            timeseries = self.api_client.get_finance_timeseries(ticker, metric.lower())
                             if timeseries.results:
-                                latest_date = max(timeseries.results.keys())
-                                latest_value = timeseries.results[latest_date]
                                 results.append(
                                     ExternalChunk(
-                                        content=f"{ticker} {metric} timeseries (latest {latest_date}): {latest_value}",
+                                        content=f"{ticker} {metric} timeseries: {timeseries.model_dump()}",
                                         source="finance_api",
                                     )
                                 )
                         except MockAPIError:
                             continue
 
-                        metric_value = getattr(company_metrics, metric, None)
+                        metric_value = getattr(company_metrics, metric.lower(), None)
                         if metric_value is not None:
                             results.append(
                                 ExternalChunk(
@@ -137,7 +158,7 @@ class HybridRAG(BaselineRAG):
                 else:
                     results.append(
                         ExternalChunk(
-                            content=f"Company Metrics for {ticker}: {company_metrics}",
+                            content=f"Company Metrics for {ticker}: {company_metrics.model_dump()}",
                             source="finance_api",
                         )
                     )
@@ -151,7 +172,7 @@ class HybridRAG(BaselineRAG):
                     company_metrics = self.api_client.get_finance_company_metrics(company)
                     results.append(
                         ExternalChunk(
-                            content=f"Company Metrics for {company}: {company_metrics}",
+                            content=f"Company Metrics for {company}: {company_metrics.model_dump()}",
                             source="finance_api",
                         )
                     )
@@ -162,7 +183,7 @@ class HybridRAG(BaselineRAG):
 
     def _get_filing_results(self, entities: dict[str, list[str]]) -> list[ExternalChunk]:
         results = []
-        filing_types = entities.get("filing_type", [])
+        filing_types = entities.get("sec_form_type", [])
         companies = entities.get("company", [])
 
         filing_type_map = {
@@ -190,7 +211,7 @@ class HybridRAG(BaselineRAG):
                         if filings_data.get("filings"):
                             results.append(
                                 ExternalChunk(
-                                    content=f"Found {len(filings_data['filings'])} {normalized_type} filings for {company}",
+                                    content=f"Found {normalized_type} filings for {company}: {filings_data.get('filings')}",
                                     source="filings_type_api",
                                 )
                             )
@@ -199,7 +220,7 @@ class HybridRAG(BaselineRAG):
                     if filings_data.get("filings"):
                         results.append(
                             ExternalChunk(
-                                content=f"Found {len(filings_data['filings'])} {normalized_type} filings",
+                                content=f"Found {normalized_type} filings: {filings_data.get('filings')}",
                                 source="filings_type_api",
                             )
                         )
@@ -213,7 +234,7 @@ class HybridRAG(BaselineRAG):
                     if search_results.get("results"):
                         results.append(
                             ExternalChunk(
-                                content=f"Found {len(search_results['results'])} filings for {company}",
+                                content=f"Filings for {company}: {search_results}",
                                 source="filings_search_api",
                             )
                         )
@@ -232,7 +253,7 @@ class HybridRAG(BaselineRAG):
                 if gpg_data.statistics:
                     results.append(
                         ExternalChunk(
-                            content=f"GPG statistics for {employer}: {len(gpg_data.statistics)} records found",
+                            content=f"GPG statistics for {employer}: {gpg_data.model_dump()}",
                             source="gpg_statistics_api",
                         )
                     )
@@ -251,7 +272,7 @@ class HybridRAG(BaselineRAG):
                 if search_data.results:
                     results.append(
                         ExternalChunk(
-                            content=f"Website search for '{term}': {len(search_data.results)} results found",
+                            content=f"Website search: {search_data.model_dump()}",
                             source="search_api",
                         )
                     )
@@ -268,11 +289,22 @@ class HybridRAG(BaselineRAG):
 
         reranked = []
         for res in results:
-            prompt = API_RERANKING_PROMPT.format(query=query, source=res.source, api_result=res.content)
+            if self.model_name in ["gpt-4o", "gpt-4o-mini"]:
+                content = truncate_to_token_limit(res.content, model=self.model_name, max_tokens=124_000)
+            else:
+                content = res.content
+            user_prompt = API_RERANKING_USER_PROMPT.format(query=query, source=res.source, api_result=content)
             completion = self.openai_client.chat.completions.create(
-                model="gpt-4o-mini", messages=[{"role": "user", "content": prompt}], logprobs=True, max_tokens=1
+                model=self.reranking_model_name,
+                messages=[
+                    {"role": "system", "content": API_RERANKING_SYSTEM_PROMPT},
+                    {"role": "user", "content": user_prompt},
+                ],
+                logprobs=True,
+                max_tokens=1,
             )
             response = completion.choices[0].message.content.strip().lower()
+            logger.debug(f"Reranking Result from: {res.source}, Response: {response}")
 
             if response == "yes" and completion.choices[0].logprobs.content:
                 yes_logprob = completion.choices[0].logprobs.content[0].logprob
@@ -287,10 +319,10 @@ class HybridRAG(BaselineRAG):
 
         return [chunk for chunk, _ in sorted(reranked, key=lambda x: x[1], reverse=True)]
 
-    def retrieve(self, query: str, top_k: int = 10) -> tuple[list[Chunk], list[ExternalChunk]]:
+    def retrieve(self, query: str, top_k: int) -> tuple[list[Chunk], list[ExternalChunk]]:
         entities = self.run_entity_extraction(query=query)
 
-        ext_chunks = self.get_api_results(entities, query)
+        ext_chunks = self.get_api_results(entities, query, top_k)
         chunks, _ = super().retrieve(query, top_k)
         return chunks, ext_chunks
 

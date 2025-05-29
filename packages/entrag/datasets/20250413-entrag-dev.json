@@ -935,7 +935,7 @@
     "domain": "Legal & Compliance",
     "question_type": "multi_hop_reasoning",
     "dynamism": "static",
-    "question": "Explain how the 'commercial guarantee' definition differs from the 'legal guarantee' in the context of consumer rights.",
+    "question": "According to Google's terms of service, how does the 'commercial guarantee' definition differ from the 'legal guarantee' in the context of consumer rights?",
     "reference_answer": "A commercial guarantee is a voluntary additional commitment beyond the legal requirement, while a legal guarantee is a mandatory protection ensuring products meet specified performance standards.",
     "sources": [
       {

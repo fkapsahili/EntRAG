@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -51,6 +53,14 @@ class ModelEvaluationConfig(BaseModel):
     output_directory: str = Field(
         description="Output directory for the evaluation results.", default="evaluation_results"
     )
+    retrieval_top_k: int = Field(description="Number of top chunks to retrieve for evaluation.", default=5)
+    model_name: str = Field(description="Name of the LLM to use for the evaluation.")
+    reranking_model_name: Literal["gpt-4o-mini", "gpt-4.1-mini", "gpt-4.1-nano"] = Field(
+        description="Name of the reranking LLM to use."
+    )
+    model_provider: Literal["openai", "gemini"] = Field(
+        description="Provider of the LLM to evaluate.", default="openai"
+    )
 
 
 class EvaluationConfig(BaseModel):
@@ -64,5 +74,5 @@ class EvaluationConfig(BaseModel):
     embedding: EmbeddingConfig = Field(description="Embedding configuration to use.", default=EmbeddingConfig())
     tasks: TasksConfig = Field(description="Tasks configuration to use.", default=TasksConfig())
     model_evaluation: ModelEvaluationConfig = Field(
-        description="Model evaluation configuration to use.", default=ModelEvaluationConfig()
+        description="Model evaluation configuration to use.",
     )
