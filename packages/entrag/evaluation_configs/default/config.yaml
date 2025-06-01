@@ -3,13 +3,13 @@ config_name: default
 tasks:
   question_answering:
     run: true
-    dataset_path: datasets/entrag-10.json 
+    dataset_path: datasets/20250413-entrag-dev.json 
 
 chunking:
   enabled: false
   files_directory: data/entrag_dev_v6
   output_directory: data/output_v4
-  dataset_name: entrag_test_minimal
+  dataset_name: entrag_test
   max_tokens: 2048 # tokens
 
 embedding:
@@ -19,6 +19,7 @@ embedding:
   output_directory: data/embeddings
 
 model_evaluation:
+  max_workers: 10 # Number of parallel workers for LLM inference
   output_directory: evaluation_results
   retrieval_top_k: 5
   model_provider: openai

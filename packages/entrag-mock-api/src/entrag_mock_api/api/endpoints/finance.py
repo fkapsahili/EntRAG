@@ -31,6 +31,9 @@ def get_metric_by_date(
     if not company:
         raise HTTPException(status_code=404, detail="Ticker not found")
 
+    if metric != "eps":
+        raise HTTPException(status_code=400, detail="Unsupported metric. Only 'eps' is available.")
+
     historical_eps = company.get("historical_eps", {})
     value = historical_eps.get(date)
 
@@ -51,6 +54,9 @@ def get_timeseries(
     ticker, company = find_company(ticker, data)
     if not company:
         raise HTTPException(status_code=404, detail="Ticker not found")
+
+    if metric != "eps":
+        raise HTTPException(status_code=400, detail="Unsupported metric. Only 'eps' is available.")
 
     historical_eps = company.get("historical_eps", {})
     results = {

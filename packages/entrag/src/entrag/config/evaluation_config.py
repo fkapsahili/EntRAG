@@ -61,6 +61,7 @@ class ModelEvaluationConfig(BaseModel):
     model_provider: Literal["openai", "gemini"] = Field(
         description="Provider of the LLM to evaluate.", default="openai"
     )
+    max_workers: int = Field(description="Maximum number of workers to use for parallel processing.", default=4)
 
 
 class EvaluationConfig(BaseModel):

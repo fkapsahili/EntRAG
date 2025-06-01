@@ -125,7 +125,7 @@
     "question_type": "simple",
     "dynamism": "dynamic",
     "question": "What was Tesla's EPS in 2024?",
-    "reference_answer": "Tesla's EPS in 2024 was 2.03.",
+    "reference_answer": "Tesla's EPS in 2024 was 2.22.",
     "sources": [
       {
         "id": "api-1",
@@ -155,7 +155,7 @@
     "question_type": "comparison",
     "dynamism": "dynamic",
     "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
-    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet's 8.20.",
+    "reference_answer": "Meta",
     "sources": [
       {
         "id": "api-1",
@@ -466,7 +466,7 @@
     "question_type": "comparison",
     "dynamism": "dynamic",
     "question": "Who had a higher EPS in 2024, Alphabet or Meta?",
-    "reference_answer": "Meta had a higher EPS in 2024 with 24.60 compared to Alphabet's 8.20.",
+    "reference_answer": "Meta",
     "sources": [
       {
         "id": "api-1",
@@ -1165,7 +1165,7 @@
     "domain": "Legal & Compliance",
     "question_type": "aggregation",
     "dynamism": "dynamic",
-    "question": "How many 8-K filings did Alphabet Inc submit in the last 30 days?",
+    "question": "How many 8-K filings did Alphabet Inc submit in 2025?",
     "reference_answer": "4",
     "sources": [
       {
