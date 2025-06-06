@@ -48,7 +48,7 @@ uv run poe start
 # Keep this terminal open while running the benchmark
 ```
 
-4. Run the benchmark with the default config in a new terminal:
+5. Run the benchmark with the default config in a new terminal:
 ```bash
 # Navigate to the benchmark package
 cd packages/entrag
