@@ -13,7 +13,7 @@ from entrag.utils.prompt import truncate_to_token_limit
 
 class BaselineRAG(RAGLM):
     def __init__(
-        self, *, storage_dir="./test_rag_vector_store", chunks: list[Chunk], ai_engine: BaseAIEngine, model_name: str
+        self, *, storage_dir: str = "data/vector_store", chunks: list[Chunk], ai_engine: BaseAIEngine, model_name: str
     ) -> None:
         super().__init__()
         self.index = None

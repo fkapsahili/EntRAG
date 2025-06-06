@@ -1,5 +1,5 @@
 """
-This script processes raw PDF files from a specified input directory and saves the structured data as markdown.
+This script processes raw input files from a specified input directory and saves the structured data as markdown.
 """
 
 import os
@@ -89,7 +89,7 @@ def process_pdf(pdf_path, temp_dir, max_workers=None):
     return assembled_content
 
 
-def process_documents(input_dir, output_dir, max_workers=None, batch_size=5):
+def process_documents(input_dir, output_dir, max_workers=None, batch_size=1):
     """
     Processes each PDF in the input directory, processing multiple PDFs concurrently.
     """
@@ -175,15 +175,15 @@ def process_single_pdf(pdf_path, output_path, temp_dir, max_workers):
 @click.option(
     "--batch-size",
     type=int,
-    default=5,
-    help="Number of PDFs to process in parallel. Default is 5.",
+    default=1,
+    help="Number of PDFs to process in parallel. Default is 1.",
 )
 def main(input_dir: str, output_dir: str, workers: int, batch_size: int) -> None:
     """
     Process raw PDF files, split them into pages, run Docling on each page,
     and save the structured data as markdown with page markers.
     """
-    logger.info(f"Starting PDF processing with batch size: {batch_size}, workers: {workers or "auto"}")
+    logger.info(f"Starting PDF processing with batch size: {batch_size}, workers: {workers or 'auto'}")
     process_documents(input_dir, output_dir, max_workers=workers, batch_size=batch_size)
     logger.info("Processing completed.")
 

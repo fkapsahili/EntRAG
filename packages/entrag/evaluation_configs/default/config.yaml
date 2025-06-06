@@ -3,13 +3,15 @@ config_name: default
 tasks:
   question_answering:
     run: true
-    dataset_path: datasets/20250413-entrag-dev.json 
+    hf_dataset_id: fkapsahili/EntRAG
+    dataset_path: null
+    split: train
 
 chunking:
-  enabled: false
-  files_directory: data/entrag_dev_v6
-  output_directory: data/output_v4
-  dataset_name: entrag_test
+  enabled: true
+  files_directory: data/entrag_processed
+  output_directory: data/entrag_chunked
+  dataset_name: entrag
   max_tokens: 2048 # tokens
 
 embedding:

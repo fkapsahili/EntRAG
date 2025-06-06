@@ -26,17 +26,16 @@ dependencies = [
     "seaborn>=0.13.2",
     "tiktoken>=0.9.0",
     "networkx>=3.4.2",
+    "datasets>=3.6.0",
 ]
 
 [dependency-groups]
 dev = ["entrag-mock-api"]
 
 [tool.poe.tasks]
-analyze-dataset = { script = "scripts.analyze-dataset:main" }
 build-raw-documents = { script = "scripts.build-raw-documents:main" }
-document-ingestion = { script = "scripts.document-ingestion:main" }
-compute-classification-metrics = { script = "scripts.compute-classification-metrics:main" }
-entrag = { shell = "python -m entrag.main" }
+create-markdown-documents = { script = "scripts.create-markdown-documents:main" }
+entrag = { script = "entrag.main:main" }
 
 [tool.ruff]
 extend = "../../pyproject.toml"

@@ -61,7 +61,7 @@ class FunctionCallingRAG(BaselineRAG):
     def __init__(
         self,
         *,
-        storage_dir="./test_rag_vector_store",
+        storage_dir: str = "data/vector_store",
         chunks: list[Chunk],
         ai_engine: BaseAIEngine,
         model_name: str,

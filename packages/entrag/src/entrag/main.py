@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from typing import Literal
 
+import click
 from loguru import logger
 
 from entrag.ai import GeminiEngine, OpenAIEngine
@@ -15,18 +16,7 @@ from entrag.models.zero_rag import ZeroRAG
 from entrag.preprocessing.create_chunks import create_chunks_for_documents
 from entrag.preprocessing.create_embeddings import create_embeddings_for_chunks
 from entrag.tasks.question_answering import evaluate_question_answering
-from entrag.visualization import (
-    plot_evaluation_results,
-    plot_evaluator_distribution,
-    plot_model_comparison,
-    plot_question_level_scores,
-    plot_radar_comparison,
-)
-from entrag.visualization.utils import (
-    create_run_id,
-    save_combined_results,
-    save_model_results,
-)
+from entrag.tasks.utils import create_run_id, save_combined_results, save_model_results
 
 
 logger.remove()  # Remove the default logger
@@ -50,39 +40,60 @@ def _create_ai_engine(provider: Literal["openai", "gemini"]) -> BaseAIEngine:
         raise NotImplementedError(f"AI provider [{provider}] is not implemented yet.")
 
 
-def main() -> None:
+@click.command()
+@click.option(
+    "--config",
+    type=str,
+    required=True,
+    help="Name of the configuration to use (e.g. 'default' for evaluation_configs/default/config.yaml)",
+)
+def main(config: str) -> None:
     """
     Main entry point for the evaluation pipeline.
+
+    This command runs the complete evaluation pipeline using the specified configuration.
+    The config should be the name of a directory under evaluation_configs/ that contains
+    a config.yaml file.
+
+    Example:
+        uv run poe entrag --config default
+        (uses evaluation_configs/default/config.yaml)
     """
 
-    # TODO: Make this a CLI argument
-    config = load_eval_config("default")
+    eval_config = load_eval_config(config)
 
     llm_kwargs = {
-        "model_name": config.model_evaluation.model_name,
-        "ai_engine": _create_ai_engine(config.model_evaluation.model_provider),
+        "model_name": eval_config.model_evaluation.model_name,
+        "ai_engine": _create_ai_engine(eval_config.model_evaluation.model_provider),
     }
 
     run_id = create_run_id()
-    output_dir = Path(config.model_evaluation.output_directory) / f"{str(run_id)}_{config.model_evaluation.model_name}"
+    output_dir = (
+        Path(eval_config.model_evaluation.output_directory)
+        / f"{str(run_id)}_{eval_config.model_evaluation.model_name}"
+    )
     logger.info(f"Created evaluation run with ID: [{run_id}]")
 
-    chunks = create_chunks_for_documents(config)
+    chunks = create_chunks_for_documents(eval_config)
     logger.info(f"Loaded [{len(chunks)}] chunks.")
 
-    embeddings = create_embeddings_for_chunks(config)
+    embeddings = create_embeddings_for_chunks(eval_config)
 
-    logger.info(f"Using LLM: [{llm_kwargs['model_name']}] from provider [{config.model_evaluation.model_provider}]")
+    logger.info(
+        f"Using LLM: [{llm_kwargs['model_name']}] from provider [{eval_config.model_evaluation.model_provider}]"
+    )
 
     model_kwargs = {"chunks": chunks}
     models = (
-        # ZeroRAG(**llm_kwargs),
-        # BaselineRAG(**model_kwargs, **llm_kwargs),
-        HybridRAG(**model_kwargs, **llm_kwargs, reranking_model_name=config.model_evaluation.reranking_model_name),
-        # FunctionCallingRAG(
-        #     **model_kwargs,
-        #     **llm_kwargs,
-        # ),
+        ZeroRAG(**llm_kwargs),
+        BaselineRAG(**model_kwargs, **llm_kwargs),
+        HybridRAG(
+            **model_kwargs, **llm_kwargs, reranking_model_name=eval_config.model_evaluation.reranking_model_name
+        ),
+        FunctionCallingRAG(
+            **model_kwargs,
+            **llm_kwargs,
+        ),
     )
 
     all_results = {}
@@ -94,9 +105,9 @@ def main() -> None:
 
         model_results = []
 
-        if config.tasks.question_answering.run:
+        if eval_config.tasks.question_answering.run:
             qa_results = evaluate_question_answering(
-                model, config, output_file=f"{output_dir}/{model_name}_qa_logs.json"
+                model, eval_config, output_file=f"{output_dir}/{model_name}_qa_logs.json"
             )
             model_results.extend(qa_results)
 
@@ -104,31 +115,8 @@ def main() -> None:
             save_model_results(model_name, model_results, output_dir)
             all_results[model_name] = model_results
 
-            # Visualize individual model results
-            plot_evaluation_results(
-                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_results.png"
-            )
-            plot_question_level_scores(
-                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_question_scores.png"
-            )
-            plot_evaluator_distribution(
-                qa_results, model_name=model_name, output_file=output_dir / f"{model_name}_evaluator_distribution.png"
-            )
-
     # If we have results from multiple models
     if len(all_results) > 1:
         logger.info("Creating model comparison visualizations")
-
         save_combined_results(all_results, output_dir)
-
-        # Generate additional comparison plots
-        plot_model_comparison(all_results, figsize=(14, 8), output_file=output_dir / "model_comparison.png")
-        plot_radar_comparison(
-            all_results, top_n_models=len(all_results), output_file=output_dir / "radar_comparison.png"
-        )
-
         logger.info(f"All evaluation visualizations saved to [{output_dir}].")
-
-
-if __name__ == "__main__":
-    main()

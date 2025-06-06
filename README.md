@@ -30,7 +30,7 @@ cd EntRAG
 uv sync --all-groups
 ```
 
-3. Get an API key for OpenAI and Gemini and add it to the .env file
+3. Get an API key for OpenAI or Gemini and add it to the .env file
 ```bash
 touch .env
 echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env 
@@ -44,6 +44,140 @@ cd packages/entrag
 
 # Run the pipeline
 poe entrag --config example/configs/default.yaml 
+```
+
+ ### Data Processing
+
+ #### Using Pre-processed Data
+
+ If you have access to the pre-processed markdown data, place it in the `data/entrag_processed/` directory (or any directory specified as `chunking.files_directory` in your config file) and the benchmark will use it directly.
+
+
+#### Preprocessing Raw Documents
+
+If you have the raw documents that need to be processed, you can use the standalone processing script before running the benchmark. This script will process the documents and save them in the `data/entrag_processed/` directory.
+
+```bash
+cd packages/entrag
+uv run poe create-markdown-documents.py \
+    --input-dir <path_to_raw_documents> \
+    --output-dir data/entrag_processed/ \
+    --workers <number_of_workers> \
+    --batch-size <batch_size>
+```
+
+**Note**: The processing script uses [Docling](https://github.com/DS4SD/docling) for Markdown conversion and requires significant computational resources if running multiple workers. Ensure you have enough memory and CPU resources available.
+
+### Configuration
+
+#### Using Existing Configurations
+
+The benchmark includes a default configuration located at `evaluation_configs/default/config.yaml`. You can run the benchmark with this configuration:
+
+```bash
+uv run poe entrag --config default
+```
+
+#### Creating Custom Configurations
+
+To create a custom configuration for your specific evaluation needs:
+
+1. **Create a new configuration directory:**
+```bash
+mkdir evaluation_configs/my-custom-config
+```
+
+2. **Create the configuration file:**
+```bash
+touch evaluation_configs/my-custom-config/config.yaml
+```
+
+3. **Configure your evaluation settings** by editing the `config.yaml` file. Here's a template with explanations:
+
+```yaml
+config_name: my-custom-config
+tasks:
+  question_answering:
+    run: true                           # Enable/disable QA evaluation
+    hf_dataset_id: fkapsahili/EntRAG    # HuggingFace dataset ID
+    dataset_path: null                  # Alternative: local dataset path
+    split: train                        # Dataset split to use
+
+chunking:
+  enabled: true                          # Enable document chunking
+  files_directory: data/entrag_processed # Input directory for processed docs
+  output_directory: data/entrag_chunked  # Output directory for chunks
+  dataset_name: entrag                   # Dataset identifier
+  max_tokens: 2048                       # Maximum tokens per chunk
+
+embedding:
+  enabled: true                         # Enable embedding generation
+  model: text-embedding-3-small         # Embedding model to use
+  batch_size: 8                         # Batch size for embedding generation
+  output_directory: data/embeddings     # Output directory for embeddings
+
+model_evaluation:
+  max_workers: 10                       # Parallel workers for LLM inference
+  output_directory: evaluation_results  # Results output directory
+  retrieval_top_k: 5                    # Number of documents to retrieve
+  model_provider: openai                # AI provider: "openai" or "gemini"
+  model_name: gpt-4o-mini               # Model name for evaluation
+  reranking_model_name: gpt-4o-mini     # Model for reranking (if applicable)
+```
+
+4. **Run your custom configuration:**
+```bash
+uv run poe entrag --config my-custom-config
+```
+
+### Configuration Options
+
+**Task Configuration:**
+- `question_answering.run`: Whether to run QA evaluation
+- `hf_dataset_id`: HuggingFace dataset containing evaluation questions
+- `split`: Which dataset split to use for evaluation
+
+**Chunking Configuration:**
+- `files_directory`: Directory containing processed markdown documents
+- `max_tokens`: Maximum size for document chunks
+- `dataset_name`: Identifier for the dataset being processed
+
+**Model Configuration:**
+- `model_provider`: Choose between `"openai"` or `"gemini"`
+- `model_name`: Specific model to use for evaluation
+- `retrieval_top_k`: Number of relevant documents to retrieve for each question
+
+**Available Models:**
+- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`, `gpt-3.5-turbo`
+- **Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`
+
+### Example: Custom High-Performance Configuration
+
+```yaml
+config_name: high-performance
+tasks:
+  question_answering:
+    run: true
+    hf_dataset_id: fkapsahili/EntRAG
+    split: train
+chunking:
+  enabled: true
+  files_directory: data/entrag_processed
+  output_directory: data/entrag_chunked
+  dataset_name: entrag
+  max_tokens: 1024                      # Smaller chunks for better precision
+embedding:
+  enabled: true
+  model: text-embedding-3-large         # Higher quality embeddings
+  batch_size: 4                         
+  output_directory: data/embeddings
+model_evaluation:
+  max_workers: 5                        
+  output_directory: evaluation_results
+  retrieval_top_k: 10                   # Retrieve more documents
+  model_provider: openai
+  model_name: gpt-4.1                   # Best available model
+  reranking_model_name: gpt-4.1
 ```
 
 ## Packages

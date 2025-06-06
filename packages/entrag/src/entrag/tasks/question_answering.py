@@ -6,6 +6,7 @@ from typing import Any
 
 from loguru import logger
 
+from datasets import load_dataset
 from entrag.api.model import RAGLM
 from entrag.config.evaluation_config import EvaluationConfig
 from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair, Source
@@ -18,6 +19,42 @@ from entrag.evaluators import (
 )
 from entrag.prompts.default_prompts import DEFAULT_QA_SYSTEM_PROMPT, DEFAULT_QA_USER_PROMPT
 from entrag.utils.prompt import get_formatted_chunks, get_formatted_external_chunks, get_query_time
+
+
+def _load_dataset(config: EvaluationConfig) -> list[QuestionAnswerPair]:
+    """
+    Load QA dataset from either local file or Hugging Face Hub.
+
+    Args:
+        config: The evaluation configuration
+    """
+    dataset_config = config.tasks.question_answering
+
+    if hasattr(dataset_config, "hf_dataset_id") and dataset_config.hf_dataset_id:
+        logger.info(f"Loading dataset from Hugging Face: [{dataset_config.hf_dataset_id}]")
+        try:
+            hf_dataset = load_dataset(
+                dataset_config.hf_dataset_id,
+                split=getattr(dataset_config, "split", "train"),
+                token=getattr(dataset_config, "hf_token", None),
+            )
+            dataset_items = [dict(item) for item in hf_dataset]
+            logger.info(f"Loaded {len(dataset_items)} QA pairs from Hugging Face")
+
+        except Exception as e:
+            logger.error(f"Failed to load dataset from Hugging Face: {e}")
+            raise ValueError("Failed to load dataset from Hugging Face. Please check the dataset ID.") from e
+
+    elif dataset_config.dataset_path is not None:
+        logger.info(f"Loading dataset from local file: [{dataset_config.dataset_path}]")
+        with open(dataset_config.dataset_path, "r") as file:
+            dataset_items = json.load(file)
+        logger.info(f"Loaded {len(dataset_items)} QA pairs from local file")
+
+    else:
+        raise ValueError("Either hf_dataset_id or dataset_path must be specified in the configuration")
+
+    return [QuestionAnswerPair(**item) for item in dataset_items]
 
 
 def _compute_and_log_aggregated_metrics(output_file: str) -> None:
@@ -245,26 +282,24 @@ def evaluate_question_answering(model: RAGLM, config: EvaluationConfig, *, outpu
     results: list[EvaluationResult] = []
     file_lock = Lock()
 
-    with open(config.tasks.question_answering.dataset_path, "r") as file:
-        dataset_ = json.load(file)
-        dataset = [QuestionAnswerPair(**item) for item in dataset_]
-        logger.info(f"Loaded [{len(dataset)}] QA pairs.")
-        logger.debug(f"Running evaluation with [{config.model_evaluation.max_workers}] workers.")
+    dataset = _load_dataset(config)
+    logger.info(f"Loaded [{len(dataset)}] QA pairs.")
+    logger.debug(f"Running evaluation with [{config.model_evaluation.max_workers}] workers.")
 
-        with ThreadPoolExecutor(max_workers=config.model_evaluation.max_workers) as executor:
-            future_to_question = {
-                executor.submit(_run_question_inference, model, example, config, output_file, file_lock): example
-                for example in dataset
-            }
+    with ThreadPoolExecutor(max_workers=config.model_evaluation.max_workers) as executor:
+        future_to_question = {
+            executor.submit(_run_question_inference, model, example, config, output_file, file_lock): example
+            for example in dataset
+        }
 
-            for future in as_completed(future_to_question):
-                question = future_to_question[future]
-                try:
-                    question_results = future.result()
-                    results.extend(question_results)
-                    logger.debug(f"Collected results for question {question.id}")
-                except Exception as e:
-                    logger.error(f"Question {question.id} generated an exception: {e}")
+        for future in as_completed(future_to_question):
+            question = future_to_question[future]
+            try:
+                question_results = future.result()
+                results.extend(question_results)
+                logger.debug(f"Collected results for question {question.id}")
+            except Exception as e:
+                logger.error(f"Question {question.id} generated an exception: {e}")
 
     _compute_and_log_aggregated_metrics(output_file)
     return results

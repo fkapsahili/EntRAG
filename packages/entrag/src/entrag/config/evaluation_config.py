@@ -31,8 +31,14 @@ class QuestionAnsweringConfig(BaseModel):
     Configuration section for question answering.
     """
 
-    dataset_path: str = Field(description="File path of the dataset to use.", default="dataset")
     run: bool = Field(description="Flag to enable the question answering step.", default=True)
+    hf_dataset_id: str | None = Field(description="The HuggingFace Dataset to use.", default=None)
+    dataset_path: str | None = Field(
+        description="Path to the local dataset file if not using HuggingFace Dataset.", default=None
+    )
+    split: Literal["train", "test"] = Field(
+        description="The split of the dataset to use for question answering.", default="train"
+    )
 
 
 class TasksConfig(BaseModel):
