@@ -4,9 +4,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 from typing import Any
 
+from datasets import load_dataset
 from loguru import logger
 
-from datasets import load_dataset
 from entrag.api.model import RAGLM
 from entrag.config.evaluation_config import EvaluationConfig
 from entrag.data_model.question_answer import EvaluationResult, InferenceResult, QuestionAnswerPair, Source
