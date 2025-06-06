@@ -78,6 +78,8 @@ The benchmark includes a default configuration located at `evaluation_configs/de
 uv run poe entrag --config default
 ```
 
+The results will then be saved in the `evaluation_results/` directory.
+
 #### Creating Custom Configurations
 
 To create a custom configuration for your specific evaluation needs:
@@ -143,7 +145,7 @@ uv run poe entrag --config my-custom-config
 - `dataset_name`: Identifier for the dataset being processed
 
 **Model Configuration:**
-- `model_provider`: Choose between `"openai"` or `"gemini"`
+- `model_provider`: Choose between `openai` or `gemini`
 - `model_name`: Specific model to use for evaluation
 - `retrieval_top_k`: Number of relevant documents to retrieve for each question
 
@@ -179,6 +181,44 @@ model_evaluation:
   model_name: gpt-4.1                   # Best available model
   reranking_model_name: gpt-4.1
 ```
+
+## Extending the Benchmark
+
+### Custom AI Providers
+
+You can add support for new AI providers (Claude, Ollama, local models, etc.) by implementing the `BaseAIEngine` interface:
+
+1. **Create your custom AI engine** by extending `BaseAIEngine`
+2. **Implement the `chat_completion` method** with your provider's API logic
+3. **Add your provider to the `create_ai_engine` function** in `main.py`
+4. **Update your configuration** to use the new provider
+
+**Example configuration:**
+```yaml
+model_evaluation:
+  model_provider: custom_provider
+  model_name: your-custom-model
+```
+
+### Custom RAG Implementations
+
+You can implement novel RAG approaches by extending the `RAGLM` base class:
+
+1. **Create your custom RAG class** by extending `RAGLM`
+2. **Implement the required methods:**
+   - `build_store()`: Build your retrieval index/database
+   - `retrieve()`: Implement your retrieval logic
+   - `generate()`: Define your response generation strategy
+3. **Add your model to the evaluation pipeline** in `main.py`
+
+### Example Extensions
+
+**Popular extensions you might implement:**
+- **Graph-based RAG**: Using knowledge graphs for retrieval expansion
+- **Agentic RAG**: RAG systems that can use tools and APIs
+- **Hierarchical RAG**: Multi-level document organization and retrieval
+
+The benchmark will automatically evaluate your custom implementations alongside the built-in models, providing standardized metrics for comparison.
 
 ## Packages
 The project uses a Monorepo which is structured into several Python packages.
