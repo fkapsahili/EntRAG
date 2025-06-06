@@ -148,8 +148,8 @@ uv run poe entrag --config my-custom-config
 - `retrieval_top_k`: Number of relevant documents to retrieve for each question
 
 **Available Models:**
-- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`, `gpt-3.5-turbo`
-- **Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`
+- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4.1-nano`, `gpt-4.1-mini`, `gpt-4.1`
+- **Gemini**: `gemini-2.0-pro`, `gemini-2.0-flash`
 
 ### Example: Custom High-Performance Configuration
 
