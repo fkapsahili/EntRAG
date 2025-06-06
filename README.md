@@ -223,7 +223,7 @@ The benchmark will automatically evaluate your custom implementations alongside 
 ## Getting the EntRAG Document Dataset
 To access the complete EntRAG document dataset for evaluation:
 
-1. Contact for dataset access: Send an email to `fabio.kapsahili@protonmail.com` requesting access to the EntRAG benchmark dataset
+1. Contact for dataset access: Send an [email](mailto:fabio.kapsahili@protonmail.com) requesting access to the EntRAG benchmark dataset
 2. Include in your request:
 - Your research affiliation
 - Intended use case for the benchmark
