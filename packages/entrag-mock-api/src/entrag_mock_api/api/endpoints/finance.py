@@ -38,7 +38,16 @@ def get_metric_by_date(
     value = historical_eps.get(date)
 
     if value is None:
-        raise HTTPException(status_code=404, detail="No data for given date")
+        # Try to match by year if exact date not found
+        try:
+            year = date[:4]
+        except Exception:
+            year = None
+        if year:
+            for d, v in historical_eps.items():
+                if d.startswith(year):
+                    return MetricResponse(ticker=ticker, metric=metric, value=v, date=d)
+        raise HTTPException(status_code=404, detail="No data for given date or year")
 
     return MetricResponse(ticker=ticker, metric=metric, value=value, date=date)
 
