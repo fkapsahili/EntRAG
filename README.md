@@ -164,35 +164,6 @@ uv run poe entrag --config my-custom-config
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4.1-nano`, `gpt-4.1-mini`, `gpt-4.1`
 - **Gemini**: `gemini-2.0-pro`, `gemini-2.0-flash`
 
-### Example: Custom High-Performance Configuration
-
-```yaml
-config_name: high-performance
-tasks:
-  question_answering:
-    run: true
-    hf_dataset_id: fkapsahili/EntRAG
-    split: train
-chunking:
-  enabled: true
-  files_directory: data/entrag_processed
-  output_directory: data/entrag_chunked
-  dataset_name: entrag
-  max_tokens: 1024                      # Smaller chunks for better precision
-embedding:
-  enabled: true
-  model: text-embedding-3-large         # Higher quality embeddings
-  batch_size: 4                         
-  output_directory: data/embeddings
-model_evaluation:
-  max_workers: 5                        
-  output_directory: evaluation_results
-  retrieval_top_k: 10                   # Retrieve more documents
-  model_provider: openai
-  model_name: gpt-4.1                   # Best available model
-  reranking_model_name: gpt-4.1
-```
-
 ## Extending the Benchmark
 
 ### Custom AI Providers
