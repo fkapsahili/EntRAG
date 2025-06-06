@@ -220,6 +220,21 @@ You can implement novel RAG approaches by extending the `RAGLM` base class:
 
 The benchmark will automatically evaluate your custom implementations alongside the built-in models, providing standardized metrics for comparison.
 
+## Getting the EntRAG Document Dataset
+To access the complete EntRAG document dataset for evaluation:
+
+1. Contact for dataset access: Send an email to `fabio.kapsahili@protonmail.com` requesting access to the EntRAG benchmark dataset
+2. Include in your request:
+- Your research affiliation
+- Intended use case for the benchmark
+- Whether you need raw documents or pre-processed markdown files
+
+3. Available data formats:
+- Pre-processed markdown: Ready-to-use documents for immediate benchmarking
+- Raw PDF documents: Original source files if you want to test custom preprocessing
+
+The QA dataset is available on HuggingFace at [fkapsahili/EntRAG](https://huggingface.co/datasets/fkapsahili/EntRAG) and will be automatically downloaded during benchmark execution.
+
 ## Packages
 The project uses a Monorepo which is structured into several Python packages.
 
