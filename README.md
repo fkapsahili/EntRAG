@@ -232,6 +232,7 @@ To access the complete EntRAG document dataset for evaluation:
 3. Available data formats:
 - Pre-processed markdown: Ready-to-use documents for immediate benchmarking
 - Raw PDF documents: Original source files if you want to test custom preprocessing
+- Mock API datasets: Data files required for the mock API backend to simulate dynamic API queries
 
 The QA dataset is available on HuggingFace at [fkapsahili/EntRAG](https://huggingface.co/datasets/fkapsahili/EntRAG) and will be automatically downloaded during benchmark execution.
 
