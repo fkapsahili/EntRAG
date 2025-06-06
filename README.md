@@ -37,7 +37,18 @@ echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env
 echo "GEMINI_API_KEY=<your_gemini_api_key>" >> .env
 ```
 
-4. Run the pipeline with the default config:
+4. Navigate to the mock API package
+```bash
+cd packages/entrag-mock-api
+
+# Start the mock API server
+uv run poe start
+
+# The server will run on http://localhost:8000
+# Keep this terminal open while running the benchmark
+```
+
+4. Run the benchmark with the default config in a new terminal:
 ```bash
 # Navigate to the benchmark package
 cd packages/entrag
