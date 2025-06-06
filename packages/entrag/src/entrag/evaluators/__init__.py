@@ -31,7 +31,7 @@ def answer_correctenss_llm_evaluator(example: QuestionAnswerPair, result: Infere
     logger.debug(f"Answer correctness prompt: {prompt}")
 
     completion = Client(api_key=os.getenv("OPENAI_API_KEY")).beta.chat.completions.parse(
-        model="gpt-4.1-mini",
+        model="gpt-4.1",
         messages=[{"role": "system", "content": LLM_AS_JUDGE_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
         response_format=LLMAnswerEvaluation,
     )
@@ -51,7 +51,7 @@ def answer_classification_llm_evaluator(example: QuestionAnswerPair, result: Inf
     )
 
     completion = Client(api_key=os.getenv("OPENAI_API_KEY")).beta.chat.completions.parse(
-        model="gpt-4.1-mini",
+        model="gpt-4.1",
         messages=[{"role": "system", "content": LLM_AS_JUDGE_SYSTEM_PROMPT}, {"role": "user", "content": prompt}],
         response_format=LLMAnswerClassification,
     )

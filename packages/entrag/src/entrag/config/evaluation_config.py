@@ -55,7 +55,7 @@ class ModelEvaluationConfig(BaseModel):
     )
     retrieval_top_k: int = Field(description="Number of top chunks to retrieve for evaluation.", default=5)
     model_name: str = Field(description="Name of the LLM to use for the evaluation.")
-    reranking_model_name: Literal["gpt-4o-mini", "gpt-4.1-mini", "gpt-4.1-nano"] = Field(
+    reranking_model_name: Literal["gpt-4o-mini", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.1"] = Field(
         description="Name of the reranking LLM to use."
     )
     model_provider: Literal["openai", "gemini"] = Field(

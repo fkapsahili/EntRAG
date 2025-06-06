@@ -23,5 +23,5 @@ model_evaluation:
   output_directory: evaluation_results
   retrieval_top_k: 5
   model_provider: openai
-  model_name: gpt-4.1-nano
+  model_name: gpt-4.1-mini
   reranking_model_name: gpt-4.1-mini # Must be one of: gpt-4o-mini, gpt-4.1-nano, gpt-4.1-mini

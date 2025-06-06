@@ -152,7 +152,7 @@ class HybridRAG(BaselineRAG):
                             results.append(
                                 ExternalChunk(
                                     content=f"{ticker} {metric}: {metric_value}",
-                                    source="finance_ap",
+                                    source="finance_api",
                                 )
                             )
                 else:
@@ -320,10 +320,11 @@ class HybridRAG(BaselineRAG):
         return [chunk for chunk, _ in sorted(reranked, key=lambda x: x[1], reverse=True)]
 
     def retrieve(self, query: str, top_k: int) -> tuple[list[Chunk], list[ExternalChunk]]:
+        expanded_query = self._expand_query(query)
         entities = self.run_entity_extraction(query=query)
 
         ext_chunks = self.get_api_results(entities, query, top_k)
-        chunks, _ = super().retrieve(query, top_k)
+        chunks, _ = super().retrieve(expanded_query, top_k)
         return chunks, ext_chunks
 
     def extract_entity_from_attrs(self, entity_attributes: list[str]) -> dict:
@@ -341,3 +342,19 @@ class HybridRAG(BaselineRAG):
         except ValueError as e:
             logger.warning(f"Invalid entity data: {e}")
             return None
+
+    def _expand_query(self, query: str) -> str:
+        rewrite_prompt = f"""Convert this question into search keywords that would find relevant documents:
+
+    Question: "{query}"
+    Search keywords:"""
+
+        try:
+            response = self.ai_engine.chat_completion(model=self.model_name, user=rewrite_prompt)
+            if response and response.strip():
+                logger.debug(f"Query rewritten from '{query}' to '{response.strip()}'")
+                return response.strip()
+            return query
+        except Exception as e:
+            logger.error(f"Failed to rewrite query '{query}': {e}")
+            return query

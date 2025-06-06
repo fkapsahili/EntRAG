@@ -1151,7 +1151,7 @@
     "question_type": "simple_w_condition",
     "dynamism": "dynamic",
     "question": "Which company filed the most recent 8-K report, and what date was it filed?",
-    "reference_answer": "Alphabet Inc on 2025-06-06.",
+    "reference_answer": "Alphabet Inc on 2025-05-06.",
     "sources": [
       {
         "id": "api-1",

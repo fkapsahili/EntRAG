@@ -76,13 +76,13 @@ def main() -> None:
 
     model_kwargs = {"chunks": chunks}
     models = (
-        ZeroRAG(**llm_kwargs),
-        BaselineRAG(**model_kwargs, **llm_kwargs),
+        # ZeroRAG(**llm_kwargs),
+        # BaselineRAG(**model_kwargs, **llm_kwargs),
         HybridRAG(**model_kwargs, **llm_kwargs, reranking_model_name=config.model_evaluation.reranking_model_name),
-        FunctionCallingRAG(
-            **model_kwargs,
-            **llm_kwargs,
-        ),
+        # FunctionCallingRAG(
+        #     **model_kwargs,
+        #     **llm_kwargs,
+        # ),
     )
 
     all_results = {}

@@ -5,9 +5,9 @@ import textwrap
 DEFAULT_QA_SYSTEM_PROMPT = textwrap.dedent("""
 You are provided with a question and a set of references.
 Your task is to answer the question using the provided information, using the fewest words possible.
-If the references do not contain the necessary information to answer the question, respond with "I don't know".
-There is no need to provide explanations or reasoning in your answer.
 If the question contains factual contradictions or false premises, respond with "invalid question".
+If the question is valid but the references do not contain the necessary information to answer it, respond with "I don't know".
+There is no need to provide explanations or reasoning in your answer.
 """)
 
 DEFAULT_QA_USER_PROMPT = textwrap.dedent("""

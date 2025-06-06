@@ -27,7 +27,7 @@ class GetFinanceCompanyMetrics(BaseModel):
 class GetFinanceMetricByDate(BaseModel):
     ticker: str = Field(..., description="Company ticker symbol (e.g. 'AAPL', 'GOOGL')")
     metric: str = Field(..., description="Financial metric to retrieve (currently only 'eps' is supported)")
-    date: str = Field(..., description="Date in YYYY-MM-DD format. Use 'yyyy-12-31' for year-end EPS data.")
+    date: str = Field(..., description="Date in YYYY-MM-DD format. Use 'yyyy-12-31' for EPS data of a specific year.")
 
 
 class GetFinanceTimeseries(BaseModel):
@@ -387,7 +387,7 @@ class FunctionCallingRAG(BaselineRAG):
 
         **Finance APIs - Use to supplement knowledge base with simple metrics:**
         - get_finance_company_metrics: Basic financial metrics only (EPS, P/E ratio, dividend, market cap) for major companies
-        - get_finance_metric_by_date: Historical EPS data for specific dates (limited data available).
+        - get_finance_metric_by_date: Historical EPS data for specific dates (limited data available). Use 'yyyy-12-31' for annual EPS.
         - get_finance_timeseries: Historical EPS trends only (not comprehensive financial data)
 
         **Filing/Document APIs - Use when query mentions:**
