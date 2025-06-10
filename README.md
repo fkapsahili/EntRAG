@@ -83,7 +83,7 @@ uv run poe create-markdown-documents.py \
 
 #### Using Existing Configurations
 
-The benchmark includes a default configuration located at `evaluation_configs/default/config.yaml`. You can run the benchmark with this configuration:
+The benchmark includes a default configuration located at `packages/entrag/evaluation_configs/default/config.yaml`. You can run the benchmark with this configuration:
 
 ```bash
 uv run poe entrag --config default
